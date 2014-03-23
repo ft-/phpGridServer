@@ -1,0 +1,10 @@
+__pycache__
+*~
+*.bak
+*.o
+*.a
+config.php
+RemoteSystemsTempFiles
+.metadata
+simulator/bin
+

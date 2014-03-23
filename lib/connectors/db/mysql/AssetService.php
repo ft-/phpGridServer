@@ -1,0 +1,244 @@
+<?php
+/******************************************************************************
+ * phpGridServer
+ *
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * Version 2.1, February 1999
+ *
+ */
+
+require_once("lib/interfaces/AssetServiceInterface.php");
+require_once("lib/connectors/db/mysql/_MySQLConnectionCache.php");
+
+class MySQLAssetServiceConnector implements AssetServiceInterface
+{
+	private $db;
+	private $dbtable;
+
+	public function __construct($dbhost, $dbuser, $dbpass, $dbname, $dbtable)
+	{
+		$this->dbtable = $dbtable;
+		$this->db = cached_mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	}
+
+	private function metaDataFromRow(&$asset, $row)
+	{
+		$asset->ID=$row["id"];
+		$asset->Name=$row["name"];
+		$asset->Description=$row["description"];
+		$asset->Type=$row["assetType"];
+		if($row["local"])
+		{
+			$asset->Local=True;
+		}
+		else
+		{
+			$asset->Local=False;
+		}
+		if($row["temporary"])
+		{
+			$asset->Temporary=True;
+		}
+		else
+		{
+			$asset->Temporary=False;
+		}
+		$asset->CreatorID=$row["CreatorID"];
+	}
+
+	public function exists($assetID)
+	{
+		UUID::CheckWithException($assetID);
+		$res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$row = $res->fetch_assoc();
+		if(!$row)
+		{
+			throw new AssetNotFoundException("Asset $assetID not found");
+		}
+
+		$res->free();
+	}
+
+
+	public function get($assetID)
+	{
+		UUID::CheckWithException($assetID);
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$row = $res->fetch_assoc();
+		if(!$row)
+		{
+			throw new AssetNotFoundException("Asset $assetID not found");
+		}
+
+		$asset=new Asset();
+		$this->metaDataFromRow($asset, $row);
+		$asset->Data=$row["data"];
+
+		$res->free();
+
+		return $asset;
+	}
+
+	public function getData($assetID)
+	{
+		UUID::CheckWithException($assetID);
+		$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$row = $res->fetch_assoc();
+		if(!$row)
+		{
+			throw new AssetNotFoundException("Asset $assetID not found");
+		}
+
+		$asset= $row["data"];
+		$res->free();
+
+		return $asset;
+	}
+
+	public function getMetadata($assetID)
+	{
+		UUID::CheckWithException($assetID);
+		$res = $this->db->query("SELECT id, name, description, assetType, local, temporary, CreatorID FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$row = $res->fetch_assoc();
+		if(!$row)
+		{
+			throw new AssetNotFoundException("Asset $assetID not found");
+		}
+
+		$asset=new AssetMetadata();
+		$this->metaDataFromRow($asset, $row);
+		$res->free();
+
+		return $asset;
+	}
+
+	public function store($asset)
+	{
+		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable." (name, description, assetType, local, temporary, id, create_time, access_time, asset_flags, CreatorID, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		if(!$stmt)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$create_time = time();
+		$access_time = time();
+
+		$id = $asset->ID->__toString();
+		$stmt->bind_param("ssiiisiiisb", $asset->Name,
+						$asset->Description,
+						$asset->Type,
+						$asset->Local,
+						$asset->Temporary,
+						$id,
+						$create_time,
+						$access_time,
+						$asset->Flags,
+						$asset->CreatorID,
+						$null);
+		$stmt->send_long_data(10, "".$asset->Data); /* this prevents us frm having to rewrite max_packet_size */
+		$stmt->execute();
+		if($stmt->affected_rows == 0)
+		{
+			$stmt->close();
+			$res = $this->db->query("SELECT id FROM assets WHERE id = '".mysqli_real_escape_string($db, $assetbase["ID"])."' AND asset_flags <> 0");
+			if(!$res)
+			{
+				trigger_error(mysqli_error($this->db));
+				throw new AssetStoreFailedException("Database access error");
+			}
+			else if($row= $res->fetch_assoc())
+			{
+				$res->free();
+				$stmt = $db->prepare("UPDATE assets SET data=? WHERE id=? AND asset_flags <> 0");
+				$stmt->bind_param("bs", $null, $asset->ID->ID);
+				$stmt->send_long_data(0, $asset->Data); /* this prevents us frm having to rewrite max_packet_size */
+				$stmt->execute();
+				if($stmt->affected_rows == 0)
+				{
+					$stmt->close();
+					throw new AssetStoreFailedException("Could not update asset");
+				}
+				else
+				{
+					$stmt->close();
+				}
+			}
+			else
+			{
+				$res->free();
+				throw new AssetStoreFailedException("Could not update immutable asset.");
+			}
+		}
+		else
+		{
+			$stmt->close();
+		}
+	}
+
+	public function delete($assetID)
+	{
+		UUID::CheckWithException($assetID);
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE id LIKE '$assetID' AND asset_flags <> 0");
+		if(!$stmt)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$stmt->execute();
+		if($stmt->affected_rows == 0)
+		{
+			$stmt->close();
+			throw new AssetDeleteFailedException("Could not delete asset");
+		}
+		else
+		{
+			$stmt->close();
+		}
+	}
+
+	private $revisions = array("CREATE TABLE %tablename% (
+  							`name` varchar(64) NOT NULL,
+  							`description` varchar(64) NOT NULL,
+  							`assetType` tinyint(4) NOT NULL,
+  							`local` tinyint(1) NOT NULL,
+  							`temporary` tinyint(1) NOT NULL,
+  							`data` longblob NOT NULL,
+  							`id` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
+  							`create_time` int(11) DEFAULT '0',
+  							`access_time` int(11) DEFAULT '0',
+  							`asset_flags` int(11) NOT NULL DEFAULT '0',
+  							`CreatorID` varchar(128) NOT NULL DEFAULT '',
+							PRIMARY KEY (`id`)) ENGINE=InnoDB ROW_FORMAT=DYNAMIC DEFAULT CHARSET=utf8");
+
+	public function migrateRevision()
+	{
+		mysql_migrationExecuter($this->db, "MySQL.Asset", $this->dbtable, $this->revisions);
+	}
+};
+
+return new MySQLAssetServiceConnector(
+					"p:".$_SERVICE_PARAMS["dbhost"],
+					$_SERVICE_PARAMS["dbuser"],
+					$_SERVICE_PARAMS["dbpass"],
+					$_SERVICE_PARAMS["dbname"],
+					$_SERVICE_PARAMS["dbtable"]);

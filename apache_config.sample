@@ -1,0 +1,55 @@
+<Directory "/opt/omv-services/php">
+    #
+    # Possible values for the Options directive are "None", "All",
+    # or any combination of:
+    #   Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
+    #
+    # Note that "MultiViews" must be named *explicitly* --- "Options All"
+    # doesn't give it to you.
+    #
+    # The Options directive is both complicated and important.  Please see
+    # http://httpd.apache.org/docs/2.2/mod/core.html#options
+    # for more information.
+    #
+    Options ExecCGI Indexes FollowSymLinks
+
+    #
+    # AllowOverride controls what directives may be placed in .htaccess files.
+    # It can be "All", "None", or any combination of the keywords:
+    #   Options FileInfo AuthConfig Limit
+    #
+    AllowOverride None
+
+    #
+    # Controls who can get stuff from this server.
+    #
+    Order allow,deny
+    Allow from all
+
+</Directory>
+
+Alias /accounts /opt/omv-services/php/rest_accounts.php
+Alias /auth /opt/omv-services/php/rest_auth.php
+Alias /authorization /opt/omv-services/php/rest_authorization.php
+Alias /avatar /opt/omv-services/php/rest_avatar.php
+Alias /grid /opt/omv-services/php/rest_grid.php
+Alias /griduser /opt/omv-services/php/rest_griduser.php
+Alias /helo /opt/omv-services/php/rest_helo.php
+Alias /get_grid_info /opt/omv-services/php/get_grid_info.php
+Alias /json_grid_info /opt/omv-services/php/json_grid_info.php
+Alias /presence /opt/omv-services/php/rest_presence.php
+Alias /map /opt/omv-services/php/map.php
+Alias /login /opt/omv-services/php/login/index.php
+Alias /offlineim /opt/omv-services/php/rest_offlineim.php
+Alias /sim_grid_info /opt/omv-services/php/sim_grid_info.php
+
+Alias /assets /opt/omv-services/php/rest_assets.php
+Alias /xinventory /opt/omv-services/php/rest_xinventory.php
+Alias /hgfriends /opt/omv-services/php/rest_hgfriends.php
+Alias /friends /opt/omv-services/php/rest_friends.php
+Alias /groups /opt/omv-services/php/rest_groups.php
+Alias /hg-groups /opt/omv-services/php/rest_hggroups.php
+Alias /cap /opt/omv-services/php/cap.php
+Alias /homeagent /opt/omv-services/php/rest_homeagent.php
+Alias /foreignagent /opt/omv-services/php/rest_foreignagent.php
+

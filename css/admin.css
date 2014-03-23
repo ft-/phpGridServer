@@ -1,0 +1,141 @@
+/******************************************************************************
+ * phpGridServer
+*
+* GNU LESSER GENERAL PUBLIC LICENSE
+* Version 2.1, February 1999
+*
+*/
+
+body
+{
+	padding: 0px;
+	margin: 0px;
+	background-color: darkblue;
+}
+
+table.mainwindow
+{
+	width: 100%; 
+	margin: 0px; 
+	padding: 0px; 
+	height: 100%;
+}
+
+div.navbar
+{
+	width: 100%; 
+	height: 100%; 
+	background-color: darkblue; 
+	color: white;
+}
+
+div.main
+{
+	width: 100%; 
+	height: 100%; 
+	background-color: white;
+	color: black;
+}
+
+td.navbar
+{
+	height: 100%;
+	width: 150px;
+}
+
+td.main
+{
+	height: 100%;
+}
+
+a.navbar:link {
+	color: lightblue;
+	text-decoration: none;
+	font-weight: bold;	
+}
+
+a.navbar:visited {
+	color: lightblue;
+	text-decoration: none;
+	font-weight: bold;	
+}
+
+a.navbar:focus {
+	color: lightblue;
+	text-decoration: none;
+	font-weight: bold;	
+}
+
+a.navbar:hover {
+	color: white;
+	text-decoration: none;
+	font-weight: bold;	
+}
+
+a.navbar:active {
+	color: white;
+	text-decoration: none;
+	font-weight: bold;	
+}
+
+input
+{
+	color: black;
+	background-color: lightblue;
+}
+
+h1.loginpage
+{
+	color: white;
+}
+
+h1
+{
+	color: black;
+}
+
+th
+{
+	color: white;
+}
+
+table.listingtable
+{
+	border-style: solid;
+	border-width: 1px;
+	width: 100%;
+}
+
+th
+{
+	color: black;
+}
+
+th.loginpage
+{
+	color: white;
+}
+
+th.listingtable
+{
+	color: darkblue;
+	border-style: solid;
+	border-width: 1px;
+	text-style: bold;
+}
+
+td.listingtable
+{
+	border-style: solid;
+	border-width: 1px;
+}
+
+.error
+{
+	color: red;
+}
+
+.success
+{
+	color: green;
+}
