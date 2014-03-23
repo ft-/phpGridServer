@@ -65,10 +65,11 @@ GridURI                    no                                    http://<yourgri
 
 5.1. Setting up Grid Library
 
-The following steps are required whether migrating or setting up from scratch
+The following steps are required whether migrating or setting up from scratch.
+You need a set of files to set it up accordingly. Those can be extracted from OpenSimulator archive.
 
-run tools/loadninifile.php with the asset set from OpenSimulator
-run tools/loadninifile.php with the inventory library set from OpenSimulator
+run tools/loadninifile.php assets/AssetSets.xml
+run tools/loadninifile.php inventory/Libraries.xml
 
 6. Connecting a simulator
 
