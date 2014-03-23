@@ -201,11 +201,11 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 		
 		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_items.
 		"(assetID, assetType, inventoryName, avatarID, inventoryID,
-		invType, creatorID, creatorRefID, inventoryDescription, inventoryBasePermissions, inventoryCurrentPermissions,
+		invType, creatorRefID, inventoryDescription, inventoryBasePermissions, inventoryCurrentPermissions,
 		inventoryNextPermissions, inventoryEveryOnePermissions, groupID, groupOwned, inventoryGroupPermissions,
 		salePrice, saleType, flags, creationDate, parentFolderID)
 		values (?, ?, ?, ?, ?,
-			?, ?, ?, ?, ?, ?,
+			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?,
 			?, ?, ?, ?, ?)");
 		if(!$stmt)
@@ -223,7 +223,6 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 						$item->ID,
 
 						$item->Type,
-						$creatorData,
 						$creatorRefId,
 						$item->Description,
 						$item->BasePermissions,
@@ -673,7 +672,6 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 								inventoryNextPermissions int(10) unsigned DEFAULT NULL,
 								inventoryCurrentPermissions int(10) unsigned DEFAULT NULL,
 								invType int(11) DEFAULT NULL,
-								creatorID varchar(255) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
 								inventoryBasePermissions int(10) unsigned NOT NULL DEFAULT '0',
 								inventoryEveryOnePermissions int(10) unsigned NOT NULL DEFAULT '0',
 								salePrice int(11) NOT NULL DEFAULT '0',
