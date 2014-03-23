@@ -48,6 +48,7 @@ interface GridServiceInterface
 	public function getHyperlinks($scopeID);
 	public function getRegionsByRange($scopeID, $min_x, $min_y, $max_x, $max_y);
 	public function getNeighbours($scopeID, $regionID);
+	public function modifyRegionFlags($scopeID, $regionID, $flagsToAdd, $flagsToRemove);
 
 	public function getRegionDefaultsForRegion($scopeID, $regionID, $regionName);
 

@@ -258,8 +258,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		}
 		$stmt->close();
 	}
-
-
+	
 	public function registerRegion($region)
 	{
 		$region->Flags |= RegionFlags::RegionOnline;
@@ -541,6 +540,24 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		return $this->getRegionsByFlags($scopeID, RegionFlags::DefaultHGRegion);
 	}
 
+	public function modifyRegionFlags($scopeID, $regionID, $flagsToAdd, $flagsToRemove)
+	{
+		$flagsToAdd = intval($flagsToAdd);
+		$flagsToRemove = ~intval($flagsToRemove);
+		UUID::CheckWithException($regionID);
+		if($scopeID)
+		{
+			UUID::CheckWithException($scopeID);
+			$w = "ScopeID LIKE '$scopeID' AND";
+		}
+		else
+		{
+			$w = "";
+		}
+		$this->db->query("UPDATE ".$this->dbtable." SET flags=(flags | $flagsToAdd) & $flagsToRemove WHERE $w uuid LIKE '$regionID'");
+		/* no error checking here since we may not have a region at all */
+	}
+	
 	private function getRegionsByFlags($scopeID, $flags)
 	{
 		if($scopeID)
