@@ -728,7 +728,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 					"creatorRefID = 0");
 		if(!$res)
 		{
-			print("Migration already done by removing creatorID from inventoryitems");
+			print("Migration of inventory already done by removing creatorID from inventoryitems\n");
 			return;
 		}
 		$numentriesfixed = 0;
