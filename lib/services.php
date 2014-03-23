@@ -11,6 +11,7 @@ require_once("config.php");
 
 /* we run everything through this file, so we set the timezone we need right here */
 date_default_timezone_set('UTC');
+ini_set("default_charset", "UTF-8");
 ini_set("display_errors", 0);
 
 $_services_ = array();
