@@ -688,7 +688,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 								KEY inventoryitems_avatarid (avatarID),
 								KEY inventoryitems_parentFolderid (parentFolderID)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-		"ALTER TABLE %tablename% ADD COLUMN creatorRefID BIGINT(20) NOT NULL DEFAULT '0' AFTER creatorID"
+		"ALTER TABLE %tablename% ADD COLUMN creatorRefID BIGINT(20) NOT NULL DEFAULT '0' AFTER creationDate"
 	);
 	private $revisions_folders = array(
 		" CREATE TABLE %tablename% (
