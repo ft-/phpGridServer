@@ -42,7 +42,7 @@ your former admin accounts will become admin accounts as well
 
 Go to page All Server Params on the admin pages.
 
-With the Parameter Add you will see. You can add the following parameters:
+With the Parameter Add, you have to add the following parameters:
 
 Replace <yourgridserver> with the hostname and port you are going to use
 
