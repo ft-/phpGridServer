@@ -68,8 +68,8 @@ GridURI                    no                                    http://<yourgri
 The following steps are required whether migrating or setting up from scratch.
 You need a set of files to set it up accordingly. Those can be extracted from OpenSimulator archive.
 
-run tools/loadninifile.php assets/AssetSets.xml
-run tools/loadninifile.php inventory/Libraries.xml
+run tools/loadninifile.php <path-to-opensim-bin>/assets/AssetSets.xml
+run tools/loadninifile.php <path-to-opensim-bin>/inventory/Libraries.xml
 
 6. Connecting a simulator
 
