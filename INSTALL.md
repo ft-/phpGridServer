@@ -1,9 +1,12 @@
 1. Requirements
 
-- PHP
+- PHP 5.4 or newer
 - Database (currently only MySQL or MariaDB)
 - Web-Server with ability to configure aliases
 
+1.1. UTF-8 is necessary on PHP for correct operation
+
+default_charset should be set to UTF-8
 
 2. Setting up the Web-Server
 
