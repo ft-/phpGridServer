@@ -34,6 +34,8 @@ require_once("admin/session.php");
 <br/>
 <a class="navbar" href="/admin/?page=all_regions">All Regions</a><br/>
 <a class="navbar" href="/admin/?page=all_serverparams">All Server Params</a><br/>
+<br/>
+<a class="navbar" href="/admin/?page=all_regiondefaults">All Region Defaults</a><br/>
 </div>
 </td>
 <td class="main">
@@ -61,7 +63,7 @@ if(isset($_GET["page"]))
 	if(isset($page))
 	{
 		$page = "admin/pages/$page.php";
-		@include_once($page);
+		include_once($page);
 	}
 }
 ?>
