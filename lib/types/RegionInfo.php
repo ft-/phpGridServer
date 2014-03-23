@@ -31,7 +31,7 @@ class RegionDefault
 {
 	private $ID;
 	private $ScopeID;
-	public $RegionName = 0;
+	public $RegionName = "";
 	public $Flags = 0;
 
 	public function __construct()
