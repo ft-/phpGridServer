@@ -109,8 +109,8 @@ else if($_SERVER["REQUEST_METHOD"]=="POST")
 	$maptile = new Maptile();
 	$maptile->ScopeID = $scopeid;
 	$maptile->Data = new BinaryData(base64_decode($_POST["DATA"]));
-	$maptile->LocX = $locX;
-	$maptile->LocY = $locY;
+	$maptile->LocX = $x;
+	$maptile->LocY = $y;
 	$maptile->ContentType = $_POST["TYPE"];
 	
 	try
