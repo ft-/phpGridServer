@@ -410,7 +410,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		}
 		else
 		{
-			$res = $this->db->query("UPDATE ".$this->dbtable." SET flags = flags - $RegionFlag_RegionOnline, last_seen=CURRENT_TIMESTAMP WHERE ScopeID LIKE '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::RegionOnline." != 0");
+			$res = $this->db->query("UPDATE ".$this->dbtable." SET flags = flags - ".RegionFlags::RegionOnline.", last_seen=CURRENT_TIMESTAMP WHERE ScopeID LIKE '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::RegionOnline." != 0");
 		}
 	}
 
