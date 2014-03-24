@@ -50,6 +50,7 @@ With the Parameter Add, you have to add the following parameters:
 Replace <yourgridserver> with the hostname and port you are going to use
 
 Parameter                  GridInfo                              Value                                 Description
+
 login                      yes                                   http://<yourgridserver>/
 HG_HomeURI                 no                                    http://<yourgridserver>/
 gridname                   yes                                   <your long grid name>                 gives your grid a name
