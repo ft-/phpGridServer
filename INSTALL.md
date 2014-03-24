@@ -49,19 +49,19 @@ With the Parameter Add, you have to add the following parameters:
 
 Replace <yourgridserver> with the hostname and port you are going to use
 
-Parameter                  GridInfo                              Description
+Parameter                  GridInfo                              Value                                 Description
 login                      yes                                   http://<yourgridserver>/
 HG_HomeURI                 no                                    http://<yourgridserver>/
-gridname                   yes                                   gives your grid a name
-gridnick                   yes                                   gives your grid a short nick name
+gridname                   yes                                   <your long grid name>                 gives your grid a name
+gridnick                   yes                                   <your grid's nick>                    gives your grid a short nick name
 register                   yes                                   http://<yourgridserver>/register
 welcome		           yes                                   http://<yourgridserver>/
-RegionDeleteOnUnregister   no                                    Either a region is removed from grid or just marked offline
+RegionDeleteOnUnregister   no                                    false OR true                         Either a region is removed from grid or just marked offline
 Map_ServerURI              no                                    http://<yourgridserver>/map/
-UserRegistrationsEnabled   no                                    Set to true if you accept user registrations
-gridlibraryownerid         no                                    default ownerid for Grid Library (11111111-1111-0000-0000-000100bba000)
-gridlibraryfolderid        no                                    default folderid for Grid Library (00000112-000f-0000-0000-000100bba000)
-gridlibraryenabled         no                                    set to true if you provide the Grid Library
+UserRegistrationsEnabled   no                                    false OR true                         Set to true if you accept user registrations
+gridlibraryownerid         no                                    11111111-1111-0000-0000-000100bba000  default ownerid for Grid Library
+gridlibraryfolderid        no                                    00000112-000f-0000-0000-000100bba000  default folderid for Grid Library
+gridlibraryenabled         no                                    false OR true                         set to true if you provide the Grid Library
 about                      yes                                   http://<yourgridserver>/
 GridURI                    no                                    http://<yourgridserver>/
 
