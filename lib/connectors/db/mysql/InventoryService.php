@@ -215,7 +215,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 		}
 		try
 		{
-			$stmt->bind_param("sisss"."isisii"."iisii"."iiiis",
+			$stmt->bind_param("sisss"."iisii"."iisii"."iiiis",
 						$item->AssetID,
 						$item->AssetType,
 						$item->Name,
