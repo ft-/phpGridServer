@@ -1,11 +1,4 @@
 <?php
-/******************************************************************************
- * phpGridServer
- *
- * GNU LESSER GENERAL PUBLIC LICENSE
- * Version 2.1, February 1999
- *
- */
 
 set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include_path());
 
@@ -25,7 +18,7 @@ $config_type = $_GET["config_type"];
 
 
 
-if(!preg_match("/^[A-Za-z_]*$/", $config_type))
+if(!preg_match("/^[A-Za-z_\-]*$/", $config_type))
 {
 	http_response_code("400");
 	echo "Invalid config_type parameter";
