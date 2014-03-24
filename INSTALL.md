@@ -61,7 +61,7 @@ Map_ServerURI              no                                    http://<yourgri
 UserRegistrationsEnabled   no                                    Set to true if you accept user registrations
 gridlibraryownerid         no                                    default ownerid for Grid Library (11111111-1111-0000-0000-000100bba000)
 gridlibraryfolderid        no                                    default folderid for Grid Library (00000112-000f-0000-0000-000100bba000)
-gridlibraryenabld          no                                    set to true if you provide the Grid Library
+gridlibraryenabled         no                                    set to true if you provide the Grid Library
 about                      yes                                   http://<yourgridserver>/
 GridURI                    no                                    http://<yourgridserver>/
 
