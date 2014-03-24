@@ -15,7 +15,10 @@ if(isset($_POST["Edit"]))
 	$serverParam = new ServerParamData();
 	$serverParam->Parameter = $_GET["Parameter"];
 	$serverParam->Value = $_POST["Value"];
-	$serverParam->GridInfo = boolval($_POST["GridInfo"]);
+	if(isset($_POST["GridInfo"]))
+	{
+		$serverParam->GridInfo = boolval($_POST["GridInfo"]);
+	}
 
 	try
 	{
