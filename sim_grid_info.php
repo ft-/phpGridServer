@@ -25,7 +25,7 @@ $config_type = $_GET["config_type"];
 
 
 
-if(!preg_match("/^[A-Za-z_]*$/", $sim_type))
+if(!preg_match("/^[A-Za-z_]*$/", $config_type))
 {
 	http_response_code("400");
 	echo "Invalid config_type parameter";
