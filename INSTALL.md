@@ -51,7 +51,7 @@ Replace <yourgridserver> with the hostname and port you are going to use
 
 Parameter                  GridInfo                              Description
 login                      yes                                   http://<yourgridserver>/
-HG_HomeURI                 yes                                   http://<yourgridserver>/
+HG_HomeURI                 no                                    http://<yourgridserver>/
 gridname                   yes                                   gives your grid a name
 gridnick                   yes                                   gives your grid a short nick name
 register                   yes                                   http://<yourgridserver>/register
