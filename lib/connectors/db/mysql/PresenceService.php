@@ -241,7 +241,7 @@ class MySQLPresenceServiceConnector implements PresenceServiceInterface
 							`SessionID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
 							`SecureSessionID` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
 							`LastSeen` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-							IMServiceType VARCHAR(255) NOT NULL DEFAULT 'lib/connectors/im/Simulator',
+							ServiceHandler VARCHAR(255) NOT NULL DEFAULT 'lib/Presence/Simulator',
 							UNIQUE KEY `SessionID` (`SessionID`),
 							KEY `UserID` (`UserID`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8",
