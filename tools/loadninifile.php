@@ -227,6 +227,7 @@ function parseNiniSection_InventoryItem(&$input, $dirname, $encoding)
 				$inventoryitem->BasePermissions = InventoryPermissions::Transfer | InventoryPermissions::Modify | InventoryPermissions::Copy;
 				$inventoryitem->CurrentPermissions = InventoryPermissions::Transfer | InventoryPermissions::Modify | InventoryPermissions::Copy;
 				$inventoryitem->NextPermissions = InventoryPermissions::Transfer | InventoryPermissions::Modify | InventoryPermissions::Copy;
+				$inventoryitem->EveryOnePermissions = InventoryPermissions::Transfer | InventoryPermissions::Copy;
 
 				if($inventoryitem->AssetType == AssetType::LinkFolder)
 				{
