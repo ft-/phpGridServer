@@ -143,6 +143,7 @@ CREATE TABLE `usersettings` (
   PRIMARY KEY (`useruuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE Presence ADD ServiceHandler VARCHAR(255) NOT NULL DEFAULT 'lib/Presence/Simulator';
 
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Asset','assets',1);
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.AuthInfo','auth',1);
