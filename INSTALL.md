@@ -66,7 +66,7 @@ gridlibraryownerid         no                                    11111111-1111-0
 gridlibraryfolderid        no                                    00000112-000f-0000-0000-000100bba000  default folderid for Grid Library
 gridlibraryenabled         no                                    false OR true                         set to true if you provide the Grid Library
 about                      yes                                   http://<yourgridserver>/
-GridURI                    no                                    http://<yourgridserver>/
+GridURI                    no                                    http://<yourgridserver>               this is the GridURI and used for all entries (DO NOT ADD / at the end)
 
 
 5.1. Setting up Grid Library
