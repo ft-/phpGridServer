@@ -360,7 +360,11 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 	public function getItemsInFolder($principalID, $folderID)
 	{
 		UUID::CheckWithException($folderID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_items." WHERE ".
+		$res = $this->db->query("SELECT assetID, assetType, inventoryName, inventoryDescription, inventoryNextPermissions,
+					inventoryCurrentPermissions, invType, n.creatorID AS creatorID, inventoryBasePermissions, inventoryEveryOnePermissions,
+					salePrice, saleType, creationDate, groupID, groupOwned, flags, 
+					inventoryID, avatarID, parentFolderID, inventoryGroupPermissions 
+					FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE ".
 					"parentFolderID LIKE '$folderID'");
 		if(!$res)
 		{
@@ -374,7 +378,11 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 	public function getActiveGestures($principalID)
 	{
 		UUID::CheckWithException($principalID);
-		$query = "SELECT * FROM ".$this->dbtable_items." WHERE avatarID LIKE '$principalID' AND assetType=".AssetType::Gesture." AND (flags & 1) <>0";
+		$query = "SELECT assetID, assetType, inventoryName, inventoryDescription, inventoryNextPermissions,
+					inventoryCurrentPermissions, invType, n.creatorID AS creatorID, inventoryBasePermissions, inventoryEveryOnePermissions,
+					salePrice, saleType, creationDate, groupID, groupOwned, flags, 
+					inventoryID, avatarID, parentFolderID, inventoryGroupPermissions 
+					FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE avatarID LIKE '$principalID' AND assetType=".AssetType::Gesture." AND (flags & 1) <>0";
 		$res = $this->db->query($query);
 		if(!$res)
 		{
