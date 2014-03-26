@@ -160,7 +160,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 		UUID::CheckWithException($itemID);
 		$res = $this->db->query("SELECT 
 					assetID, assetType, inventoryName, inventoryDescription, inventoryNextPermissions,
-					inventoryCurrentPermissions, invType, n.creatorID, inventoryBasePermissions, inventoryEveryOnePermissions,
+					inventoryCurrentPermissions, invType, n.creatorID AS creatorID, inventoryBasePermissions, inventoryEveryOnePermissions,
 					salePrice, saleType, creationDate, groupID, groupOwned, flags, 
 					inventoryID, avatarID, parentFolderID, inventoryGroupPermissions 
 					FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE ".
