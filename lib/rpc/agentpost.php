@@ -185,7 +185,6 @@ if(isset($agentPostParams->serviceurls))
 		if(isset($agentPostParams->serviceurls->$uriName))
 		{
 			$serverDataURI->$uriName = $agentPostParams->serviceurls->$uriName;
-			trigger_error("new HG uri for ".$userAccount->ID." $uriName => ".$agentPostParams->serviceurls->$uriName);
 		}
 	}
 }
@@ -214,7 +213,6 @@ else if(isset($agentPostParams->service_urls))
 		if(isset($uriNames[$keyName]))
 		{
 			$serverDataURI->$keyName = $keyValue;
-			trigger_error("new HG uri for ".$userAccount->ID." $keyName => $keyValue");
 		}
 	}
 }
