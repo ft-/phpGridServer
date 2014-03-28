@@ -30,6 +30,7 @@ require_once("user/session.php");
 <div class="navbar">
 <a class="navbar" href="/user/?Logout=true">Logout</a><br/><br/>
 <a class="navbar" href="/user">Details</a><br/><br/>
+<a class="navbar" href="/user/?page=changepassword">Change password</a><br/><br/>
 <a class="navbar" href="/user/?page=appearances">Appearances</a><br/>
 <a class="navbar" href="/user/?page=purgeappearance">Purge Appearance</a><br/><br/>
 </div>
