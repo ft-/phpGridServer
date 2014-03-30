@@ -39,7 +39,7 @@ if(!UUID::IsUUID($_RPC_REQUEST->PRINCIPAL))
 	exit;
 }
 
-$lifetime=intval($_POST->LIFETIME);
+$lifetime=intval($_RPC_REQUEST->LIFETIME);
 if($lifetime > 30)
 {
 	$lifetime = 30;
