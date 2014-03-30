@@ -50,7 +50,7 @@ $authenticationService = getService("RPC_Authentication");
 
 try
 {
-	$token = UUID::ZERO(); //$authenticationService->authenticate($_POST->PRINCIPAL, $_POST->PASSWORD, $lifetime);
+	$token = $authenticationService->authenticate($_RPC_REQUEST->PRINCIPAL, $_RPC_REQUEST->PASSWORD, $lifetime);
 	header("Content-Type: text/xml");
 	echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><ServerResponse><Result>Success</Result><Token>".htmlentities($token)."</Token></ServerResponse>";		
 }
