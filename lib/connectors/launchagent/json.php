@@ -244,7 +244,7 @@ class JSON_LaunchAgentServiceConnector implements LaunchAgentServiceInterface
 
 			$circuitInfo->Destination = $destination;
 			$circuitInfo->CapsPath = UUID::Random();
-			$circuitInfo->MapServerURL = $serverParams->getParam("Map_ServerURI", "http://${_SERVER["SERVER_NAME"]}:${_SERVER["SERVER_PORT"]}/");
+			$circuitInfo->MapServerURL = $serverParams->getParam("Map_ServerURI", "http://${_SERVER["SERVER_NAME"]}:${_SERVER["SERVER_PORT"]}/map/");
 
 			$circuitInfo->child = False;
 		}
