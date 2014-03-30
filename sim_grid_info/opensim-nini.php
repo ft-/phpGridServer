@@ -61,6 +61,7 @@ $service_uris["Cap_FetchLib2"] = getWebInventoryCapsURI()."cap/FetchLib2/";
 $service_uris["Cap_FetchLibDescendents2"] = getWebInventoryCapsURI()."cap/FetchLibDescendents2/";
 $service_uris["Cap_GetMesh"] = getWebGetMeshCapsURI()."cap/GetMesh/";
 $service_uris["Cap_GetTexture"] = getWebGetTextureCapsURI()."cap/GetTexture/";
+$service_uris["MapServerURI"] = $serverParams->getParam("Map_ServerURI", "http://${_SERVER["SERVER_NAME"]}:${_SERVER["SERVER_PORT"]}/map/");
 
 header("Content-Type: text/xml");
 echo "<?xml version=\"1.0\"?>";
@@ -175,6 +176,10 @@ printSectionEnd();
 
 printSectionBegin("MapImageService");
 printKey("MapImageServerURI", $gridserveruri);
+printSectionEnd();
+
+printSectionBegin("SimulatorFeatures");
+printKey("MapTileURL", $service_uris["MapServerURI"]);
 printSectionEnd();
 
 echo "</Nini>";
