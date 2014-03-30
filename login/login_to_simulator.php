@@ -463,26 +463,9 @@ catch(Exception $e)
 {
 }
 
-function rewriteSeedCapsURI($uri)
-{
-	global $seedType, $sessionid, $pathcmps;
-
-	return "http://${_SERVER["SERVER_NAME"]}:${_SERVER["SERVER_PORT"]}/cap/RegionSeed/$sessionid/".urlencode($uri)."/";
-}
-
 $rpcStruct->look_at = "[r".$destination->LookAt->X.",r".$destination->LookAt->Y.",r".$destination->LookAt->Z."]";
 $rpcStruct->agent_access_max = "A";
-if($userAccount->BypassEQGProxy || strtolower($serverParamService->getParam("EnableEQGProxy", "false")) != "true")
-{
-	$rpcStruct->seed_capability = new URI($destination->ServerURI."CAPS/".$circuitInfo->CapsPath."0000/");
-}
-else
-{
-	$capsSeedOriginal = $destination->ServerURI."CAPS/".$circuitInfo->CapsPath."0000/";
-	$capsSeedNew = "http://${_SERVER["SERVER_NAME"]}:${_SERVER["SERVER_PORT"]}/cap/RegionSeed/$sessionID/".base64_encode($capsSeedOriginal)."/";
-	trigger_error("enabled Seed Proxy $capsSeedNew");
-	$rpcStruct->seed_capability = new URI($capsSeedNew);
-}
+$rpcStruct->seed_capability = new URI($destination->ServerURI."CAPS/".$circuitInfo->CapsPath."0000/");
 $rpcStruct->region_x = $destination->LocX;
 $rpcStruct->region_y = $destination->LocY;
 $rpcStruct->region_size_x = $destination->SizeX;
