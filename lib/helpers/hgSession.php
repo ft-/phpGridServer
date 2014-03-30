@@ -189,7 +189,7 @@ function getServicesBySessionID($sessionID)
 		$gridServicesInfo->AssetService = getService("Asset");
 		$gridServicesInfo->ProfileService = getService("Profile");
 		$gridServicesInfo->FriendsService = getService("Friends"); /* TODO: needs a different service type here */
-		$gridServicesInfo->IMService = getService("IMService");
+		$gridServicesInfo->IMService = getService("IM");
 		$gridServicesInfo->GroupsService = getService("Groups");
 	}
 	else if(UUI::IsUUI($presence->UserID))
@@ -227,7 +227,7 @@ function getServicesByAgentID($userID)
 		$gridServicesInfo->AssetService = getService("Asset");
 		$gridServicesInfo->ProfileService = getService("Profile");
 		$gridServicesInfo->FriendsService = getService("Friends"); /* TODO: needs a different service type here */
-		$gridServicesInfo->IMService = getService("IMService");
+		$gridServicesInfo->IMService = getService("IM");
 		$gridServicesInfo->GroupsService = getService("Groups");
 	}
 	else if(UUI::IsUUI($presence->UserID))
@@ -276,7 +276,7 @@ function getServicesByAgentIDAndIPAddress($userID, $ipAddress)
 		$gridServicesInfo->AssetService = getService("Asset");
 		$gridServicesInfo->ProfileService = getService("Profile");
 		$gridServicesInfo->FriendsService = getService("Friends"); /* TODO: needs a different service type here */
-		$gridServicesInfo->IMService = getService("IMService");
+		$gridServicesInfo->IMService = getService("IM");
 		$gridServicesInfo->GroupsService = getService("Groups");
 	}
 	else if(UUI::IsUUI($userID))
