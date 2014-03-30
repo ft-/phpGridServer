@@ -19,6 +19,11 @@ function cached_mysqli_connect($dbhost, $dbuser, $dbpass, $dbname)
 		return $__mysqli_connections[$connid];
 	}
 	$db = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	if(!$db)
+	{
+		trigger_error("Failed to connect to database");
+		throw new Exception("Failed to connect to database");
+	}
 	$__mysqli_connections[$connid] = $db;
 
 	return $db;
