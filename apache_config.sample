@@ -39,6 +39,7 @@ Alias /get_grid_info /opt/omv-services/php/get_grid_info.php
 Alias /json_grid_info /opt/omv-services/php/json_grid_info.php
 Alias /presence /opt/omv-services/php/rest_presence.php
 Alias /map /opt/omv-services/php/map.php
+Alias /MAP /opt/omv-services/php/map.php
 Alias /login /opt/omv-services/php/login/index.php
 Alias /offlineim /opt/omv-services/php/rest_offlineim.php
 Alias /sim_grid_info /opt/omv-services/php/sim_grid_info.php
