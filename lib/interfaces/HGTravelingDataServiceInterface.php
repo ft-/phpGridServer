@@ -23,6 +23,7 @@ interface HGTravelingDataServiceInterface
 	public function getHGTravelingData($sessionID);
 	public function getHGTravelingDataByAgentUUIDAndIPAddress($uuid, $ipAddress);
 	public function getHGTravelingDatasByAgentUUID($uuid); /* returns HGTravelingDataIterator */
+	public function getHGTravelingDataByAgentUUIDAndNotHomeURI($uuid, $homeURI);
 	public function storeHGTravelingData($travelingData);
 	public function deleteHGTravelingData($sessionID);
 }

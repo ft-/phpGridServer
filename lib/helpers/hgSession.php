@@ -213,15 +213,26 @@ function getServicesByAgentID($userID)
 	$presenceService = getService("Presence");
 	$gridUserService = getService("GridUser");
 	$hgServerDataService = getService("HGServerData");
+	$hgTravelingDataService = getService("HGTravelingData");
+	
+	try
+	{
+		$presence = $presenceService->getAgentByUUID($userID);
+		/* we got a matching presence here, so we check its properties */
+		$userID = $presence->UserID;
+	}
+	catch(Exception $e)
+	{
+		/* no presence but we may still have a traveling agent */
+		$hgTravelingData = $hgTravelingDataService->getHGTravelingDatasByAgentUUID($userID);
+		/* we got a traveller here, so we go with that */
+		$userID = $hgTravelingData->UserID;
+	}
 
-	$presence = $presenceService->getAgentByUUID($userID);
-	$gridUser = $gridUserService->getGridUser($presence->UserID);
-
-
-	if(UUID::IsUUID($presence->UserID))
+	if(UUID::IsUUID($userID))
 	{
 		/* present local services */
-		$gridServicesInfo = new GridServicesInfo($presence->UserID);
+		$gridServicesInfo = new GridServicesInfo($userID);
 		$gridServicesInfo->GatekeeperService = null;
 		$gridServicesInfo->InventoryService = getService("Inventory");
 		$gridServicesInfo->AssetService = getService("Asset");
@@ -230,10 +241,10 @@ function getServicesByAgentID($userID)
 		$gridServicesInfo->IMService = getService("IM");
 		$gridServicesInfo->GroupsService = getService("Groups");
 	}
-	else if(UUI::IsUUI($presence->UserID))
+	else if(UUI::IsUUI($userID))
 	{
 		/* get URIs and present remote services */
-		$uui = new UUI($presence->UserID);
+		$uui = new UUI($userID);
 		$gridServicesInfo = getGridServiceData($uui->Uri, $uui->ID, $sessionID);
 	}
 	else

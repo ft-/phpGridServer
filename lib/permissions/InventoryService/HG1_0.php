@@ -10,6 +10,9 @@
 require_once("lib/interfaces/InventoryServiceInterface.php");
 require_once("lib/services.php");
 require_once("lib/types/UUI.php");
+require_once("lib/helpers/hgSession.php");
+require_once("lib/helpers/gridlibrary.php");
+require_once("lib/types/ServerDataURI.php");
 
 function hg10_patchItem($item)
 {
@@ -59,13 +62,38 @@ class HGInventoryServiceItemIteratorProxy implements InventoryServiceItemIterato
 class HG1_0InventoryService implements InventoryServiceInterface
 {
 	private $service;
+	private $agent_already_seen;
 	public function __construct($service)
 	{
 		$this->service = getService($service);
+		$this->agent_already_seen = array();
+	}
+	
+	public function checkLoggedIn($principalID)
+	{
+		if(in_array($principalID, $this->agent_already_seen))
+		{
+			return;
+		}
+		if(isGridLibraryEnabled())
+		{
+			if(getGridLibraryOwner() == $principalID)
+			{
+				$this->agent_already_seen[] = $principalID;
+				return;
+			}
+		}
+		$hgTravelingDataService = getService("HGTravelingData");
+		
+		$homeServices = ServerDataURI::getHome();
+		
+		$hgTravelingDataService->getHGTravelingDataByAgentUUIDAndNotHomeURI($principalID, $homeServices->HomeURI);
+		$this->agent_already_seen[] = $principalID;
 	}
 
 	public function getItem($principalID, $itemID)
 	{
+		$this->checkLoggedIn($principalID);
 		return hg10_patchItem($this->service->getItem($principalID, $itemID));
 	}
 
@@ -91,21 +119,25 @@ class HG1_0InventoryService implements InventoryServiceInterface
 
 	public function getItemsInFolder($principalID, $folderID)
 	{
+		$this->checkLoggedIn($principalID);
 		return new HGInventoryServiceItemIteratorProxy($this->service->getItemsInFolder($principalID, $folderID));
 	}
 
 	public function getActiveGestures($principalID)
 	{
+		$this->checkLoggedIn($principalID);
 		return new HGInventoryServiceItemIteratorProxy($this->service->getActiveGestures($principalID));
 	}
 
 	public function getFoldersInFolder($principalID, $folderID)
 	{
+		$this->checkLoggedIn($principalID);
 		return $this->service->getFoldersInFolder($principalID, $folderID);
 	}
 
 	public function getFolder($principalID, $folderID)
 	{
+		$this->checkLoggedIn($principalID);
 		return $this->service->getFolder($principalID, $folderID);
 	}
 

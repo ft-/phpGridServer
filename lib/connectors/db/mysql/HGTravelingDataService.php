@@ -65,6 +65,33 @@ class MySQLHGTravelingDataService implements HGTravelingDataServiceInterface
 		return new MySQLHGTravelingDataIterator($res);
 	}
 
+	public function getHGTravelingDataByAgentUUIDAndNotHomeURI($uuid, $homeURI)
+	{
+		UUID::CheckWithException($uuid);
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$uuid%' AND GridExternalName NOT LIKE '".$this->db->real_escape_string($homeURI)."' LIMIT 1");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$row = $res->fetch_assoc();
+		if(!$row)
+		{
+			$res->free();
+			throw new HGTravelingDataNotFoundException();
+		}
+		
+		$ret = new HGTravelingData();
+		$ret->SessionID = $row["SessionID"];
+		$ret->UserID = $row["UserID"];
+		$ret->GridExternalName = $row["GridExternalName"];
+		$ret->ServiceToken = $row["ServiceToken"];
+		$ret->ClientIPAddress = $row["ClientIPAddress"];
+		$ret->TMStamp = $row["TMStamp"];
+		$res->free();
+		return $ret;
+	}
+	
 	public function getHGTravelingDataByAgentUUIDAndIPAddress($uuid, $ipAddress)
 	{
 		UUID::CheckWithException($uuid);
