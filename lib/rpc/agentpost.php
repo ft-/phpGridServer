@@ -29,7 +29,18 @@ if($_SERVER["REQUEST_METHOD"] != "POST")
 }
 
 $inputdata = file_get_contents("php://input");
-if($_SERVER["CONTENT_TYPE"] == "application/x-gzip")
+$gzip_compressed = False;
+if(isset($_SERVER["HTTP_X_CONTENT_ENCODING"]))
+{
+}
+else if(isset($_SERVER["HTTP_CONTENT_ENCODING"]))
+{
+}
+else if($_SERVER["CONTENT_TYPE"] == "application/x-gzip")
+{
+	$gzip_compressed = True;
+}
+if($gzip_compressed)
 {
 	$inputdata = gzdecode($inputdata);
 	if($inputdata === false)
