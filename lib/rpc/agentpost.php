@@ -32,9 +32,11 @@ $inputdata = file_get_contents("php://input");
 $gzip_compressed = False;
 if(isset($_SERVER["HTTP_X_CONTENT_ENCODING"]))
 {
+	$gzip_compressed = True;
 }
 else if(isset($_SERVER["HTTP_CONTENT_ENCODING"]))
 {
+	$gzip_compressed = True;
 }
 else if($_SERVER["CONTENT_TYPE"] == "application/x-gzip")
 {
