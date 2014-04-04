@@ -752,7 +752,13 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 							`profileFirstImage` varchar(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
 							`profileFirstText` text NOT NULL,
 							PRIMARY KEY (`useruuid`)
-							) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+							) ENGINE=MyISAM DEFAULT CHARSET=utf8",
+		"ALTER TABLE %tablename% CHANGE profileURL VARCHAR(255) NOT NULL DEFAULT '',
+					CHANGE profileWantToText text NOT NULL DEFAULT '',
+					CHANGE profileSkillsText text NOT NULL DEFAULT '',
+					CHANGE profileLanguages text NOT NULL DEFAULT '',
+					CHANGE profileAboutText TEXT NOT NULL DEFAULT '',
+					CHANGE profileFirstText TEXT NOT NULL DEFAULT ''"
 	);
 
 	private $revisions_usersettings = array(
