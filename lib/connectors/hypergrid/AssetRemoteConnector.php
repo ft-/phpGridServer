@@ -99,4 +99,20 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 			throw new AssetNotFoundException();
 		}
 	}
+	
+	public function existsMultiple($assetIDsHash)
+	{
+		foreach($assetIDsHash as $k => $v)
+		{
+			try
+			{
+				$this->exists($k);
+				$assetIDsHash[$k] = True;
+			}
+			catch(Exception $e)
+			{
+			}
+			}
+		}
+	}
 }
