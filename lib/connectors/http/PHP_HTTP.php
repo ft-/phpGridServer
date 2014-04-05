@@ -11,7 +11,7 @@ require_once("lib/interfaces/HttpConnectorServiceInterface.php");
 
 class PHPHttpConnector implements HttpConnectorServiceInterface
 {
-	public function doRequest($method, $uri, $body = null, $requestContentType = null)
+	public function doRequest($method, $uri, $body = null, $requestContentType = null, $gzipEncoding = false)
 	{
 		$req = new HttpRequest($uri);
 		$req->setMethod($method);
@@ -54,7 +54,7 @@ class PHPHttpConnector implements HttpConnectorServiceInterface
 		return $uri;
 	}
 
-	public function doPostRequest($uri, $postvalues, $getValues = null)
+	public function doPostRequest($uri, $postvalues, $getValues = null, $gzipEncoding = false)
 	{
 		$urlencoded = "";
 		foreach($postvalues as $k => $v)
@@ -65,7 +65,7 @@ class PHPHttpConnector implements HttpConnectorServiceInterface
 			}
 			$urlencoded.=urlencode($k)."=".urlencode($v);
 		}
-		return $this->doRequest("POST", $this->buildUri($uri, $getValues), $urlencoded, "application/x-www-form-urlencoded");
+		return $this->doRequest("POST", $this->buildUri($uri, $getValues), $urlencoded, "application/x-www-form-urlencoded", $gzipEncoding);
 	}
 
 	public function doGetRequest($uri, $getValues = null)

@@ -11,14 +11,23 @@ require_once("lib/interfaces/HttpConnectorServiceInterface.php");
 
 class CurlHttpConnector implements HttpConnectorServiceInterface
 {
-	public function doRequest($method, $uri, $body = "", $requestContentType = "")
+	public function doRequest($method, $uri, $body = "", $requestContentType = "", $gzipEncoding = false)
 	{
 		$ch = curl_init();
-
+		if($gzipEncoding)
+		{
+			$body = gzencode($body);
+		}
+		$headers = array('Content-Type: '. $requestContentType,'Content-Length: '.strlen($body));
+		if($gzipEncoding)
+		{
+			$headers["X-Content-Encoding"] = "gzip";
+		}
+		
 		curl_setopt($ch, CURLOPT_URL, $uri);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: '. $requestContentType,'Content-Length: '.strlen($body)));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 		$data = curl_exec($ch);
 
@@ -70,9 +79,9 @@ class CurlHttpConnector implements HttpConnectorServiceInterface
 		return $data;
 	}
 
-	public function doPostRequest($uri, $postvalues, $getValues = null)
+	public function doPostRequest($uri, $postvalues, $getValues = null, $gzipEncoding = false)
 	{
-		return $this->doRequest("POST", $this->buildUri($uri, $getValues), $this->buildPostParams($postvalues), 'application/x-www-form-urlencoded');
+		return $this->doRequest("POST", $this->buildUri($uri, $getValues), $this->buildPostParams($postvalues), 'application/x-www-form-urlencoded', $gzipEncoding);
 	}
 
 	public function doGetRequest($uri, $getValues = null)

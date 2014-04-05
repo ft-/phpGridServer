@@ -345,7 +345,7 @@ class JSON_LaunchAgentServiceConnector implements LaunchAgentServiceInterface
 
 		try
 		{
-			$res = $httpConnector->doRequest("POST", $agentPath, gzencode($json), "application/x-gzip");
+			$res = $httpConnector->doRequest("POST", $agentPath, $json, "application/json", true);
 		}
 		catch(Exception $e)
 		{
