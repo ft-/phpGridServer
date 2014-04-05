@@ -640,13 +640,13 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function updateGroupMember($requestingAgentID, $groupMember)
 	{
-		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_membership." SET AcceptNotices=?, ListInProfile=? WHERE GroupID LIKE ? AND PrincipalID LIKE ?");
+		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_membership." SET AcceptNotices=?, ListInProfile=?, SelectedRoleID=? WHERE GroupID LIKE ? AND PrincipalID LIKE ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
 			throw new Exception("updateGroupMember: Database access error: ".mysqli_error($this->db));
 		}
-		$stmt->bind_param("iiss", $groupMember->AcceptNotices, $groupMember->ListInProfile, $groupMember->GroupID, $groupMember->PrincipalID);
+		$stmt->bind_param("iisss", $groupMember->AcceptNotices, $groupMember->ListInProfile, $groupMember->SelectedRoleID, $groupMember->GroupID, $groupMember->PrincipalID);
 		if(!$stmt->execute())
 		{
 			$stmt->close();
