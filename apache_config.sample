@@ -45,6 +45,7 @@ Alias /offlineim /opt/omv-services/php/rest_offlineim.php
 Alias /sim_grid_info /opt/omv-services/php/sim_grid_info.php
 
 Alias /assets /opt/omv-services/php/rest_assets.php
+Alias /get_assets_exist /opt/omv-services/php/rest_assets_exist.php
 Alias /xinventory /opt/omv-services/php/rest_xinventory.php
 Alias /hgfriends /opt/omv-services/php/rest_hgfriends.php
 Alias /friends /opt/omv-services/php/rest_friends.php

@@ -216,6 +216,47 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		}
 	}
 
+	/* parameter is hash array with keys as uuids and values set to False initially and replaced successively
+	 * return value is changed hash array
+	*/
+	public function existsMultiple($assetIDsHash)
+	{
+		if(count($assetIDsHash)==0)
+		{
+			return $assetIDsHash;
+		}
+		$w = "(";
+		foreach($assetIDsHash as $k => $v)
+		{
+			if($v)
+			{
+				continue;
+			}
+			UUID::CheckWithException($k);
+			if($w != "(")
+			{
+				$w.=",";
+			}
+			$w .= "'$k'";
+		}
+		$w .= ")";
+		
+		$res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE id IN $w");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		while($row = $res->fetch_assoc())
+		{
+			$assetIDsHash[$row["id"]] = True;
+		}
+		
+		$res->free();
+
+		return $assetIDsHash;
+	}
+	
 	private $revisions = array("CREATE TABLE %tablename% (
   							`name` varchar(64) NOT NULL,
   							`description` varchar(64) NOT NULL,

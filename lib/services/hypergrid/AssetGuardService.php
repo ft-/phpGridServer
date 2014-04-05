@@ -49,6 +49,10 @@ class HGAssetGuardService implements AssetServiceInterface
 		return $this->service->exists($assetID);
 	}
 
+	public function existsMultiple($assetIDsHash)
+	{
+		return $this->service->existsMultiple($assetIDsHash);
+	}
 }
 
 return new HGAssetGuardService($_SERVICE_PARAMS["service"]);

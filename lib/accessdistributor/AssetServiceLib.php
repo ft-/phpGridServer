@@ -109,4 +109,21 @@ class DistributorAssetService implements AssetServiceInterface
 		}
 		throw new AssetNotFoundException();
 	}
+	
+	/* parameter is hash array with keys as uuids and values set to False initially and replaced successively */
+	public function existsMultiple($assetIDsHash)
+	{
+		foreach($this->services as $service)
+		{
+			try
+			{
+				$$assetIDsHash = $service->existsMultiple($assetIDsHash);
+			}
+			catch(Exception $e)
+			{
+
+			}
+		}
+		return $assetIDsHash;
+	}
 }

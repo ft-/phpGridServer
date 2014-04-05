@@ -35,9 +35,9 @@ class HttpConnectorResponse
 
 interface HttpConnectorServiceInterface
 {
-	public function doRequest($method, $uri, $body = null, $requestContentType = null);
+	public function doRequest($method, $uri, $body = null, $requestContentType = null, $gzipEncoding = false);
 	
-	public function doPostRequest($uri, $postValues, $getValues = null);
+	public function doPostRequest($uri, $postValues, $getValues = null, $gzipEncoding = false);
 	
 	public function doGetRequest($uri, $getValues = null);
 }

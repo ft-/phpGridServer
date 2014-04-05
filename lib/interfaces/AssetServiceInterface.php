@@ -23,4 +23,8 @@ interface AssetServiceInterface
 	public function store($asset);
 	public function delete($assetID);
 	public function exists($assetID);
+	/* parameter is hash array with keys as uuids and values set to False initially and replaced successively
+	 * return value is changed hash array
+	 */
+	public function existsMultiple($assetIDsHash);
 }
