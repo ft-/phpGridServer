@@ -113,5 +113,6 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 			{
 			}
 		}
+		return $assetIDsHash;
 	}
 }
