@@ -112,7 +112,6 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 			catch(Exception $e)
 			{
 			}
-			}
 		}
 	}
 }
