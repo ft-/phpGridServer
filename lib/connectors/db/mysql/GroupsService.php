@@ -663,7 +663,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 		foreach($table_names as $table_name)
 		{
-			$stmt = $this->db->prepare("deleteGroupMember: DELETE FROM ".$table_name." WHERE GroupID LIKE '$groupID' AND PrincipalID LIKE '".$this->db->real_escape_string($principalID)."'");
+			$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID LIKE '$groupID' AND PrincipalID LIKE '".$this->db->real_escape_string($principalID)."'");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
