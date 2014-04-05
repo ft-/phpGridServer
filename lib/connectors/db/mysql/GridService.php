@@ -667,6 +667,55 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		}
 		return new MySQLGridServiceRegionIterator($res);
 	}
+	
+	public function getNumberOfRegions($scopeID)
+	{
+		if($scopeID)
+		{
+			UUID::CheckWithException($scopeID);
+			$w = "ScopeID LIKE '$scopeID' AND";
+		}
+		else
+		{
+			$w = "";
+		}
+		$w = "SELECT COUNT(flags) AS count FROM ".$this->dbtable." WHERE $w (flags & 544) = 0";
+		$res = $this->db->query($w);
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$row = $res->fetch_assoc();
+		$regioncount = $row["count"];
+		$res->free();
+		return $regioncount;
+	}
+
+	public function getNumberOfRegionsFlags($scopeID, $flags)
+	{
+		$flags = intval($flags);
+		if($scopeID)
+		{
+			UUID::CheckWithException($scopeID);
+			$w = "ScopeID LIKE '$scopeID' AND";
+		}
+		else
+		{
+			$w = "";
+		}
+		$w = "SELECT COUNT(flags) AS count FROM ".$this->dbtable." WHERE $w (flags & $flags) <> 0";
+		$res = $this->db->query($w);
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$row = $res->fetch_assoc();
+		$regioncount = $row["count"];
+		$res->free();
+		return $regioncount;
+	}
 
 	private $revisions_regions = array(
 		"CREATE TABLE %tablename% (

@@ -50,6 +50,9 @@ interface GridServiceInterface
 	public function getNeighbours($scopeID, $regionID);
 	public function modifyRegionFlags($scopeID, $regionID, $flagsToAdd, $flagsToRemove);
 
+	public function getNumberOfRegions($scopeID);
+	public function getNumberOfRegionsFlags($scopeID, $flags);
+	
 	public function getRegionDefaultsForRegion($scopeID, $regionID, $regionName);
 
 	public function storeRegionDefault($regionDefaults);

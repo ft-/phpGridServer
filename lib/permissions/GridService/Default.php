@@ -202,6 +202,16 @@ class GridServiceDefaultPermissions implements GridServiceInterface
 	{
 		return $this->service->deleteRegionDefault($regionDefault);
 	}
+	
+	public function getNumberOfRegions($scopeID)
+	{
+		return $this->service->getNumberOfRegions($scopeID);
+	}
+
+	public function getNumberOfRegionsFlags($scopeID, $flags)
+	{
+		return $this->service->getNumberOfRegionsFlags($scopeID, $flags);
+	}
 }
 
 return new GridServiceDefaultPermissions($_SERVICE_PARAMS["service"]);
