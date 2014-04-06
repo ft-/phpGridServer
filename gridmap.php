@@ -40,7 +40,7 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 		catch(Exception $e)
 		{
 			$maptile = imagecreatetruecolor(256, 256);
-			$blue = imagecolorallocate($maptile, 0, 0, 240);
+			$blue = imagecolorallocate($maptile, 30, 70, 95);
 			imagefill($maptile, 0, 0, $blue);
 		}
 	}
@@ -50,7 +50,7 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 		$partsize = 256 / $numparts;
 		/* merge 4 maptiles */
 		$maptile = imagecreatetruecolor(256, 256);
-		$blue = imagecolorallocate($maptile, 0, 0, 240);
+		$blue = imagecolorallocate($maptile, 30, 70, 95);
 		imagefill($maptile, 0, 0, $blue);
 		for($ox = 0; $ox < $numparts; ++$ox)
 		{
