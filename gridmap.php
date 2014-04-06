@@ -58,8 +58,8 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 			{
 				try
 				{
-					$part = gdloadMaptile($x+$ox, $y+$oy);
-					imagecopyresized($maptile, $part, $ox * $partsize, $oy * $partsize, 0, 0, $partsize, $partsize, 256, 256);
+					$part = gdloadMaptile($x+$ox, $y+$oy+1);
+					imagecopyresized($maptile, $part, $ox * $partsize, ($numparts - 1 - $oy) * $partsize, 0, 0, $partsize, $partsize, 256, 256);
 					imagedestroy($part);
 				}
 				catch(Exception $e)
@@ -80,6 +80,8 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <title>Grid Map</title>
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet/leaflet.css"/>
 <script src="/lib/js/leaflet/leaflet.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.css"/>
+<script src="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="map" class="map" style="width: 100%; height: 100%;"></div>
@@ -87,18 +89,18 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <!--
 L.Projection.NoWrap = {
     project: function (latlng) {
-        return new L.Point(latlng.lat, -latlng.lng);
+        return new L.Point(latlng.lat, latlng.lng);
     },
 
     unproject: function (point, unbounded) {
-        return new L.LatLng(point.x, -point.y, true);
+        return new L.LatLng(point.x, point.y, true);
     }
 };
 
 L.CRS.Direct = L.Util.extend({}, L.CRS, {
 	code: 'Direct',
 	projection: L.Projection.NoWrap,
-	transformation: new L.Transformation(1, 0, 1, 0)
+	transformation: new L.Transformation(1, 0, -1, 1)
 });
 
 L.TileLayer.Grid = L.TileLayer.extend({});
@@ -135,11 +137,11 @@ else
 	$y = floatval($_GET["mapy"])-1;
 }
 ?>
-var map = L.map('map', {center: [<?php echo "$x,-$y"; ?>], fullscreenControl: true, zoom: 0, crs: L.CRS.Direct});
+var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], fullscreenControl: true, zoom: 0, crs: L.CRS.Direct});
 
 var tileLayer = new L.TileLayer.Grid('<?php echo split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
- tms:false,
+ tms:true,
  zoomOffset:0,
  maxNativeZoom:0,
  maxZoom:0,
@@ -147,8 +149,10 @@ var tileLayer = new L.TileLayer.Grid('<?php echo split('?', $_SERVER["REQUEST_UR
 });
 tileLayer.addTo(map);
 
+L.control.mousePosition().addTo(map);
+
 <?php
-echo "map.panTo([$x,-$y]);\n";
+echo "map.panTo([$x,$y]);\n";
 ?>
 //-->
 </script>
