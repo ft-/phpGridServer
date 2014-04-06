@@ -149,7 +149,7 @@ var tileLayer = new L.TileLayer.Grid('<?php echo split('?', $_SERVER["REQUEST_UR
 });
 tileLayer.addTo(map);
 
-L.control.mousePosition().addTo(map);
+L.control.mousePosition({numDigits:2}).addTo(map);
 
 <?php
 echo "map.panTo([$x,$y]);\n";
