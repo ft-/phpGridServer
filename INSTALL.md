@@ -3,6 +3,7 @@
 - PHP 5.4 or newer
 - PHP GMP extension
 - PHP curl extension
+- PHP GD extension
 - Database (currently only MySQL or MariaDB)
 - Web-Server with ability to configure aliases
 
