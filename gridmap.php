@@ -31,7 +31,6 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 	$z = pow(2, -intval($_GET["zoom"]));
 	$x *= $z;
 	$y *= $z;
-	trigger_error("XXXX $x $y");
 	if(intval($_GET["zoom"]) == 0)
 	{
 		try
@@ -49,7 +48,6 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 	{
 		$numparts = pow(2, -intval($_GET["zoom"]));
 		$partsize = 256 / $numparts;
-		trigger_error("YYYY $numparts $partsize");
 		/* merge 4 maptiles */
 		$maptile = imagecreatetruecolor(256, 256);
 		$blue = imagecolorallocate($maptile, 0, 0, 240);
@@ -66,7 +64,6 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 				}
 				catch(Exception $e)
 				{
-					trigger_error("no maptile at ".($x+$ox).",".($y+$oy));
 				}
 			}
 		}
