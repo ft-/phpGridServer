@@ -29,6 +29,7 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 	$x = intval($_GET["x"]);
 	$y = intval($_GET["y"]);
 	$z = pow(2, -intval($_GET["zoom"]));
+	trigger_error("$x $y $z");
 	$x *= $z;
 	$y *= $z;
 	if(intval($_GET["zoom"]) == 0)
@@ -58,7 +59,7 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 			{
 				try
 				{
-					$part = gdloadMaptile($x+$ox, $y+$oy);
+					$part = gdloadMaptile($x+$ox, $y-$oy);
 					imagecopyresized($maptile, $part, $ox * $partsize, $oy * $partsize, 0, 0, $partsize, $partsize, 256, 256);
 					imagedestroy($part);
 				}
@@ -102,7 +103,6 @@ L.CRS.Direct = L.Util.extend({}, L.CRS, {
 });
 
 L.TileLayer.Grid = L.TileLayer.extend({});
-
 <?php
 if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 {
@@ -136,7 +136,7 @@ else
 	$y = floatval($_GET["mapy"])-1;
 }
 ?>
-var map = L.map('map', {center: [<?php echo "$x,-$y"; ?>], zoom: 0, crs: L.CRS.Direct});
+var map = L.map('map', {center: [<?php echo "$x,-$y"; ?>], fullscreenControl: true, zoom: 0, crs: L.CRS.Direct});
 
 var tileLayer = new L.TileLayer.Grid('<?php echo split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
@@ -147,6 +147,7 @@ var tileLayer = new L.TileLayer.Grid('<?php echo split('?', $_SERVER["REQUEST_UR
  minZoom:-4,
 });
 tileLayer.addTo(map);
+
 <?php
 echo "map.panTo([$x,-$y]);\n";
 ?>
