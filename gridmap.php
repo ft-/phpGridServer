@@ -101,17 +101,7 @@ L.CRS.Direct = L.Util.extend({}, L.CRS, {
 	transformation: new L.Transformation(1, 0, 1, 0)
 });
 
-L.TileLayer.Grid = L.TileLayer.extend({
-	/*
-	getTileUrl: function (tilePoint) {
-		return L.Util.template(this._url, L.extend({
-			s: this._getSubdomain(tilePoint),
-			z: tilePoint.z,
-			x: (tilePoint.x / (1 << (tilePoint.z - 4))),
-			y: (tilePoint.y / (1 << (tilePoint.z - 4)))
-		}, this.options));
-	}*/
-});
+L.TileLayer.Grid = L.TileLayer.extend({});
 
 <?php
 if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
