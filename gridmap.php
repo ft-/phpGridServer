@@ -29,7 +29,6 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 	$x = intval($_GET["x"]);
 	$y = intval($_GET["y"]);
 	$z = pow(2, -intval($_GET["zoom"]));
-	trigger_error("$x $y $z");
 	$x *= $z;
 	$y *= $z;
 	if(intval($_GET["zoom"]) == 0)
@@ -59,7 +58,7 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 			{
 				try
 				{
-					$part = gdloadMaptile($x+$ox, $y-$oy);
+					$part = gdloadMaptile($x+$ox, $y+$oy);
 					imagecopyresized($maptile, $part, $ox * $partsize, $oy * $partsize, 0, 0, $partsize, $partsize, 256, 256);
 					imagedestroy($part);
 				}
@@ -88,11 +87,11 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <!--
 L.Projection.NoWrap = {
     project: function (latlng) {
-        return new L.Point(latlng.lat, latlng.lng);
+        return new L.Point(latlng.lat, -latlng.lng);
     },
 
     unproject: function (point, unbounded) {
-        return new L.LatLng(point.x, point.y, true);
+        return new L.LatLng(point.x, -point.y, true);
     }
 };
 
@@ -140,7 +139,7 @@ var map = L.map('map', {center: [<?php echo "$x,-$y"; ?>], fullscreenControl: tr
 
 var tileLayer = new L.TileLayer.Grid('<?php echo split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
- tms:true,
+ tms:false,
  zoomOffset:0,
  maxNativeZoom:0,
  maxZoom:0,
