@@ -82,6 +82,13 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <script src="/lib/js/leaflet/leaflet.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.css"/>
 <script src="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.js" type="text/javascript"></script>
+<script src="/lib/js/leaflet-plugins/label/Label.js"></script>
+<script src="/lib/js/leaflet-plugins/label/BaseMarkerMethods.js"></script>
+<script src="/lib/js/leaflet-plugins/label/Marker.Label.js"></script>
+<script src="/lib/js/leaflet-plugins/label/CircleMarker.Label.js"></script>
+<script src="/lib/js/leaflet-plugins/label/Path.Label.js"></script>
+<script src="/lib/js/leaflet-plugins/label/Map.Label.js"></script>
+<script src="/lib/js/leaflet-plugins/label/FeatureGroup.Label.js"></script>
 </head>
 <body>
 <div id="map" class="map" style="width: 100%; height: 100%;"></div>
@@ -152,6 +159,13 @@ tileLayer.addTo(map);
 L.control.mousePosition({numDigits:2}).addTo(map);
 
 <?php
+$gridService = getService("Grid");
+$res = $gridService->getAllRegions();
+while($region = $res->getRegion())
+{
+	echo "L.marker([".($region->LocX / 256).",".($region->LocY / 256)."]).bindLabel('".addslashes($region->RegionName)."', {noHide: true}).addTo(map);\n";
+}
+$res->free();
 echo "map.panTo([$x,$y]);\n";
 ?>
 //-->
