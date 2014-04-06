@@ -11,6 +11,7 @@ require_once("lib/interfaces/AssetServiceInterface.php");
 require_once("lib/services.php");
 require_once("lib/types/Asset.php");
 require_once("lib/types/UUID.php");
+require_once("lib/rpc/xmlrpc.php");
 
 class HGAssetRemoteConnector implements AssetServiceInterface
 {
@@ -215,7 +216,7 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 		/* mark all existing assets as existing */
 		for($i = 0; $i < count($assetids); ++$i)
 		{
-			if(strtolower($response[$i]) == "true")
+			if(string2boolean($response[$i]))
 			{
 				$assetIDsHash[$assetids[$i]] = true;
 			}
