@@ -108,7 +108,7 @@ L.TileLayer.Grid = L.TileLayer.extend({});
 if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 {
 	$x = 1000.5;
-	$y = 999.5;
+	$y = 1000.5;
 
 	$gridService = getService("Grid");
 	$res = $gridService->getDefaultRegions(null);
@@ -117,7 +117,7 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 		if($region = $res->getRegion())
 		{
 			$x = ($region->LocX / 256) + 0.5;
-			$y = ($region->LocY / 256) - 0.5;
+			$y = ($region->LocY / 256) + 0.5;
 		}
 		else
 		{
@@ -125,7 +125,7 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 			if($region = $res->getRegion())
 			{
 				$x = ($region->LocX / 256) + 0.5;
-				$y = ($region->LocY / 256) - 0.5;
+				$y = ($region->LocY / 256) + 0.5;
 			}
 		}
 		$res->free();
