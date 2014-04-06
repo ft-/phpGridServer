@@ -5,8 +5,6 @@ require_once("lib/services.php");
 
 if(isset($_GET["x"]) && isset($_GET["y"]))
 {
-	$maptileService = getService("Maptile");
-
 	$scopeid = "00000000-0000-0000-0000-000000000000";
 	if(isset($_GET["SCOPEID"]))
 	{
@@ -17,19 +15,65 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 			exit;
 		}
 	}
-	$x = intval($_GET["x"]) * 256;
-	$y = intval($_GET["y"]) * 256;
-	try
+
+	$maptileService = getService("Maptile");
+	function gdloadMaptile($x, $y)
 	{
-		$maptile = $maptileService->getMaptile($scopeid, $x, $y);
+		global $maptileService, $scopeid;
+		$x = intval($x);
+		$y = intval($y);
+		$maptile = $maptileService->getMaptile($scopeid, $x * 256, $y * 256);
+		return imagecreatefromstring($maptile);
 	}
-	catch(Exception $e)
+
+	$x = intval($_GET["x"]);
+	$y = intval($_GET["y"]);
+	$z = pow(2, -intval($_GET["zoom"]));
+	$x *= $z;
+	$y *= $z;
+	trigger_error("XXXX $x $y");
+	if(intval($_GET["zoom"]) == 0)
 	{
-		http_response_code("404");
-		exit;
+		try
+		{
+			$maptile = gdloadMaptile($x, $y);
+		}
+		catch(Exception $e)
+		{
+			$maptile = imagecreatetruecolor(256, 256);
+			$blue = imagecolorallocate($maptile, 0, 0, 240);
+			imagefill($maptile, 0, 0, $blue);
+		}
 	}
+	if(intval($_GET["zoom"]) < 0)
+	{
+		$numparts = pow(2, -intval($_GET["zoom"]));
+		$partsize = 256 / $numparts;
+		trigger_error("YYYY $numparts $partsize");
+		/* merge 4 maptiles */
+		$maptile = imagecreatetruecolor(256, 256);
+		$blue = imagecolorallocate($maptile, 0, 0, 240);
+		imagefill($maptile, 0, 0, $blue);
+		for($ox = 0; $ox < $numparts; ++$ox)
+		{
+			for($oy = 0; $oy < $numparts; ++$oy)
+			{
+				try
+				{
+					$part = gdloadMaptile($x+$ox, $y+$oy);
+					imagecopyresized($maptile, $part, $ox * $partsize, $oy * $partsize, 0, 0, $partsize, $partsize, 256, 256);
+					imagedestroy($part);
+				}
+				catch(Exception $e)
+				{
+					trigger_error("no maptile at ".($x+$ox).",".($y+$oy));
+				}
+			}
+		}
+	}
+
 	header("Content-Type: image/jpeg");
-	echo $maptile;
+	echo imagejpeg($maptile);
 	exit;
 }
 
@@ -60,6 +104,18 @@ L.CRS.Direct = L.Util.extend({}, L.CRS, {
 	transformation: new L.Transformation(1, 0, 1, 0)
 });
 
+L.TileLayer.Grid = L.TileLayer.extend({
+	/*
+	getTileUrl: function (tilePoint) {
+		return L.Util.template(this._url, L.extend({
+			s: this._getSubdomain(tilePoint),
+			z: tilePoint.z,
+			x: (tilePoint.x / (1 << (tilePoint.z - 4))),
+			y: (tilePoint.y / (1 << (tilePoint.z - 4)))
+		}, this.options));
+	}*/
+});
+
 <?php
 		$x = 1000.5;
 		$y = 1000.5;
@@ -87,14 +143,14 @@ L.CRS.Direct = L.Util.extend({}, L.CRS, {
 ?>
 var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], zoom: 0, crs: L.CRS.Direct});
 
-L.tileLayer('<?php echo $_SERVER["REQUEST_URI"] ?>?zoom={z}&x={x}&y={y}', {
+var tileLayer = new L.TileLayer.Grid('<?php echo $_SERVER["REQUEST_URI"] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
  zoomOffset:0,
  maxNativeZoom:0,
  maxZoom:0,
- minZoom:0,
-}
-).addTo(map);
+ minZoom:-4,
+});
+tileLayer.addTo(map);
 <?php
 echo "map.panTo([$x,$y]);\n";
 ?>
