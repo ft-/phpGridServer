@@ -13,12 +13,22 @@ class PHPHttpConnector implements HttpConnectorServiceInterface
 {
 	public function doRequest($method, $uri, $body = null, $requestContentType = null, $gzipEncoding = false)
 	{
+		if($gzipEncoding)
+		{
+			$body = gzencode($body);
+		}
+		$headers = array('Content-Type: '. $requestContentType);
+		if($gzipEncoding)
+		{
+			$headers["X-Content-Encoding"] = "gzip";
+		}
+
 		$req = new HttpRequest($uri);
 		$req->setMethod($method);
 		$req->setOptions(array("compress"=>true));
 		if($requestContentType)
 		{
-			$req->addHeaders(array("Content-Type: $requestContentType"));
+			$req->addHeaders($headers);
 		}
 		if(!is_null($body))
 		{
