@@ -30,6 +30,7 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 	}
 	header("Content-Type: image/jpeg");
 	echo $maptile;
+	exit;
 }
 
 ?>
