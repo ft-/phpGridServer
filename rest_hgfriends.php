@@ -48,11 +48,13 @@ $HGFriendsService = getService("RPC_HGFriends");
 
 if(!preg_match("/^[A-Za-z_]*$/", $_RPC_REQUEST->Method))
 {
+	trigger_error("Invalid RPC ".$_RPC_REQUEST->Method);
 	http_response_code("400");
 	exit;
 }
 else if(!file_exists("hgfriends/rpc_".$_RPC_REQUEST->Method.".php"))
 {
+	trigger_error("Unknown RPC ".$_RPC_REQUEST->Method);
 	http_response_code("400");
 	exit;
 }

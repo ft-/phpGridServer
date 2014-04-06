@@ -9,18 +9,21 @@
 
 if(!isset($_RPC_REQUEST->userID))
 {
+	trigger_error("userID missing");
 	http_response_code("400");
 	exit;
 }
 
 if(!isset($_POST["online"]))
 {
+	trigger_error("online not filled in correctly");
 	http_response_code("400");
 	exit;
 }
 
 if(!UUID::IsUUID($_RPC_REQUEST->userID))
 {
+	trigger_error("invalid UUID");
 	http_response_code("400");
 	exit;
 }
