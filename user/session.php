@@ -14,6 +14,11 @@ session_start();
 $authInfoService = getService("AuthInfo");
 $userAccountService = getService("UserAccount");
 
+if(!isset($nologinpage))
+{
+	$nologinpage = false;
+}
+
 /* this session handler is kept compatible with admin/session.php */
 
 if(isset($_SESSION["token"]) && isset($_SESSION["principalid"]))
@@ -47,6 +52,10 @@ else
 if(!$userLoggedIn)
 {
 	/* we do not require any wrapper page here for creating a user */
+	if($nologinpage)
+	{
+		exit;
+	}
 	require_once("user/user_login.php");
 }
 else if(isset($_GET["Logout"]))
@@ -54,5 +63,9 @@ else if(isset($_GET["Logout"]))
 	$authInfoService->releaseToken($_SESSION["principalid"], $_SESSION["token"]);
 	unset($_SESSION["token"]);
 	unset($_SESSION["principalid"]);
+	if($nologinpage)
+	{
+		exit;
+	}
 	require_once("user/user_login.php");
 }
