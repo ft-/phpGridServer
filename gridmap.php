@@ -114,29 +114,37 @@ L.TileLayer.Grid = L.TileLayer.extend({
 });
 
 <?php
-		$x = 1000.5;
-		$y = 999.5;
+if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
+{
+	$x = 1000.5;
+	$y = 999.5;
 
-		$gridService = getService("Grid");
-		$res = $gridService->getDefaultRegions(null);
-		if($res)
+	$gridService = getService("Grid");
+	$res = $gridService->getDefaultRegions(null);
+	if($res)
+	{
+		if($region = $res->getRegion())
 		{
+			$x = ($region->LocX / 256) + 0.5;
+			$y = ($region->LocY / 256) - 0.5;
+		}
+		else
+		{
+			$res = $gridService->getFallbackRegions(null);
 			if($region = $res->getRegion())
 			{
 				$x = ($region->LocX / 256) + 0.5;
 				$y = ($region->LocY / 256) - 0.5;
 			}
-			else
-			{
-				$res = $gridService->getFallbackRegions(null);
-				if($region = $res->getRegion())
-				{
-					$x = ($region->LocX / 256) + 0.5;
-					$y = ($region->LocY / 256) - 0.5;
-				}
-			}
-			$res->free();
 		}
+		$res->free();
+	}
+}
+else
+{
+	$x = floatval($_GET["mapx"]);
+	$y = floatval($_GET["mapy"]);
+}
 ?>
 var map = L.map('map', {center: [<?php echo "$x,-$y"; ?>], zoom: 0, crs: L.CRS.Direct});
 
