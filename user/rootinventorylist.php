@@ -115,12 +115,12 @@ try
 		if($row->AssetType == AssetType::Link || $row->AssetType == AssetType::LinkFolder)
 		{
 			$items["".$row->ID] = array("title"=>htmlentities($row->Name). " [Link]",
-					"icon" => getItemIcon($row->Type, $row->AssetType, $row->Flags, $row->AssetID));
+					"icon" => getItemIcon($principalID, $row->Type, $row->AssetType, $row->Flags, $row->AssetID));
 		}
 		else
 		{
 			$items["".$row->ID] = array("title"=>htmlentities($row->Name),
-					"icon" => getItemIcon($row->Type, $row->AssetType, $row->Flags, $row->AssetID));
+					"icon" => getItemIcon($principalID, $row->Type, $row->AssetType, $row->Flags, $row->AssetID));
 		}
 	}
 	uasort($items, "titlecmp");

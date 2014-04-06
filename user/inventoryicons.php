@@ -87,7 +87,7 @@ $wearableicon_mapping = array(
 	WearableType::Physics => "inv_item_physics.png"
 );
 
-function getItemIcon($invtype, $assettype, $flags, $assetid)
+function getItemIcon($principalID, $invtype, $assettype, $flags, $refid)
 {
 	global $inventoryicon_mapping, $wearableicon_mapping;
 	$icon = null;
@@ -95,6 +95,18 @@ function getItemIcon($invtype, $assettype, $flags, $assetid)
 	{
 		/* special handling link */
 		$inventoryService = getService("Inventory");
+		try
+		{
+			$item = $inventoryService->getItem($principalID, $refid);
+			$icon = getItemIcon($principalID, $item->Type, $item->AssetType, $item->Flags, $item->AssetID);
+			if($icon)
+			{
+				return $icon;
+			}
+		}
+		catch(Exception $e)
+		{
+		}
 	}
 	else if(AssetType::LinkFolder == $assettype)
 	{
@@ -107,7 +119,7 @@ function getItemIcon($invtype, $assettype, $flags, $assetid)
 		$assetService = getService("Asset");
 		try
 		{
-			$asset = $assetService->get($assetid);
+			$asset = $assetService->get($refid);
 			$wearable = Wearable::fromAsset($asset);
 			if(isset($wearableicon_mapping[$wearable->Type]))
 			{
@@ -116,6 +128,7 @@ function getItemIcon($invtype, $assettype, $flags, $assetid)
 		}
 		catch(Exception $e)
 		{
+			$icon = "inv_invalid.png";
 			trigger_error($e->getFile().":".$e->getLine().":".$e->getMessage());
 		}
 	}
