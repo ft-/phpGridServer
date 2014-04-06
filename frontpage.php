@@ -14,6 +14,7 @@ $numregions = $gridService->getNumberOfRegionsFlags(null, RegionFlags::RegionOnl
 </head>
 <body>
 <center><h1><?php echo $gridname ?></h1></center><br/>
-<b>Regions online: <?php echo $numregions ?></b>
+<center><b>Regions online: <?php echo $numregions ?></b></center><br/>
+<center><iframe src="gridmap.php" style="width: 600px; height: 600px;"></iframe></center>
 </body>
 </html>
