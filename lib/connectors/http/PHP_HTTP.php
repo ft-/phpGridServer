@@ -20,7 +20,7 @@ class PHPHttpConnector implements HttpConnectorServiceInterface
 		$headers = array('Content-Type: '. $requestContentType);
 		if($gzipEncoding)
 		{
-			$headers["X-Content-Encoding"] = "gzip";
+			$headers[] = "X-Content-Encoding: gzip";
 		}
 
 		$req = new HttpRequest($uri);
