@@ -115,7 +115,7 @@ L.TileLayer.Grid = L.TileLayer.extend({
 
 <?php
 		$x = 1000.5;
-		$y = 1000.5;
+		$y = 999.5;
 
 		$gridService = getService("Grid");
 		$res = $gridService->getDefaultRegions(null);
@@ -124,7 +124,7 @@ L.TileLayer.Grid = L.TileLayer.extend({
 			if($region = $res->getRegion())
 			{
 				$x = ($region->LocX / 256) + 0.5;
-				$y = ($region->LocY / 256) + 0.5;
+				$y = ($region->LocY / 256) - 0.5;
 			}
 			else
 			{
@@ -132,16 +132,17 @@ L.TileLayer.Grid = L.TileLayer.extend({
 				if($region = $res->getRegion())
 				{
 					$x = ($region->LocX / 256) + 0.5;
-					$y = ($region->LocY / 256) + 0.5;
+					$y = ($region->LocY / 256) - 0.5;
 				}
 			}
 			$res->free();
 		}
 ?>
-var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], zoom: 0, crs: L.CRS.Direct});
+var map = L.map('map', {center: [<?php echo "$x,-$y"; ?>], zoom: 0, crs: L.CRS.Direct});
 
 var tileLayer = new L.TileLayer.Grid('<?php echo $_SERVER["REQUEST_URI"] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
+ tms:true,
  zoomOffset:0,
  maxNativeZoom:0,
  maxZoom:0,
@@ -149,7 +150,7 @@ var tileLayer = new L.TileLayer.Grid('<?php echo $_SERVER["REQUEST_URI"] ?>?zoom
 });
 tileLayer.addTo(map);
 <?php
-echo "map.panTo([$x,$y]);\n";
+echo "map.panTo([$x,-$y]);\n";
 ?>
 //-->
 </script>
