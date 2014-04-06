@@ -16,12 +16,14 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 {
 	private $httpConnector;
 	private $uri;
+	private $exists_uri;
 	private $SessionID;
 
 	public function __construct($uri, $sessionID)
 	{
 		$this->httpConnector = getService("HTTPConnector");
 		$this->uri = $uri."/assets";
+		$this->exists_uri = $uri."/get_assets_exist";
 		$this->SessionID = $sessionID;
 	}
 
@@ -72,7 +74,7 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 		$xml = $asset->toXML();
 		try
 		{
-			$res = $this->httpConnector->doRequest("POST", $this->uri, "text/xml")->Body;
+			$res = $this->httpConnector->doRequest("POST", $this->uri, $xml, "text/xml")->Body;
 		}
 		catch(Exception $e)
 		{
@@ -99,18 +101,123 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 			throw new AssetNotFoundException();
 		}
 	}
-	
+
+
+	public static function parseArrayOfBoolean(&$input)
+	{
+		$assetstatus = array();
+		while($tok = xml_tokenize($input))
+		{
+			if($tok["type"]=="opening")
+			{
+				if($tok["name"]=="boolean")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new Exception();
+					}
+					$assetstatus[] = $data["text"];
+				}
+				else
+				{
+					throw new Exception();
+				}
+			}
+			else if($tok["type"]=="closing")
+			{
+				if($tok["name"]=="ArrayOfBoolean")
+				{
+					return $assetstatus;
+				}
+				else
+				{
+					throw new Exception();
+				}
+			}
+		}
+	}
+
+	public static function parseAssetsExistResponse($input)
+	{
+		$encoding="utf-8";
+
+		while($tok = xml_tokenize($input))
+		{
+			if($tok["type"]=="processing")
+			{
+				if($tok["name"]=="xml")
+				{
+					if(isset($tok["attrs"]["encoding"]))
+					{
+						$encoding=$tok["attrs"]["encoding"];
+					}
+				}
+			}
+			else if($tok["type"]=="opening")
+			{
+				if($tok["name"] == "ArrayOfBoolean")
+				{
+					return HGAssetRemoteConnector::parseArrayOfBoolean($input);
+				}
+				else
+				{
+					throw new Exception();
+				}
+			}
+		}
+
+		throw new Exception();
+	}
+
 	public function existsMultiple($assetIDsHash)
 	{
-		foreach($assetIDsHash as $k => $v)
+		/* build request and request list */
+		$assetids = array();
+		$get_assets_req = "<?xml version=\"1.0\"?>\n";
+		$get_assets_req .= "<ArrayOfString xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
+		foreach($assetIDsHash as $id => $b)
 		{
-			try
+			UUID::CheckWithException($id);
+			$get_assets_req .= "<string>$id</string>";
+			$assetids[] = $id;
+		}
+		$get_assets_req .= "</ArrayOfString>";
+
+		/* send request */
+		try
+		{
+			$res = $this->httpConnector->doRequest("POST", $this->exists_uri, $get_assets_req, "text/xml")->Body;
+		}
+		catch(Exception $e)
+		{
+			/* error response means no asset exists for now */
+			return $assetIDsHash;
+		}
+
+		/* parse response */
+		try
+		{
+			$response = HGAssetRemoteConnector::parseAssetsExistResponse($res);
+		}
+		catch(Exception $e)
+		{
+			/* broken response means no asset exists for now */
+			return $assetIDsHash;
+		}
+
+		if(count($assetids) != count($response))
+		{
+			/* broken response means no asset exists for now */
+			return $assetIDsHash;
+		}
+
+		/* mark all existing assets as existing */
+		for($i = 0; $i < count($assetids); ++$i)
+		{
+			if(strtolower($response[$i]) == "true")
 			{
-				$this->exists($k);
-				$assetIDsHash[$k] = True;
-			}
-			catch(Exception $e)
-			{
+				$assetIDsHash[$assetids[$i]] = true;
 			}
 		}
 		return $assetIDsHash;
