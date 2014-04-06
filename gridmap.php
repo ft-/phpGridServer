@@ -133,7 +133,7 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 else
 {
 	$x = floatval($_GET["mapx"]);
-	$y = floatval($_GET["mapy"]);
+	$y = floatval($_GET["mapy"])-1;
 }
 ?>
 var map = L.map('map', {center: [<?php echo "$x,-$y"; ?>], zoom: 0, crs: L.CRS.Direct});
