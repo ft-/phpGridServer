@@ -134,7 +134,7 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 else
 {
 	$x = floatval($_GET["mapx"]);
-	$y = floatval($_GET["mapy"])-1;
+	$y = floatval($_GET["mapy"]);
 }
 ?>
 var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], fullscreenControl: true, zoom: 0, crs: L.CRS.Direct});
