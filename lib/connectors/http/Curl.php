@@ -21,9 +21,9 @@ class CurlHttpConnector implements HttpConnectorServiceInterface
 		$headers = array('Content-Type: '. $requestContentType,'Content-Length: '.strlen($body));
 		if($gzipEncoding)
 		{
-			$headers["X-Content-Encoding"] = "gzip";
+			$headers[] = "X-Content-Encoding: gzip";
 		}
-		
+
 		curl_setopt($ch, CURLOPT_URL, $uri);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
