@@ -35,7 +35,7 @@ else if($_SERVER["REQUEST_METHOD"]=="HEAD")
 		echo "Invalid asset service configuration";
 		exit;
 	}
-	
+
 	try
 	{
 		$data = $assetService->exists($assetid);
@@ -72,12 +72,12 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 	{
 		try
 		{
-			$data = $assetService->getData($assetid);
+			$asset = $assetService->get($assetid);
 			/* enable output compression */
 			ini_set("zlib.output_compression", 4096);
-			header("Content-Type: application/octet-stream");
-			header("Content-Length ".strlen($data));
-			echo $data;
+			header("Content-Type: ".$asset->getContentType());
+			header("Content-Length ".strlen($asset->Data));
+			echo $asset->Data;
 			exit;
 		}
 		catch(InvalidUUIDException $e)

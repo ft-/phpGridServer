@@ -68,7 +68,7 @@ class AssetMetadata
 	public $Temporary;
 	public $Flags;
 	public $CreatorID;
-	
+
 	public function __construct()
 	{
 		$this->ID=new UUID();
@@ -80,13 +80,13 @@ class AssetMetadata
 		$this->CreatorID="";
 		$this->Flags=0;
 	}
-	
+
 	public function __clone()
 	{
 		$this->ID = clone $this->ID;
 		$this->CreatorID = clone $this->CreatorID;
 	}
-	
+
 	public function __set($name, $value)
 	{
 		if($name == "ID")
@@ -101,8 +101,8 @@ class AssetMetadata
 		    ' on line ' . $trace[0]['line'],
 		    E_USER_NOTICE);
 	}
-	
-	public static function getContentType($type)
+
+	public function getContentType()
 	{
 		switch($this->Type)
 		{
@@ -146,7 +146,7 @@ class AssetMetadata
 				return "application/octet-stream";
 		}
 	}
-	
+
 	public function __get($name)
 	{
 		if($name == "ID")
@@ -163,14 +163,14 @@ class AssetMetadata
 		    ' in ' . $trace[0]['file'] .
 		    ' on line ' . $trace[0]['line'],
 		    E_USER_NOTICE);
-		return null;	
+		return null;
 	}
-	
+
 	public function toXML()
 	{
 		return $this->toMetadataXML();
 	}
-	
+
 	public function toMetadataXML()
 	{
 		$xmlout="<?xml version=\"1.0\" encoding=\"utf-8\"?>";
@@ -245,7 +245,7 @@ class AssetMetadata
 		$xmlout.="</AssetMetadata>";
 		return $xmlout;
 	}
-	
+
 	private static function parseAssetMetaData(&$input)
 	{
 		$asset = new AssetMetadata();
@@ -426,7 +426,7 @@ class AssetMetadata
 	public static function fromXML($input)
 	{
 		$encoding="utf-8";
-		
+
 		while($tok = xml_tokenize($input))
 		{
 			if($tok["type"]=="processing")
@@ -451,29 +451,29 @@ class AssetMetadata
 				}
 			}
 		}
-		
+
 		throw new AssetXMLParseException();
 	}
-		
+
 }
 
 class Asset extends AssetMetadata
 {
 	private $Data;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$this->Data=new BinaryData();
 	}
-	
+
 	public function __clone()
 	{
 		parent::__clone();
 		$this->Data = clone $this->Data;
 	}
-	
+
 	public function __set($name, $value)
 	{
 		if($name == "Data")
@@ -483,7 +483,7 @@ class Asset extends AssetMetadata
 		}
 		return parent::__set($name, $value);
 	}
-	
+
 	public function __get($name)
 	{
 		if($name == "Data")
@@ -492,8 +492,8 @@ class Asset extends AssetMetadata
 		}
 		return parent::__get($name);
 	}
-	
-	public function toXML() 
+
+	public function toXML()
 	{
 		$xmlout="<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 		$xmlout.="<AssetBase xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
@@ -575,11 +575,11 @@ class Asset extends AssetMetadata
 		$xmlout.="</AssetBase>";
 		return $xmlout;
 	}
-	
-	
+
+
 	/**********************************************************************/
 	/* XML parsing */
-		
+
 
 	private static function parseAssetBaseData(&$input)
 	{
@@ -770,7 +770,7 @@ class Asset extends AssetMetadata
 	public static function fromXML($input)
 	{
 		$encoding="utf-8";
-		
+
 		while($tok = xml_tokenize($input))
 		{
 			if($tok["type"]=="processing")
@@ -795,10 +795,10 @@ class Asset extends AssetMetadata
 				}
 			}
 		}
-		
+
 		throw new AssetXMLParseException();
 	}
-	
+
 	public static function fromMetaData($metadata, $data)
 	{
 		$asset = new Asset();
