@@ -21,6 +21,14 @@ $inventoryService = getService("Inventory");
 $userAccountService = getService("UserAccount");
 $assetServerURI = "/assets";
 
+$itemid = substr($_SERVER["REQUEST_URI"], 1 + strlen($_SERVER["SCRIPT_NAME"]));
+$detail = "";
+
+if(strpos($assetid, "/"))
+{
+	$itemid = strstr($itemid, "/", true);
+}
+
 ?><html>
 <head>
 </head>
@@ -28,7 +36,7 @@ $assetServerURI = "/assets";
 <?php
 try
 {
-	$inventoryitem = $inventoryService->getItem($_SESSION["principalid"], $_GET["itemid"]);
+	$inventoryitem = $inventoryService->getItem($_SESSION["principalid"], $itemid);
 
 	if($inventoryitem->CreatorData != "")
 	{

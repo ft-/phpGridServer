@@ -40,7 +40,7 @@ $(function(){
         onActivate: function(node) {
             if(!node.data.isFolder)
             {
-                parent.frames.inventoryitem.location.href = "/user/inventoryitem.php?itemid=" + node.data.key;
+                parent.frames.inventoryitem.location.href = "/user/inventoryitem.php/" + node.data.key;
             }
         }
 });
