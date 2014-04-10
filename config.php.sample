@@ -35,10 +35,6 @@ $cfg_FriendsSimConnectorService = array(
 	"use" => "connectors/sim/Friends/LocalOnly"
 );
 
-$cfg_ImageConverterService = array(
-	"use" => "imageconverter/None"
-);
-
 $cfg_IMService = array(
 	"use" => "services/im/Grid"
 );
