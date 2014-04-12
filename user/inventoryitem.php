@@ -12,6 +12,8 @@ set_include_path(dirname(dirname($_SERVER["SCRIPT_FILENAME"])).PATH_SEPARATOR.ge
 require_once("lib/services.php");
 require_once("lib/types/Asset.php");
 require_once("lib/types/Landmark.php");
+require_once("lib/types/Notecard.php");
+require_once("user/inventoryicons.php");
 require_once("lib/connectors/hypergrid/GatekeeperRemoteConnector.php");
 $nologinpage = true;
 $movemainpage = true;
@@ -42,7 +44,7 @@ try
 
 	if($inventoryitem->CreatorData != "")
 	{
-		$creatorname = split(";", $inventoryitem->CreatorData);
+		$creatorname = split(";", $inventoryitem->CreatorData)[1];
 	}
 	else
 	{
@@ -135,16 +137,71 @@ try
 		}
 		catch(Exception $e)
 		{
-			trigger_error(print_r($e, true));
 ?><div style="width: 100%; text-align: center;">Asset missing</div><?php
 		}
 	} ?>
 <?php if($inventoryitem->AssetType == AssetType::Clothing) { ?>
 <?php } ?>
-<?php if($inventoryitem->AssetType == AssetType::Notecard) { ?>
-<textarea style="width: 100%; height: 400px;" readonly="yes">
-</textarea>
-<?php } ?>
+<?php if($inventoryitem->AssetType == AssetType::Notecard) {
+		try
+		{
+			$asset = $assetService->get($inventoryitem->AssetID);
+			try
+			{
+				$notecard = Notecard::fromAsset($asset);
+?><div style="width: 100%; max-width: 100%; height: 400px; border-style: inset; border-width: 1px; padding: 2px; overflow: scroll; white-space: pre;"><?php
+				$out = "";
+				$in = $notecard->Text;
+				while(strlen($in) != 0)
+				{
+					$pos = strpos($in, "\xF4");
+					if($pos===FALSE)
+					{
+						$out.=htmlentities($in);
+						$in = "";
+					}
+					else
+					{
+						$out.=htmlentities(substr($in, 0, $pos));
+						$marker = substr($in, $pos, 4);
+						$in = substr($in, $pos+4);
+						$charindex = (ord(substr($marker, 1, 1)) & 0x7F);
+						$charindex = ($charindex << 7) | (ord(substr($marker, 2, 1)) & 0x7F);
+						$charindex = ($charindex << 7) | (ord(substr($marker, 3, 1)) & 0x7F);
+						trigger_error("X $charindex ".ord(substr($marker, 1))." ".ord(substr($marker, 2))." ".ord(substr($marker, 3)));
+						$item = null;
+						foreach($notecard->InventoryItems as $titem)
+						{
+							if($titem->ExtCharIndex == $charindex)
+							{
+								$item = $titem;
+								break;
+							}
+						}
+						if($item)
+						{
+							$icon = getItemIcon(UUID::ZERO(), $item->Type, $item->AssetType, $item->Flags, $item->AssetID);
+							$out.="<span><img src=\"$icon\"/>".htmlentities($item->Name)."</span> ";
+						}
+						else
+						{
+							$out.="<span style=\"color: red\"><img src=\"/llview/inventoryicons/inv_item_unknown.png\"/>Missing item $charindex</span> ";
+						}
+					}
+				}
+				echo $out;
+?></div><?php
+			}
+			catch(Exception $e)
+			{
+?><div style="width: 100%; text-align: center;">Notecard parsing error</div><?php
+			}
+		}
+		catch(Exception $e)
+		{
+?><div style="width: 100%; text-align: center;">Asset missing</div><?php
+		}
+	 } ?>
 <?php if($inventoryitem->AssetType == AssetType::LSLText) { ?>
 <textarea style="width: 100%; height: 400px;" readonly="yes">
 <?php
