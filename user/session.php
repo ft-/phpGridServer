@@ -18,6 +18,10 @@ if(!isset($nologinpage))
 {
 	$nologinpage = false;
 }
+if(!isset($movemainpage))
+{
+	$movemainpage = false;
+}
 
 /* this session handler is kept compatible with admin/session.php */
 
@@ -54,6 +58,18 @@ if(!$userLoggedIn)
 	/* we do not require any wrapper page here for creating a user */
 	if($nologinpage)
 	{
+		if($movemainpage)
+		{
+?>
+<html><head></head>
+<body>
+<script type="text/javascript"><!--
+top.location.href="/user/?page=inventory";
+//-->
+</script>
+</body></html>
+<?php
+		}
 		exit;
 	}
 	require_once("user/user_login.php");
