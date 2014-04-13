@@ -11,6 +11,7 @@ set_include_path(dirname(dirname($_SERVER["SCRIPT_FILENAME"])).PATH_SEPARATOR.ge
 
 require_once("lib/services.php");
 require_once("lib/types/Asset.php");
+require_once("lib/types/UUID.php");
 
 $nologinpage = true;
 
@@ -36,7 +37,26 @@ catch(Exception $e)
 	exit;
 }
 
-if($asset->Type == AssetType::Sound)
+if($asset->Type == AssetType::Texture)
+{
+	$tmpfile = "../tmp/".UUID::Random().".jp2";
+	file_put_contents($tmpfile, $asset->Data->Data);
+	try
+	{
+		$im = new GMagick($tmpfile);
+		$im->setimageformat("png");
+		header("Content-Type: image/png");
+		echo (string)$im;
+	}
+	catch(Exception $e)
+	{
+		http_response_code("500");
+		header("Content-Type: text/plain");
+		echo $e->getMessage();
+	}
+	unlink($tmpfile);
+}
+else if($asset->Type == AssetType::Sound)
 {
 	header("Content-Type: audio/ogg");
 	echo $asset->Data;

@@ -69,8 +69,8 @@ try
 </tr>
 <tr>
 <td style="height: 400px;">
-<?php if($inventoryitem->AssetType == AssetType::Texture) { ?>
-<!-- <center><img src="/user/fetchasset.php/<?php echo $inventoryitem->AssetID ?>" width="400" height="300"/></center> -->
+<?php if($inventoryitem->AssetType == AssetType::Texture && extension_loaded("gmagick")) { ?>
+<center><img src="/user/fetchasset.php/<?php echo $inventoryitem->AssetID ?>" width="400" height="300"/></center>
 <?php } ?>
 <?php if($inventoryitem->AssetType == AssetType::Sound) { ?>
 <object data="/user/fetchasset.php/<?php echo $inventoryitem->AssetID ?>" width="400"></object>

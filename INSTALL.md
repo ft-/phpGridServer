@@ -17,6 +17,13 @@ default_charset should be set to UTF-8
 - opcode cache (e.g. APCu, ZendOpcache)
 
 
+1.3 Enabling JPEG2000 display
+
+- create folder tmp in root directory with write permissions for web server
+- enable GraphicsMagick extension (http://pecl.php.net/package/gmagick)
+- check that jasper is compiled to be used by GraphicsMagick (http://www.ece.uvic.ca/~mdadams/jasper/)
+
+
 2. Setting up the Web-Server
 
 2.1. Setting up Apache HTTP
