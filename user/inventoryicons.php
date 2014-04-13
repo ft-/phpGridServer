@@ -8,6 +8,7 @@
 */
 
 require_once("lib/types/Asset.php");
+require_once("lib/types/InventoryItem.php");
 require_once("lib/types/Wearable.php");
 
 $foldericon_mapping = array(
@@ -112,6 +113,10 @@ function getItemIcon($principalID, $invtype, $assettype, $flags, $refid)
 	{
 		/* special handling linkfolder */
 		$inventoryService = getService("Inventory");
+	}
+	else if(InventoryType::Snapshot == $invtype)
+	{
+		$icon = "inv_item_snapshot.png";
 	}
 	else if(AssetType::Clothing == $assettype || AssetType::Bodypart == $assettype)
 	{
