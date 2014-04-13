@@ -11,6 +11,12 @@
 
 default_charset should be set to UTF-8
 
+
+1.2 Recommended PHP extensions
+
+- opcode cache (e.g. APCu, ZendOpcache)
+
+
 2. Setting up the Web-Server
 
 2.1. Setting up Apache HTTP
