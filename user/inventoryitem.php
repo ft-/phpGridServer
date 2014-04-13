@@ -24,6 +24,7 @@ require_once("user/inventoryicons.php");
 $inventoryService = getService("Inventory");
 $userAccountService = getService("UserAccount");
 $assetService = getService("Asset");
+$serverParamService = getService("ServerParam");
 
 $itemid = substr($_SERVER["REQUEST_URI"], 1 + strlen($_SERVER["SCRIPT_NAME"]));
 $detail = "";
@@ -83,12 +84,14 @@ try
 			$landmark = Landmark::fromAsset($asset);
 			if($landmark->GatekeeperURI != "")
 			{
-				try
+				if(string2boolean($serverParamService->getParam("enable_hglm_lookup", false)))
 				{
-					$gatekeeper = new GatekeeperRemoteConnector($landmark->GatekeeperURI);
-					$destinationInfo = new DestinationInfo();
-					$destinationInfo->ID = $landmark->RegionID;
-					$destinationInfo = $gatekeeper->getRegion($destinationInfo);
+					try
+					{
+						$gatekeeper = new GatekeeperRemoteConnector($landmark->GatekeeperURI);
+						$destinationInfo = new DestinationInfo();
+						$destinationInfo->ID = $landmark->RegionID;
+						$destinationInfo = $gatekeeper->getRegion($destinationInfo);
 ?>
 <table border="0" style="width: 100%; border-style: none;">
 <tr><td>Landmark Type:</td><td>HyperGrid</td></tr>
@@ -98,14 +101,25 @@ try
 <tr><td>Location:</td><td><?php echo $landmark->LocalPos->X." ".$landmark->LocalPos->Y." ".$landmark->LocalPos->Z ?></td></tr>
 </table>
 <?php
-				}
-				catch(Exception $e)
-				{
+					}
+					catch(Exception $e)
+					{
 ?>
 <table border="0" style="width: 100%; border-style: none;">
 <tr><td>Landmark Type:</td><td>HyperGrid</td></tr>
 <tr><td>Grid URI:</td><td><?php echo $landmark->GatekeeperURI ?></td></tr>
 <tr><td>Error:</td><td>Target grid did not provide information about region</td></tr>
+</table>
+<?php
+					}
+				}
+				else
+				{
+?>
+<table border="0" style="width: 100%; border-style: none;">
+<tr><td>Landmark Type:</td><td>HyperGrid</td></tr>
+<tr><td>Grid URI:</td><td><?php echo $landmark->GatekeeperURI ?></td></tr>
+<tr><td>Location:</td><td><?php echo $landmark->LocalPos->X." ".$landmark->LocalPos->Y." ".$landmark->LocalPos->Z ?></td></tr>
 </table>
 <?php
 				}
