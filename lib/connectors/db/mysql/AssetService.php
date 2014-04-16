@@ -58,6 +58,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		$row = $res->fetch_assoc();
 		if(!$row)
 		{
+			$res->free();
 			throw new AssetNotFoundException("Asset $assetID not found");
 		}
 
@@ -240,7 +241,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 			$w .= "'$k'";
 		}
 		$w .= ")";
-		
+
 		$res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE id IN $w");
 		if(!$res)
 		{
@@ -251,12 +252,12 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		{
 			$assetIDsHash[$row["id"]] = True;
 		}
-		
+
 		$res->free();
 
 		return $assetIDsHash;
 	}
-	
+
 	private $revisions = array("CREATE TABLE %tablename% (
   							`name` varchar(64) NOT NULL,
   							`description` varchar(64) NOT NULL,
