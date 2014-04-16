@@ -86,70 +86,42 @@ class InventoryItem
 
 	public function __get($name)
 	{
-		if($name == "ID")
+		if(property_exists($this, $name))
 		{
-			return $this->ID;
-		}
-		if($name == "AssetID")
-		{
-			return $this->AssetID;
-		}
-		if($name == "GroupID")
-		{
-			return $this->GroupID;
-		}
-		if($name == "ParentFolderID")
-		{
-			return $this->ParentFolderID;
-		}
-		if($name == "OwnerID")
-		{
-			return $this->OwnerID;
+			return $this->$name;
 		}
 
 		$trace = debug_backtrace();
 		trigger_error(
-		    'Undefined property via __get(): ' . $name .
-		    ' in ' . $trace[0]['file'] .
-		    ' on line ' . $trace[0]['line'],
-		    E_USER_NOTICE);
+		'Undefined property via __get() for '.get_class($this).': ' . $name .
+		' in ' . $trace[0]['file'] .
+		' on line ' . $trace[0]['line'],
+		E_USER_NOTICE);
 		return null;
 	}
 
 	public function __set($name, $value)
 	{
-		if($name == "ID")
+		if(property_exists($this, $name))
 		{
-			$this->ID->ID = $value;
-			return;
-		}
-		if($name == "AssetID")
-		{
-			$this->AssetID->ID = $value;
-			return;
-		}
-		if($name == "GroupID")
-		{
-			$this->GroupID->ID = $value;
-			return;
-		}
-		if($name == "ParentFolderID")
-		{
-			$this->ParentFolderID->ID = $value;
-			return;
-		}
-		if($name == "OwnerID")
-		{
-			$this->OwnerID->ID = $value;
-			return;
+			if(is_a($this->$name, "UUID"))
+			{
+				$this->$name->ID = $value;
+				return;
+			}
+			else if(is_null($this->$name))
+			{
+				$this->$name = $value;
+				return;
+			}
 		}
 
 		$trace = debug_backtrace();
 		trigger_error(
-		    'Undefined property via __set(): ' . $name .
-		    ' in ' . $trace[0]['file'] .
-		    ' on line ' . $trace[0]['line'],
-		    E_USER_NOTICE);
+		'Undefined property via __set() for '.get_class($this).': ' . $name .
+		' in ' . $trace[0]['file'] .
+		' on line ' . $trace[0]['line'],
+		E_USER_NOTICE);
 	}
 
 	public function toXML($tagname='item', $attrs=" type=\"List\"")
