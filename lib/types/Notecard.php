@@ -341,7 +341,10 @@ class Notecard
 		$versioninfo = preg_split("/[ \t]/", $line);
 		if($versioninfo[0] != "Linden" || $versioninfo[1] != "text")
 		{
-			throw new NotANotecardFormat();
+			/* Viewers handle notecards without this header as plain text notecard */
+			$notecard = new Notecard();
+			$notecard->Text = $assetdata;
+			return $notecard;
 		}
 		return Notecard::readNotecard($assetdata);
 	}
