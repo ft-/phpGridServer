@@ -185,19 +185,69 @@ function parse_xml_tag($xml)
 }
 
 /******************************************************************************/
+class XmlStringReader
+{
+	private $xml_string;
+	private $xml_pos;
+	private $xml_len;
+	public function __construct($xml_string)
+	{
+		$this->xml_string = $xml_string;
+		$this->xml_pos = 0;
+		$this->xml_len = strlen($xml_string);
+	}
+
+	public function strpos($needle)
+	{
+		$pos = strpos($this->xml_string, $needle, $this->xml_pos);
+		if($pos !== False)
+		{
+			$pos -= $this->xml_pos;
+		}
+		return $pos;
+	}
+
+	public function strlen()
+	{
+		return $this->xml_len - $this->xml_pos;
+	}
+
+	public function substr($len)
+	{
+		return substr($this->xml_string, $this->xml_pos, $len);
+	}
+
+	public function consume($len)
+	{
+		if($len > $this->xml_len - $this->xml_pos)
+		{
+			$this->xml_pos = $this->xml_len;
+		}
+		else
+		{
+			$this->xml_pos += $len;
+		}
+	}
+}
+
+/******************************************************************************/
 function xml_tokenize(&$xml_string, $use_decode = True)
 {
+	if(!is_object($xml_string))
+	{
+		$xml_string = new XmlStringReader("".$xml_string);
+	}
 	$xmltok = null;
 restart:
 	$pos = 0;
-	if(strlen($xml_string) == 0)
+	if($xml_string->strlen() == 0)
 	{
 		return null;
 	}
-	else if(substr($xml_string, $pos, 1) == "<")
+	else if($xml_string->substr(1) == "<")
 	{
 		/* xml tag */
-		$pos = strpos($xml_string, ">");
+		$pos = $xml_string->strpos(">");
 		if($pos=== False)
 		{
 			return null;
@@ -205,7 +255,7 @@ restart:
 
 		++$pos;
 		/* we got the xml tag now */
-		$xmltag = substr($xml_string, 0, $pos);
+		$xmltag = $xml_string->substr($pos);
 
 		if(substr($xmltag, 0, 2) == "<?")
 		{
@@ -215,12 +265,12 @@ restart:
 		else if(substr($xmltag, 0, 4) == "<!--")
 		{
 			/* comment */
-			$pos = strpos($xml_string, "-->");
+			$pos = $xml_string->strpos("-->");
 			if($pos === False)
 			{
 				return null;
 			}
-			$xml_string=substr($xml_string, $pos);	/* get rid of parsed stuff */
+			$xml_string->consume($pos+3);	/* get rid of parsed stuff */
 			goto restart;
 		}
 		else if(substr($xmltag, 0, 9) == "<![CDATA[")
@@ -258,12 +308,12 @@ restart:
 	else
 	{
 		/* just data */
-		$pos = strpos($xml_string, "<");
-		if($pos==False)
+		$pos = $xml_string->strpos("<");
+		if($pos === False)
 		{
-			$pos=strlen($xml_string);
+			$pos = $xml_string->strlen();
 		}
-		$out = substr($xml_string , 0, $pos);
+		$out = $xml_string->substr($pos);
 		if($use_decode)
 		{
 			$xmltok = array("type" => "data", "data" => html_entity_decode($out, ENT_XML1));
@@ -273,7 +323,7 @@ restart:
 			$xmltok = array("type" => "data", "data" => $out);
 		}
 	}
-	$xml_string=substr($xml_string, $pos);	/* get rid of parsed stuff */
+	$xml_string->consume($pos);	/* get rid of parsed stuff */
 
 	return $xmltok;
 }
