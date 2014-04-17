@@ -158,7 +158,11 @@ class Notecard
 			}
 			else if($data[0] == "sale_price")
 			{
-				$item->SalePrice = intval("0x".$data[1]);
+				$item->SalePrice = intval($data[1]);
+			}
+			else if($data[0] == "perm_mask")
+			{
+				$item->SalePermMask = intval($data[1], 16);
 			}
 			else
 			{

@@ -50,6 +50,7 @@ class InventoryItem
 	public $NextPermissions;
 	public $SalePrice;
 	public $SaleType;
+	public $SalePermMask;
 
 	public function __construct()
 	{
@@ -74,6 +75,7 @@ class InventoryItem
 		$this->OwnerID = UUID::ZERO();
 		$this->SalePrice = 0;
 		$this->SaleType = 0;
+		$this->SalePermMask = InventoryPermissions::All;
 	}
 
 	public function __clone()
