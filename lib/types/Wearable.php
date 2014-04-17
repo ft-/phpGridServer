@@ -44,7 +44,8 @@ class Wearable
 	{
 		$wearable = new Wearable();
 
-		$lines = explode("\n", $asset->Data);
+		$assetdata = str_replace("\r", "", $asset->Data);
+		$lines = explode("\n", $assetdata);
 		$versioninfo = preg_split("/[ \t]/", $lines[0]);
 		if($versioninfo[0] != "LLWearable")
 		{
