@@ -35,7 +35,7 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		}
 		$stmt->bind_param("iissbb", $maptile->LocX, $maptile->LocY, $scopeID, $maptile->ContentType, $NULL, $NULL);
 		$stmt->send_long_data(4, $data);
-		$stmt->send_long_data(4, $data);
+		$stmt->send_long_data(5, $data);
 		$stmt->execute();
 		$stmt->close();
 	}
