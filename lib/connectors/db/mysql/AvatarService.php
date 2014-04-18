@@ -70,7 +70,7 @@ class MySQLAvatarServiceConnector implements AvatarServiceInterface
 
 		foreach($itemlist as $k => $v)
 		{
-			$this->db->query("DELETE FROM ".$this->dbtable."  WHERE PrincipalID LIKE '${_POST["UserID"]}' AND Name LIKE '".$this->db->real_escape_string($k)."'");
+			$this->db->query("DELETE FROM ".$this->dbtable."  WHERE PrincipalID LIKE '$PrincipalID' AND Name LIKE '".$this->db->real_escape_string($k)."'");
 			$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable."  (PrincipalID, Name, Value) VALUES (?, ?, ?)");
 			if($stmt)
 			{
