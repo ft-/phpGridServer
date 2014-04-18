@@ -149,7 +149,7 @@ class MySQLFriendsServiceConnector implements FriendsServiceInterface
 			trigger_error(mysqli_error($this->db));
 			throw new Exception("Database access error");
 		}
-		$stmt->bind_param("ss", $friend->UserID, $friend->FriendID);
+		$stmt->bind_param("ss", $UserID, $FriendID);
 		$stmt->execute();
 		if($stmt->affected_rows != 0)
 		{
