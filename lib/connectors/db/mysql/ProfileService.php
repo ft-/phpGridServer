@@ -129,7 +129,7 @@ class MySQLProfileUserAppDataIterator implements ProfileUserAppDataIterator
 
 	public function getUserAppData()
 	{
-		$row = $res->fetch_assoc();
+		$row = $this->res->fetch_assoc();
 		if(!$row)
 		{
 			return null;
