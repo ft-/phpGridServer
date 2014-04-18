@@ -10,10 +10,6 @@
 require_once("lib/interfaces/MaptileServiceInterface.php");
 require_once("lib/connectors/db/mysql/_MySQLConnectionCache.php");
 
-function mysql_MaptileFromRow($row)
-{
-}
-
 class MySQLMaptileServiceConnector implements MaptileServiceInterface
 {
 	private $db;
