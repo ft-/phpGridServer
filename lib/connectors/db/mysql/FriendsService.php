@@ -153,7 +153,7 @@ class MySQLFriendsServiceConnector implements FriendsServiceInterface
 		$stmt->execute();
 		if($stmt->affected_rows != 0)
 		{
-			$sstmt->close();
+			$stmt->close();
 			return;
 		}
 
