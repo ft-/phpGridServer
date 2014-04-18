@@ -69,7 +69,7 @@ class MySQLGridServiceRegionIterator implements GridServiceRegionIterator
 	}
 }
 
-class MSQLGridServiceRegionDefaultIterator implements GridServiceRegionDefaultIterator
+class MySQLGridServiceRegionDefaultIterator implements GridServiceRegionDefaultIterator
 {
 	private $res;
 	public function __construct($res)
@@ -240,7 +240,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 			throw new Exception("Database access error");
 		}
 
-		return new MSQLGridServiceRegionDefaultIterator($res);
+		return new MySQLGridServiceRegionDefaultIterator($res);
 	}
 	public function deleteRegionDefault($regionDefault)
 	{
