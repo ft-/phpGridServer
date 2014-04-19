@@ -95,6 +95,9 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.css"/>
 <script src="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.js" type="text/javascript"></script>
 
+<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/minimap/Control.MiniMap.css"/>
+<script src="/lib/js/leaflet-plugins/minimap/Control.MiniMap.js" type="text/javascript"></script>
+
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.css"/>
 <script src="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.js" type="text/javascript"></script>
 
@@ -177,6 +180,18 @@ L.control.mousePosition({numDigits:2}).addTo(map);
 var osmGeocoder = new L.Control.OSMGeocoder();
 
 map.addControl(osmGeocoder);
+
+<?php if(!isset($_GET["nominimap"])) { ?>
+var tileLayer2 = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
+ continuousWorld: true,
+ tms:true,
+ zoomOffset:0,
+ maxNativeZoom:0,
+ maxZoom:-5,
+ minZoom:-9,
+});
+var miniMap = new L.Control.MiniMap(tileLayer2).addTo(map);
+<?php } ?>
 
 <?php
 $gridService = getService("Grid");
