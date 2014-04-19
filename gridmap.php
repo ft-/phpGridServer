@@ -177,7 +177,6 @@ L.control.mousePosition({numDigits:2}).addTo(map);
 var osmGeocoder = new L.Control.OSMGeocoder();
 
 map.addControl(osmGeocoder);
-//map.addControl(new L.Control.Zoomslider());
 
 <?php
 $gridService = getService("Grid");
