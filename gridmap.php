@@ -1,4 +1,12 @@
 <?php
+/******************************************************************************
+ * phpGridServer
+ *
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ * Version 2.1, February 1999
+ *
+ */
+
 set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include_path());
 
 require_once("lib/services.php");
@@ -146,7 +154,7 @@ else
 ?>
 var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], fullscreenControl: true, zoom: 0, crs: L.CRS.Direct});
 
-var tileLayer = new L.TileLayer.Grid('<?php echo split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
+var tileLayer = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
  tms:true,
  zoomOffset:0,
