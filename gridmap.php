@@ -88,8 +88,13 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <title>Grid Map</title>
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet/leaflet.css"/>
 <script src="/lib/js/leaflet/leaflet.js" type="text/javascript"></script>
+
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.css"/>
 <script src="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.js" type="text/javascript"></script>
+
+<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.css"/>
+<script src="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.js" type="text/javascript"></script>
+
 <script src="/lib/js/leaflet-plugins/label/Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/BaseMarkerMethods.js"></script>
 <script src="/lib/js/leaflet-plugins/label/Marker.Label.js"></script>
@@ -165,6 +170,10 @@ var tileLayer = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_U
 tileLayer.addTo(map);
 
 L.control.mousePosition({numDigits:2}).addTo(map);
+
+var osmGeocoder = new L.Control.OSMGeocoder();
+
+map.addControl(osmGeocoder);
 
 <?php
 $gridService = getService("Grid");
