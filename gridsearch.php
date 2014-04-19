@@ -22,23 +22,6 @@ else
 	$limit = 0;
 }
 
-/*
-
-[
-	{"place_id":"62311100",
-	"licence":"Data \u00a9 OpenStreetMap contributors, ODbL 1.0. http:\/\/www.openstreetmap.org\/copyright",
-	"osm_type":"way",
-	"osm_id":"90394480",
-	"boundingbox":["52.5487442016602","52.5488510131836","-1.81651306152344","-1.81634628772736"],
-	"lat":"52.5487977",
-	"lon":"-1.81642903005944",
-	"display_name":"135, Pilkington Avenue, Castle Vale, Birmingham, West Midlands, England, B72 1LH, Vereinigtes K\u00f6nigreich Gro\u00dfbritannien und Nordirland",
-	"class":"place",
-	"type":"house",
-	"importance":0.701
-	}
-]*/
-
 $gridService = getService("Grid");
 
 $json_entry = "";
