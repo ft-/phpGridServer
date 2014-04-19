@@ -13,7 +13,7 @@ require_once("lib/services.php");
 
 $serverParams = getService("ServerParam");
 
-$gridname = $serverParams->getParam("gridname", "phpRobust");
+$gridname = $serverParams->getParam("gridname", "phpGridServer");
 
 require_once("admin/session.php");
 
