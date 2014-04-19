@@ -10,8 +10,65 @@
 set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include_path());
 
 require_once("lib/services.php");
+require_once("lib/types/UUI.php");
 
-if(isset($_GET["x"]) && isset($_GET["y"]))
+if(isset($_GET["regioninfo"]))
+{
+	$scopeid = "00000000-0000-0000-0000-000000000000";
+	if(isset($_GET["SCOPEID"]))
+	{
+		$scopeid=$_GET["SCOPEID"];
+		if(!UUID::IsUUID($scopeid))
+		{
+			http_response_code("400");
+			exit;
+		}
+	}
+	
+	$gridService = getService("Grid");
+	$userAccountService = getService("UserAccount");
+	$gridUserService = getService("GridUser");
+	/* gridx , gridy */
+	$gridx = floatval($_GET["gridx"]);
+	$gridy = floatval($_GET["gridy"]);
+	try
+	{
+		$region = $gridService->getRegionByPosition($scopeid, intval($gridx*256.), intval($gridy*256.));
+		try
+		{
+			$userAccount = $userAccountService->getAccountByID(null, $region->Owner_uuid);
+			$ownerName = $userAccount->FirstName." ".$userAccount->LastName;
+		}
+		catch(Exception $e)
+		{
+			trigger_error(get_class($e).":".$e->getMessage());
+			try
+			{
+				$gridUser = $gridUserService->getGridUser($region->Owner_uuid);
+				$uui = new UUI($gridUser->UserID);
+				$ownerName = $uui->FirstName." ".$uui->LastName;
+			}
+			catch(Exception $e)
+			{
+				$ownerName = "Unknown User";
+			}
+		}
+		$content = "<table style=\"border-width: 0px; border-style: none; width: 100%;\">".
+				"<tr><th>Name</th><td>".htmlentities($region->RegionName)."</td></tr>".
+				"<tr><th>Owner</th><td>".htmlentities($ownerName)."</td></tr>".
+				"<tr><th>Location</th><td>".intval($region->LocX/256).",".intval($region->LocY/256)."</td></tr>".
+				"<tr><th>Size</th><td>".intval($region->SizeX/256).",".intval($region->SizeY/256)."</td></tr>".
+				"</table>";
+	}
+	catch(Exception $e)
+	{
+		$content = "Region not found";
+	}
+	header("Content-Type: text/javascript");
+	echo "L.popup().setLatLng(L.latLng($gridx, $gridy)).setContent('".addslashes($content)."').openOn(map);";
+	exit;
+}
+else if(isset($_GET["x"]) && isset($_GET["y"]))
 {
 	$scopeid = "00000000-0000-0000-0000-000000000000";
 	if(isset($_GET["SCOPEID"]))
@@ -101,6 +158,9 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.css"/>
 <script src="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.js" type="text/javascript"></script>
 
+<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/contextmenu/leaflet.contextmenu.css"/>
+<script src="/lib/js/leaflet-plugins/contextmenu/leaflet.contextmenu.js" type="text/javascript"></script>
+
 <script src="/lib/js/leaflet-plugins/label/Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/BaseMarkerMethods.js"></script>
 <script src="/lib/js/leaflet-plugins/label/Marker.Label.js"></script>
@@ -163,7 +223,46 @@ else
 	$y = floatval($_GET["mapy"]);
 }
 ?>
-var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], fullscreenControl: true, zoom: 0, crs: L.CRS.Direct});
+      function showRegionInfo(locX, locY, regionName, regionOwner)
+      {
+      }
+      function showRegionInfo (uuid, e) {
+	var url = "/gridmap.php?regioninfo=1&gridx=" + e.latlng.lat + "&gridy=" + e.latlng.lng;
+	script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src = url;
+	script.id = "showregion_" +uuid;
+	document.getElementsByTagName("head")[0].appendChild(script);
+	}
+
+      function centerMap (e) {
+	      map.panTo(e.latlng);
+      }
+
+      function zoomIn (e) {
+	      map.zoomIn();
+      }
+
+      function zoomOut (e) {
+	      map.zoomOut();
+      }
+
+var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], fullscreenControl: true, zoom: 0, crs: L.CRS.Direct,
+	      contextmenu: true,
+          contextmenuWidth: 140,
+	      contextmenuItems: [{
+		      text: 'Center map here',
+		      callback: centerMap
+	      }, '-', {
+		      text: 'Zoom in',
+		      icon: '/lib/js/leaflet-plugins/contextmenu/zoom-in.png',
+		      callback: zoomIn
+	      }, {
+		      text: 'Zoom out',
+		      icon: '/lib/js/leaflet-plugins/contextmenu/zoom-out.png',
+		      callback: zoomOut
+	      }]
+});
 
 var tileLayer = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
@@ -192,13 +291,34 @@ var tileLayer2 = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_
 });
 var miniMap = new L.Control.MiniMap(tileLayer2).addTo(map);
 <?php } ?>
-
+L.Polygon.include(L.Mixin.ContextMenu);
 <?php
 $gridService = getService("Grid");
 $res = $gridService->getAllRegions();
 while($region = $res->getRegion())
 {
-	echo "L.marker([".($region->LocX / 256).",".($region->LocY / 256)."]).bindLabel('".addslashes($region->RegionName)."', {noHide: true}).addTo(map);\n";
+	$x1 = $region->LocX / 256.;
+	$y1 = $region->LocY / 256.;
+	$x2 = ($region->LocX + $region->SizeX) / 256.;
+	$y2 = ($region->LocY + $region->SizeY) / 256.;
+	$uuidshorten = str_replace("-", "", $region->ID);
+	echo "function showRegionInfo_${uuidshorten}(e) { showRegionInfo('".$region->ID."',e); }\n";
+	echo "L.polygon(
+				[[$x1, $y1], [$x2, $y1], [$x2, $y2], [$x1, $y2]], {fillOpacity:0, weight: 1,color:'#0080ff',
+	      contextmenu: true,
+contextmenuWidth: 140,
+	      contextmenuItems: [{
+		      text: 'Show Region Info',
+		      callback: showRegionInfo_${uuidshorten},
+		      index:0
+	      }, {
+              separator: true,
+              index: 1
+          }]				
+				}
+			)
+			.bindLabel('",addslashes($region->RegionName)."', {noHide: true})
+			.addTo(map);";
 }
 $res->free();
 echo "map.panTo([$x,$y]);\n";
