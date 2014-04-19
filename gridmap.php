@@ -7,142 +7,171 @@
  *
  */
 
-set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include_path());
+if(!isset($gridmap_included_once))
+{
+	set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include_path());
+}
 
 require_once("lib/services.php");
 require_once("lib/types/UUI.php");
 
-if(isset($_GET["regioninfo"]))
+if(!isset($gridmap_htmlframing))
 {
-	$scopeid = "00000000-0000-0000-0000-000000000000";
-	if(isset($_GET["SCOPEID"]))
+	$gridmap_htmlframing = true;
+}
+if(!isset($gridmap_header))
+{
+	$gridmap_header = true;
+}
+if(!isset($gridmap_body))
+{
+	$gridmap_body = true;
+}
+if(!isset($gridmap_enable_minimap))
+{
+	$gridmap_enable_minimap = true;
+}
+if(!isset($gridmap_fullscreen_control))
+{
+	$gridmap_fullscreen_control = true;
+}
+
+if(!isset($gridmap_included_once))
+{
+	$gridmap_included_once = true;
+	if(isset($_GET["regioninfo"]))
 	{
-		$scopeid=$_GET["SCOPEID"];
-		if(!UUID::IsUUID($scopeid))
+		$scopeid = "00000000-0000-0000-0000-000000000000";
+		if(isset($_GET["SCOPEID"]))
 		{
-			http_response_code("400");
-			exit;
+			$scopeid=$_GET["SCOPEID"];
+			if(!UUID::IsUUID($scopeid))
+			{
+				http_response_code("400");
+				exit;
+			}
 		}
-	}
-	
-	$gridService = getService("Grid");
-	$userAccountService = getService("UserAccount");
-	$gridUserService = getService("GridUser");
-	/* gridx , gridy */
-	$gridx = floatval($_GET["gridx"]);
-	$gridy = floatval($_GET["gridy"]);
-	try
-	{
-		$region = $gridService->getRegionByPosition($scopeid, intval($gridx*256.), intval($gridy*256.));
+		
+		$gridService = getService("Grid");
+		$userAccountService = getService("UserAccount");
+		$gridUserService = getService("GridUser");
+		/* gridx , gridy */
+		$gridx = floatval($_GET["gridx"]);
+		$gridy = floatval($_GET["gridy"]);
 		try
 		{
-			$userAccount = $userAccountService->getAccountByID(null, $region->Owner_uuid);
-			$ownerName = $userAccount->FirstName." ".$userAccount->LastName;
-		}
-		catch(Exception $e)
-		{
-			trigger_error(get_class($e).":".$e->getMessage());
+			$region = $gridService->getRegionByPosition($scopeid, intval($gridx*256.), intval($gridy*256.));
 			try
 			{
-				$gridUser = $gridUserService->getGridUser($region->Owner_uuid);
-				$uui = new UUI($gridUser->UserID);
-				$ownerName = $uui->FirstName." ".$uui->LastName;
+				$userAccount = $userAccountService->getAccountByID(null, $region->Owner_uuid);
+				$ownerName = $userAccount->FirstName." ".$userAccount->LastName;
 			}
 			catch(Exception $e)
 			{
-				$ownerName = "Unknown User";
-			}
-		}
-		$content = "<table style=\"border-width: 0px; border-style: none; width: 100%;\">".
-				"<tr><th>Name</th><td>".htmlentities($region->RegionName)."</td></tr>".
-				"<tr><th>Owner</th><td>".htmlentities($ownerName)."</td></tr>".
-				"<tr><th>Location</th><td>".intval($region->LocX/256).",".intval($region->LocY/256)."</td></tr>".
-				"<tr><th>Size</th><td>".intval($region->SizeX/256).",".intval($region->SizeY/256)."</td></tr>".
-				"</table>";
-	}
-	catch(Exception $e)
-	{
-		$content = "Region not found";
-	}
-	header("Content-Type: text/javascript");
-	echo "L.popup().setLatLng(L.latLng($gridx, $gridy)).setContent('".addslashes($content)."').openOn(map);";
-	exit;
-}
-else if(isset($_GET["x"]) && isset($_GET["y"]))
-{
-	$scopeid = "00000000-0000-0000-0000-000000000000";
-	if(isset($_GET["SCOPEID"]))
-	{
-		$scopeid=$_GET["SCOPEID"];
-		if(!UUID::IsUUID($scopeid))
-		{
-			http_response_code("400");
-			exit;
-		}
-	}
-
-	$maptileService = getService("Maptile");
-	function gdloadMaptile($x, $y)
-	{
-		global $maptileService, $scopeid;
-		$x = intval($x);
-		$y = intval($y);
-		$maptile = $maptileService->getMaptile($scopeid, $x * 256, $y * 256);
-		return imagecreatefromstring($maptile);
-	}
-
-	$x = intval($_GET["x"]);
-	$y = intval($_GET["y"]);
-	$z = pow(2, -intval($_GET["zoom"]));
-	$x *= $z;
-	$y *= $z;
-	if(intval($_GET["zoom"]) == 0)
-	{
-		try
-		{
-			$maptile = gdloadMaptile($x, $y);
-		}
-		catch(Exception $e)
-		{
-			$maptile = imagecreatetruecolor(256, 256);
-			$blue = imagecolorallocate($maptile, 30, 70, 95);
-			imagefill($maptile, 0, 0, $blue);
-		}
-	}
-	if(intval($_GET["zoom"]) < 0)
-	{
-		$numparts = pow(2, -intval($_GET["zoom"]));
-		$partsize = 256 / $numparts;
-		/* merge 4 maptiles */
-		$maptile = imagecreatetruecolor(256, 256);
-		$blue = imagecolorallocate($maptile, 30, 70, 95);
-		imagefill($maptile, 0, 0, $blue);
-		for($ox = 0; $ox < $numparts; ++$ox)
-		{
-			for($oy = 0; $oy < $numparts; ++$oy)
-			{
+				trigger_error(get_class($e).":".$e->getMessage());
 				try
 				{
-					$part = gdloadMaptile($x+$ox, $y+$oy+1);
-					imagecopyresized($maptile, $part, $ox * $partsize, ($numparts - 1 - $oy) * $partsize, 0, 0, $partsize, $partsize, 256, 256);
-					imagedestroy($part);
+					$gridUser = $gridUserService->getGridUser($region->Owner_uuid);
+					$uui = new UUI($gridUser->UserID);
+					$ownerName = $uui->FirstName." ".$uui->LastName;
 				}
 				catch(Exception $e)
 				{
+					$ownerName = "Unknown User";
+				}
+			}
+			$content = "<table style=\"border-width: 0px; border-style: none; width: 100%;\">".
+					"<tr><th>Name</th><td>".htmlentities($region->RegionName)."</td></tr>".
+					"<tr><th>Owner</th><td>".htmlentities($ownerName)."</td></tr>".
+					"<tr><th>Location</th><td>".intval($region->LocX/256).",".intval($region->LocY/256)."</td></tr>".
+					"<tr><th>Size</th><td>".intval($region->SizeX/256).",".intval($region->SizeY/256)."</td></tr>".
+					"</table>";
+		}
+		catch(Exception $e)
+		{
+			$content = "Region not found";
+		}
+		header("Content-Type: text/javascript");
+		echo "L.popup().setLatLng(L.latLng($gridx, $gridy)).setContent('".addslashes($content)."').openOn(map);";
+		exit;
+	}
+	else if(isset($_GET["x"]) && isset($_GET["y"]))
+	{
+		$scopeid = "00000000-0000-0000-0000-000000000000";
+		if(isset($_GET["SCOPEID"]))
+		{
+			$scopeid=$_GET["SCOPEID"];
+			if(!UUID::IsUUID($scopeid))
+			{
+				http_response_code("400");
+				exit;
+			}
+		}
+
+		$maptileService = getService("Maptile");
+		function gdloadMaptile($x, $y)
+		{
+			global $maptileService, $scopeid;
+			$x = intval($x);
+			$y = intval($y);
+			$maptile = $maptileService->getMaptile($scopeid, $x * 256, $y * 256);
+			return imagecreatefromstring($maptile);
+		}
+
+		$x = intval($_GET["x"]);
+		$y = intval($_GET["y"]);
+		$z = pow(2, -intval($_GET["zoom"]));
+		$x *= $z;
+		$y *= $z;
+		if(intval($_GET["zoom"]) == 0)
+		{
+			try
+			{
+				$maptile = gdloadMaptile($x, $y);
+			}
+			catch(Exception $e)
+			{
+				$maptile = imagecreatetruecolor(256, 256);
+				$blue = imagecolorallocate($maptile, 30, 70, 95);
+				imagefill($maptile, 0, 0, $blue);
+			}
+		}
+		if(intval($_GET["zoom"]) < 0)
+		{
+			$numparts = pow(2, -intval($_GET["zoom"]));
+			$partsize = 256 / $numparts;
+			/* merge 4 maptiles */
+			$maptile = imagecreatetruecolor(256, 256);
+			$blue = imagecolorallocate($maptile, 30, 70, 95);
+			imagefill($maptile, 0, 0, $blue);
+			for($ox = 0; $ox < $numparts; ++$ox)
+			{
+				for($oy = 0; $oy < $numparts; ++$oy)
+				{
+					try
+					{
+						$part = gdloadMaptile($x+$ox, $y+$oy+1);
+						imagecopyresized($maptile, $part, $ox * $partsize, ($numparts - 1 - $oy) * $partsize, 0, 0, $partsize, $partsize, 256, 256);
+						imagedestroy($part);
+					}
+					catch(Exception $e)
+					{
+					}
 				}
 			}
 		}
+
+		header("Content-Type: image/jpeg");
+		echo imagejpeg($maptile);
+		exit;
 	}
-
-	header("Content-Type: image/jpeg");
-	echo imagejpeg($maptile);
-	exit;
 }
-
 ?>
+<?php if($gridmap_htmlframing) { ?>
 <html>
 <head>
 <title>Grid Map</title>
+<?php } if($gridmap_header) { ?>
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet/leaflet.css"/>
 <script src="/lib/js/leaflet/leaflet.js" type="text/javascript"></script>
 
@@ -161,6 +190,11 @@ else if(isset($_GET["x"]) && isset($_GET["y"]))
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/contextmenu/leaflet.contextmenu.css"/>
 <script src="/lib/js/leaflet-plugins/contextmenu/leaflet.contextmenu.js" type="text/javascript"></script>
 
+<?php if($gridmap_fullscreen_control) { ?>
+<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/fullscreen/leaflet.fullscreen.css"/>
+<script src="/lib/js/leaflet-plugins/fullscreen/Leaflet.fullscreen.js" type="text/javascript"></script>
+<?php } ?>
+
 <script src="/lib/js/leaflet-plugins/label/Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/BaseMarkerMethods.js"></script>
 <script src="/lib/js/leaflet-plugins/label/Marker.Label.js"></script>
@@ -168,9 +202,11 @@ else if(isset($_GET["x"]) && isset($_GET["y"]))
 <script src="/lib/js/leaflet-plugins/label/Path.Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/Map.Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/FeatureGroup.Label.js"></script>
+<?php } if($gridmap_htmlframing) { ?>
 </head>
 <body>
 <div id="map" class="map" style="width: 100%; height: 100%;"></div>
+<?php } if($gridmap_body) { ?>
 <script type="text/javascript">
 <!--
 L.Projection.NoWrap = {
@@ -280,7 +316,7 @@ var osmGeocoder = new L.Control.OSMGeocoder();
 
 map.addControl(osmGeocoder);
 
-<?php if(!isset($_GET["nominimap"])) { ?>
+<?php if(!isset($_GET["nominimap"]) && $gridmap_enable_minimap) { ?>
 var tileLayer2 = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
  tms:true,
@@ -325,5 +361,7 @@ echo "map.panTo([$x,$y]);\n";
 ?>
 //-->
 </script>
+<?php } if($gridmap_htmlframing) { ?>
 </body>
 </html>
+<?php } ?>
