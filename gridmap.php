@@ -92,6 +92,9 @@ if(isset($_GET["x"]) && isset($_GET["y"]))
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.css"/>
 <script src="/lib/js/leaflet-plugins/mouseposition/L.Control.MousePosition.js" type="text/javascript"></script>
 
+<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.css"/>
+<script src="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.js" type="text/javascript"></script>
+
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.css"/>
 <script src="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.js" type="text/javascript"></script>
 
@@ -174,6 +177,7 @@ L.control.mousePosition({numDigits:2}).addTo(map);
 var osmGeocoder = new L.Control.OSMGeocoder();
 
 map.addControl(osmGeocoder);
+//map.addControl(new L.Control.Zoomslider());
 
 <?php
 $gridService = getService("Grid");
