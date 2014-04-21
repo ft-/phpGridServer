@@ -22,7 +22,7 @@ MIT
 leaflet-label
 see LICENSE-leaflet-label.txt
 
-leaflet-OSMGeocoder (modified URL to request Grid Data instead)
+leaflet-geocoder
 2-clause BSD License
 
 leaflet-zoomslider

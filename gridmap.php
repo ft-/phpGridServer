@@ -238,8 +238,8 @@ if(!isset($gridmap_included_once))
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/minimap/Control.MiniMap.css"/>
 <script src="/lib/js/leaflet-plugins/minimap/Control.MiniMap.js" type="text/javascript"></script>
 
-<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.css"/>
-<script src="/lib/js/leaflet-plugins/osmgeocoder/Control.OSMGeocoder.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/geocoder/Control.Geocoder.css"/>
+<script src="/lib/js/leaflet-plugins/geocoder/Control.Geocoder.js" type="text/javascript"></script>
 
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/contextmenu/leaflet.contextmenu.css"/>
 <script src="/lib/js/leaflet-plugins/contextmenu/leaflet.contextmenu.js" type="text/javascript"></script>
@@ -364,9 +364,10 @@ tileLayer.addTo(map);
 
 L.control.mousePosition({numDigits:2}).addTo(map);
 
-var osmGeocoder = new L.Control.OSMGeocoder();
-
-map.addControl(osmGeocoder);
+geocoder = L.Control.Geocoder.nominatim({serviceUrl:"/gridsearch.php/"}),
+control = L.Control.geocoder({
+geocoder: geocoder
+}).addTo(map);
 
 <?php if(!isset($_GET["nominimap"]) && $gridmap_enable_minimap) { ?>
 var tileLayer2 = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
