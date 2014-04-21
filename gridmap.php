@@ -163,6 +163,22 @@ if(!isset($gridmap_included_once))
 			$blue = imagecolorallocate($maptile, 30, 70, 95);
 			imagefill($maptile, 0, 0, $blue);
 			++$y;
+			for($ox = 0; $ox < $numparts; ++$ox)
+			{
+				for($oy = 0; $oy < $numparts; ++$oy)
+				{
+					try
+					{
+						$part = gdloadMaptile($x+$ox, $y+$oy);
+						imagecopyresized($maptile, $part, $ox * $partsize, ($numparts - 1 - $oy) * $partsize, 0, 0, $partsize, $partsize, 256, 256);
+						imagedestroy($part);
+					}
+					catch(Exception $e)
+					{
+					}
+				}
+			}
+			/*
 			$regions = $gridService->getRegionsByRange($scopeid, intval($x*256), intval($y*256), intval(($x+$numparts)*256)-1, intval(($y+$numparts)*256)-1);
 			while($region = $regions->getRegion())
 			{
@@ -191,6 +207,7 @@ if(!isset($gridmap_included_once))
 				}
 			}
 			$regions->free();
+			*/
 		}
 		else
 		{
