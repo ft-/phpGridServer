@@ -123,12 +123,15 @@ if(!isset($gridmap_included_once))
 			}
 		}
 
+		$gridService = getService("Grid");
+		
 		$maptileService = getService("Maptile");
 		function gdloadMaptile($x, $y)
 		{
-			global $maptileService, $scopeid;
+			global $maptileService, $scopeid, $gridService;
 			$x = intval($x);
 			$y = intval($y);
+			$gridService->getRegionByPosition($scopeid, $x * 256, $y * 256);
 			$maptile = $maptileService->getMaptile($scopeid, $x * 256, $y * 256);
 			return imagecreatefromstring($maptile);
 		}
@@ -151,7 +154,7 @@ if(!isset($gridmap_included_once))
 				imagefill($maptile, 0, 0, $blue);
 			}
 		}
-		if(intval($_GET["zoom"]) < 0)
+		else if(intval($_GET["zoom"]) < 0)
 		{
 			$numparts = pow(2, -intval($_GET["zoom"]));
 			$partsize = 256 / $numparts;
@@ -159,21 +162,40 @@ if(!isset($gridmap_included_once))
 			$maptile = imagecreatetruecolor(256, 256);
 			$blue = imagecolorallocate($maptile, 30, 70, 95);
 			imagefill($maptile, 0, 0, $blue);
-			for($ox = 0; $ox < $numparts; ++$ox)
+			++$y;
+			$regions = $gridService->getRegionsByRange($scopeid, intval($x*256), intval($y*256), intval(($x+$numparts)*256)-1, intval(($y+$numparts)*256)-1);
+			while($region = $regions->getRegion())
 			{
-				for($oy = 0; $oy < $numparts; ++$oy)
+				for($ox = 0; $ox < intval($region->SizeX / 256); ++$ox)
 				{
-					try
+					for($oy = 0; $oy < intval($region->SizeY / 256); ++$oy)
 					{
-						$part = gdloadMaptile($x+$ox, $y+$oy+1);
-						imagecopyresized($maptile, $part, $ox * $partsize, ($numparts - 1 - $oy) * $partsize, 0, 0, $partsize, $partsize, 256, 256);
-						imagedestroy($part);
-					}
-					catch(Exception $e)
-					{
+						$rx = intval($region->LocX / 256) - $x + $ox;
+						$ry = intval($region->LocY / 256) - $y + $oy;
+						if($ry < 0 || $ry >= $numparts || $rx < 0 || $ry >= $numparts)
+						{
+							continue;
+						}
+						try
+						{
+							$part = gdloadMaptile($x+$rx, $y + $ry);
+							imagecopyresized($maptile, $part, 
+									($rx) * $partsize, 
+									($numparts - 1 - $ry) * $partsize, 0, 0, $partsize, $partsize, 256, 256);
+							imagedestroy($part);
+						}
+						catch(Exception $e)
+						{
+						}						
 					}
 				}
 			}
+			$regions->free();
+		}
+		else
+		{
+			http_response_code("500");
+			exit;
 		}
 
 		header("Content-Type: image/jpeg");
