@@ -44,7 +44,7 @@ while($region = $regions->getRegion())
 	$json_entry .= "{\"place_id\":\"".$region->ID."\",".
 			"\"osm_type\":\"relation\",".
 			"\"osm_id\":\"".$region->ID."\",".
-			"\"boundingbox\":[\"$x\",\"$y2\",\"$x\",\"$y\"],".
+			"\"boundingbox\":[\"$x\",\"$x2\",\"$y\",\"$y2\"],".
 			"\"lat\":\"$centerx\",".
 			"\"lon\":\"$centery\",".
 			"\"display_name\":\"".$region->RegionName."\",".
