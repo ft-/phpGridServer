@@ -14,6 +14,7 @@ if(!isset($gridmap_included_once))
 
 require_once("lib/services.php");
 require_once("lib/types/UUI.php");
+require_once("lib/types/ServerDataURI.php");
 
 if(!isset($gridmap_htmlframing))
 {
@@ -58,6 +59,8 @@ if(!isset($gridmap_included_once))
 		/* gridx , gridy */
 		$gridx = floatval($_GET["gridx"]);
 		$gridy = floatval($_GET["gridy"]);
+		$hguri = "";
+		$localuri = "";
 		try
 		{
 			$region = $gridService->getRegionByPosition($scopeid, intval($gridx*256.), intval($gridy*256.));
@@ -80,7 +83,19 @@ if(!isset($gridmap_included_once))
 					$ownerName = "Unknown User";
 				}
 			}
+			$localuri = $region->RegionName."/".intval(intval($gridx*256)-$region->LocX)."/".intval(intval($gridy*256)-$region->LocY)."/0";
+			$homeGrid = ServerDataURI::getHome();
+			$components = parse_url($homeGrid->HomeURI);
+			if(!isset($components["port"]))
+			{
+				$components["port"] = 80;
+			}
+		
+			$hguri = $components["host"].":".$components["port"].":".$localuri;
+			
 			$content = "<table style=\"border-width: 0px; border-style: none; width: 100%;\">".
+					"<tr><td colspan=\"2\"><a href=\"secondlife://".htmlentities($localuri)."\">Grid Teleport</a></td></tr>".
+					"<tr><td colspan=\"2\"><a href=\"secondlife://".htmlentities($hguri)."\">HG Teleport</a></td></tr>".
 					"<tr><th>Name</th><td>".htmlentities($region->RegionName)."</td></tr>".
 					"<tr><th>Owner</th><td>".htmlentities($ownerName)."</td></tr>".
 					"<tr><th>Location</th><td>".intval($region->LocX/256).",".intval($region->LocY/256)."</td></tr>".
@@ -207,6 +222,7 @@ if(!isset($gridmap_included_once))
 <body>
 <div id="map" class="map" style="width: 100%; height: 100%;"></div>
 <?php } if($gridmap_body) { ?>
+<div style="visibility: hidden;"><iframe name="tpto" id="tpto" width="1" height="1"></iframe></div>
 <script type="text/javascript">
 <!--
 L.Projection.NoWrap = {
@@ -259,9 +275,6 @@ else
 	$y = floatval($_GET["mapy"]);
 }
 ?>
-      function showRegionInfo(locX, locY, regionName, regionOwner)
-      {
-      }
       function showRegionInfo (uuid, e) {
 	var url = "/gridmap.php?regioninfo=1&gridx=" + e.latlng.lat + "&gridy=" + e.latlng.lng;
 	script = document.createElement("script");
@@ -343,13 +356,15 @@ while($region = $res->getRegion())
 				[[$x1, $y1], [$x2, $y1], [$x2, $y2], [$x1, $y2]], {fillOpacity:0, weight: 1,color:'#0080ff',
 	      contextmenu: true,
 contextmenuWidth: 140,
-	      contextmenuItems: [{
+	      contextmenuItems: [
+		{
 		      text: 'Show Region Info',
 		      callback: showRegionInfo_${uuidshorten},
 		      index:0
-	      }, {
+		},
+	      {
               separator: true,
-              index: 1
+              index: 4
           }]				
 				}
 			)
