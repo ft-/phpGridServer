@@ -64,7 +64,32 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 
 		$res->free();
 	}
-
+	
+	public function getAssetList($assettypes)
+	{
+	        $assetwhere = "";
+	        foreach($assettypes as $assettype)
+	        {
+	                if($assetwhere!="")
+	                {
+	                        $assetwhere.=",";
+                        }
+                        $assetwhere.=intval($assettype);
+	        }
+	        $res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE assetType IN ($assetwhere)");
+	        if(!$res)
+	        {
+	                trigger_error(mysqli_error($this->db));
+	                throw new Exception("Database access error");
+                }
+                $idlist = array();
+                while($row = $res->fetch_assoc())
+                {
+                        $idlist[] = $row["id"];
+                }
+                $res->free();
+                return $idlist;
+	}
 
 	public function get($assetID)
 	{
@@ -78,6 +103,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		$row = $res->fetch_assoc();
 		if(!$row)
 		{
+			$res->free();
 			throw new AssetNotFoundException("Asset $assetID not found");
 		}
 
@@ -102,6 +128,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		$row = $res->fetch_assoc();
 		if(!$row)
 		{
+			$res->free();
 			throw new AssetNotFoundException("Asset $assetID not found");
 		}
 
@@ -123,6 +150,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		$row = $res->fetch_assoc();
 		if(!$row)
 		{
+			$res->free();
 			throw new AssetNotFoundException("Asset $assetID not found");
 		}
 
@@ -161,7 +189,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		if($stmt->affected_rows == 0)
 		{
 			$stmt->close();
-			$res = $this->db->query("SELECT id FROM assets WHERE id = '".mysqli_real_escape_string($db, $assetbase["ID"])."' AND asset_flags <> 0");
+			$res = $this->db->query("SELECT id FROM assets WHERE id = '$id' AND asset_flags <> 0");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -170,7 +198,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 			else if($row= $res->fetch_assoc())
 			{
 				$res->free();
-				$stmt = $db->prepare("UPDATE assets SET data=? WHERE id=? AND asset_flags <> 0");
+				$stmt = $this->db->prepare("UPDATE assets SET data=? WHERE id=? AND asset_flags <> 0");
 				$stmt->bind_param("bs", $null, $asset->ID->ID);
 				$stmt->send_long_data(0, $asset->Data); /* this prevents us frm having to rewrite max_packet_size */
 				$stmt->execute();
