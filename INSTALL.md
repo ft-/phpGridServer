@@ -99,3 +99,8 @@ Use the configuration sample from tools/Sample-OpenSim-Config
 7. Setting up Fallback Regions
 
 Admin pages to be implemented
+
+
+8. Enabling search collector
+
+run tools/opensim-collectord.php as a background service

@@ -45,6 +45,7 @@ interface GridServiceInterface
 	public function getFallbackRegions($scopeID);
 	public function getAllRegions();
 	public function getRegionsByName($scopeID, $regionName);
+	public function searchRegionsByName($scopeID, $searchString);
 	public function getHyperlinks($scopeID);
 	public function getRegionsByRange($scopeID, $min_x, $min_y, $max_x, $max_y);
 	public function getNeighbours($scopeID, $regionID);

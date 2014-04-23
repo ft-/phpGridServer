@@ -153,6 +153,11 @@ class GridServiceDefaultPermissions implements GridServiceInterface
 		return $this->service->getRegionsByName($scopeID, $regionName);
 	}
 
+	public function searchRegionsByName($scopeID, $regionName)
+	{
+		return $this->service->searchRegionsByName($scopeID, $regionName);
+	}
+
 	public function getHyperlinks($scopeID)
 	{
 		return $this->service->getHyperlinks($scopeID);

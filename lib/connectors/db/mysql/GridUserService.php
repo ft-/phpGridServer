@@ -159,7 +159,7 @@ class MySQLGridUserServiceConnector implements GridUserServiceInterface
 
 		if(is_null($lastRegionID))
 		{
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."' WHERE UserID=?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."' WHERE UserID LIKE ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -169,7 +169,7 @@ class MySQLGridUserServiceConnector implements GridUserServiceInterface
 		}
 		else
 		{
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."', LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID=?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."', LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID LIKE ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -197,7 +197,7 @@ class MySQLGridUserServiceConnector implements GridUserServiceInterface
 			$homeLookAt = "<0,1,0>";
 		}
 
-		$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET HomeRegionID=?, HomePosition=?, HomeLookAt=? WHERE UserID=?");
+		$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET HomeRegionID=?, HomePosition=?, HomeLookAt=? WHERE UserID LIKE ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -224,7 +224,7 @@ class MySQLGridUserServiceConnector implements GridUserServiceInterface
 			$lastLookAt = "<0,1,0>";
 		}
 
-		$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID=?");
+		$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID LIKE ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));

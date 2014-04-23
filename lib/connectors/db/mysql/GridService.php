@@ -601,6 +601,18 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		return new MySQLGridServiceRegionIterator($res);
 	}
 
+	public function searchRegionsByName($scopeID, $searchString)
+	{
+		UUID::CheckWithException($scopeID);
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID LIKE '$scopeID' AND regionName LIKE '%".$this->db->real_escape_string($searchString)."%'");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		return new MySQLGridServiceRegionIterator($res);
+	}
+
 	public function getHyperlinks($scopeID)
 	{
 		return $this->getRegionsByFlags($scopeID, RegionFlags::Hyperlink);

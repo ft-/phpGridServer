@@ -17,5 +17,6 @@ $migrateservices=array(
 	"Profile",
 	"OfflineIM",
 	"HGServerData",
-	"HGTravelingData"
+	"HGTravelingData",
+	"ContentSearch"
 );

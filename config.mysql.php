@@ -184,3 +184,14 @@ $cfg_HGTravelingDataService = array(
 		"dbpass"=>$dbpass,
 		"dbtable"=>"hg_traveling_data"
 );
+
+$cfg_ContentSearchService = array(
+		"use"=>"connectors/db/mysql/ContentSearchService",
+		"dbhost"=>$dbhost,
+		"dbname"=>$dbname,
+		"dbuser"=>$dbuser,
+		"dbpass"=>$dbpass,
+		"dbtable_searchhosts"=>"search_hosts",
+		"dbtable_parcels"=>"search_parcels",
+		"dbtable_objects"=>"search_objects"
+);

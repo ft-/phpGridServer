@@ -183,4 +183,11 @@ printSectionBegin("SimulatorFeatures");
 printKey("MapTileURL", $service_uris["MapServerURI"]);
 printSectionEnd();
 
+printSectionBegin("DataSnapshot");
+printKey("index_sims", "true");
+printKey("data_exposure", "minimum");
+printKey("gridname", $serverParams->getParam("gridnick", "phpGridServer"));
+printKey("data_services", "${gridserveruri}/search/register.php");
+printSectionEnd();
+
 echo "</Nini>";
