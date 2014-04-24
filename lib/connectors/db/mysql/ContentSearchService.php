@@ -217,7 +217,7 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 						IsPublic, IsSearchable, IsAuction, Dwell, MaturityLevel,
 						IsForSale, SalePrice, ParentEstate, ParcelArea	, Category, SnapshotID	
 		) VALUES
-						(?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE 
+						(?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE 
 						InfoID = ?, OwnerID = ?, GroupID = ?, Name = ?, Description = ?,
 						LandingPoint = ?, IsBuild = ?, IsScript = ?, IsPublic = ?, IsSearchable = ?,
 						IsAuction = ?, Dwell = ?, MaturityLevel = ?, IsForSale = ?, SalePrice = ?,
