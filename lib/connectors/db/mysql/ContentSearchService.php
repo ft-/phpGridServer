@@ -101,7 +101,6 @@ function mysql_ObjectFromRow($row)
 	$obj->Location = new Vector3($row["Location"]);
 	$obj->Name = $row["Name"];
 	$obj->Description = $row["Description"];
-	$obj->Flags = intval($row["Flags"]);
 	return $obj;
 }
 
