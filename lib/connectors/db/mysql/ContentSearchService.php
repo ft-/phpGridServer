@@ -8,6 +8,7 @@
  */
 require_once("lib/interfaces/ContentSearchServiceInterface.php");
 require_once("lib/connectors/db/mysql/_MySQLConnectionCache.php");
+require_once("lib/connectors/db/mysql/_WildcardLikeConverter.php");
 require_once("lib/types/Vector3.php");
 
 class MySQLContentSearchDataHostIterator implements ContentSearchDataHostIterator
@@ -97,7 +98,6 @@ function mysql_ObjectFromRow($row)
 	$obj->ObjectID = $row["ObjectID"];
 	$obj->ParcelID = $row["ParcelID"];
 	$obj->RegionID = $row["RegionID"];
-	$obj->SnapshotID = $row["SnapshotID"];
 	$obj->Location = new Vector3($row["Location"]);
 	$obj->Name = $row["Name"];
 	$obj->Description = $row["Description"];
@@ -409,6 +409,130 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 	{
 		$res = $this->db->query("SELECT * FROM ".$this->dbtable_parcels." WHERE Name LIKE '%".
 				$this->db->real_escape_string($query)."%' AND IsSearchable");
+		if(!$res)
+		{
+			throw new Exception("Database access error");
+		}
+		return new MySQLContentSearchParcelIterator($res);
+	}
+	
+	public function searchPlaces($text, $flags, $category, $query_start, $limit = 101)
+	{
+		$text = mysql_LikeFilterConverter($this->db, $text);
+		$flags = intval($flags);
+		$category = intval($category);
+		$query_start = intval($query_start);
+		$limit = intval($limit);
+		$terms = "1";
+		if($flags & SearchPlacesFlags::IncludePG)
+		{
+			$terms .=" OR MaturityLevel = 'PG'";
+		}
+		if($flags & SearchPlacesFlags::IncludeMature)
+		{
+			$terms .=" OR MaturityLevel = 'Mature'";
+		}
+		if($flags & SearchPlacesFlags::IncludeAdult)
+		{
+			$terms .=" OR MaturityLevel = 'Adult'";
+		}
+		
+		$extraterms = "";
+		if($category != 0)
+		{
+			$extraterms .= " AND Category = $category";
+		}
+		
+		$sort = "";
+		if($flags & SearchPlacesFlags::SortByDwell)
+		{
+			$sort = "dwell DESC,";
+		}
+		$sort .= ", Name";
+		
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_parcels." WHERE (Name LIKE '$text' OR Description LIKE '$text') AND IsSearchable AND ($terms) $extraterms $sort LIMIT $query_start, $limit");
+		if(!$res)
+		{
+			throw new Exception("Database access error");
+		}
+		return new MySQLContentSearchParcelIterator($res);
+	}
+	
+	public function searchLandSales($type, $flags, $price, $area, $query_start, $limit = 101)
+	{
+		$type = intval($type);
+		$flags = intval($flags);
+		$price = intval($price);
+		$area = intval($area);
+		$query_start = intval($query_start);
+		$limit = intval($limit);
+		$terms = "1";
+		if($flags & SearchPlacesFlags::IncludePG)
+		{
+			$terms .=" OR MaturityLevel = 'PG'";
+		}
+		if($flags & SearchPlacesFlags::IncludeMature)
+		{
+			$terms .=" OR MaturityLevel = 'Mature'";
+		}
+		if($flags & SearchPlacesFlags::IncludeAdult)
+		{
+			$terms .=" OR MaturityLevel = 'Adult'";
+		}
+		
+		$extraterms = "";
+		if($category != 0)
+		{
+			$extraterms .= " AND Category = $category";
+		}
+		
+		if($flags & 0x100000)
+		{
+			$extraterms .= " AND SalePrice <= $price";
+		}
+
+		if($flags & 0x200000)
+		{
+			$extraterms .= " AND ParcelArea >= $area";
+		}
+
+		$sort = "PricePerMeter";
+		if($flags & 0x80000)
+		{
+			$sort = "Name";
+		}
+		else if($flags & 0x10000)
+		{
+			$sort = "SalePrice";
+		}
+		else if($flags & 0x40000)
+		{
+			$sort = "ParcelArea";
+		}
+		if(!($flags & 0x8000))
+			$sort .= " DESC";
+			
+		if($type != 0xFFFFFFFF)
+		{
+			if(($type & 26) == 2)
+			{
+				$extraterms .= " AND IsAuction";
+			}
+			else
+			{
+				$extraterms .= " AND (NOT IsAuction)";
+			}
+			if(($type & 24) == 8)
+			{
+				$extraterms .= " AND ParentEstate = 1";
+			}
+			else if(($type & 24) == 16)
+			{
+				$extraterms .= " AND ParentEstate <> 1";
+			}
+		}
+		
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_parcels.", SalePrice/ParcelArea AS PricePerMeter WHERE (Name LIKE '$text' OR Description LIKE '$text') AND IsSearchable AND ($terms) $extraterms $sort LIMIT $query_start, $limit");
 		if(!$res)
 		{
 			throw new Exception("Database access error");
