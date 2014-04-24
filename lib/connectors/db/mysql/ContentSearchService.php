@@ -215,21 +215,21 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 						RegionID, ParcelID, InfoID, OwnerID, GroupID,
 						Name, Description, LandingPoint, IsBuild, IsScript,
 						IsPublic, IsSearchable, IsAuction, Dwell, MaturityLevel,
-						IsForSale, SalePrice, ParentEstate, ParcelArea	, Category	
+						IsForSale, SalePrice, ParentEstate, ParcelArea	, Category, SnapshotID	
 		) VALUES
 						(?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE 
 						InfoID = ?, OwnerID = ?, GroupID = ?, Name = ?, Description = ?,
 						LandingPoint = ?, IsBuild = ?, IsScript = ?, IsPublic = ?, IsSearchable = ?,
 						IsAuction = ?, Dwell = ?, MaturityLevel = ?, IsForSale = ?, SalePrice = ?,
-						ParentEstate = ?, ParcelArea = ?, Category = ?");
+						ParentEstate = ?, ParcelArea = ?, Category = ?, SnapshotID = ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
 			throw new Exception("Database access error");
 		}
 		
-		$stmt->bind_param("sssss"."sssii". "iiids". "iiiii". 
-					"sssss"."siiii". "idsii". "iii", 
+		$stmt->bind_param("sssss"."sssii". "iiids". "iiiiis". 
+					"sssss"."siiii". "idsii". "iiis", 
 				$parcelData->RegionID,
 				$parcelData->ParcelID,
 				$parcelData->InfoID,
@@ -253,6 +253,7 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 				$parcelData->ParentEstate,
 				$parcelData->ParcelArea,
 				$parcelData->Category,
+				$parcelData->SnapshotID,
 				
 				$parcelData->InfoID,
 				$parcelData->OwnerID,
@@ -274,7 +275,8 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 				
 				$parcelData->ParentEstate,
 				$parcelData->ParcelArea,
-				$parcelData->Category);
+				$parcelData->Category,
+				$parcelData->SnapshotID);
 		if(!$stmt->execute())
 		{
 			$stmt->close();
@@ -599,7 +601,8 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 								KEY ParcelAreaIndex (ParcelArea),
 								KEY MaturityLevelIndex (MaturityLevel),
 								KEY ParentEstateIndex (ParentEstate)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+		"ALTER TABLE %tablename% ADD SnapshotID char(36) not null default '00000000-0000-0000-0000-000000000000'"
 	);
 	
 	private $revisions_objects = array(
