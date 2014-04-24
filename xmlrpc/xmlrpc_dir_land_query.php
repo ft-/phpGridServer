@@ -19,9 +19,9 @@ if(count($_RPC_REQUEST->Params)!=1)
 
 $structParam = $_RPC_REQUEST->Params[0];
 
-if(!isset($structParam->text))
+if(!isset($structParam->type))
 {
-	return new RPCFaultResponse(4, "Missing parameter text");
+	return new RPCFaultResponse(4, "Missing parameter type");
 }
 
 if(!isset($structParam->flags))
@@ -29,9 +29,14 @@ if(!isset($structParam->flags))
 	return new RPCFaultResponse(4, "Missing parameter flags");
 }
 
-if(!isset($structParam->category))
+if(!isset($structParam->price))
 {
-	return new RPCFaultResponse(4, "Missing parameter category");
+	return new RPCFaultResponse(4, "Missing parameter price");
+}
+
+if(!isset($structParam->area))
+{
+	return new RPCFaultResponse(4, "Missing parameter area");
 }
 
 if(!isset($structParam->query_start))

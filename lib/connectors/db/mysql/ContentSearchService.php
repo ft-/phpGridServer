@@ -484,10 +484,6 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 		}
 		
 		$extraterms = "";
-		if($category > 0)
-		{
-			$extraterms .= " AND Category = $category";
-		}
 		
 		if($flags & 0x100000)
 		{
@@ -535,7 +531,8 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 			}
 		}
 		
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_parcels.", SalePrice/ParcelArea AS PricePerMeter WHERE (Name LIKE '$text' OR Description LIKE '$text') AND IsSearchable AND ($terms) $extraterms $sort LIMIT $query_start, $limit");
+		$query = "SELECT *, SalePrice/ParcelArea AS PricePerMeter FROM ".$this->dbtable_parcels." WHERE IsForSale AND ($terms) $extraterms ORDER BY $sort LIMIT $query_start, $limit";
+		$res = $this->db->query($query);
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
