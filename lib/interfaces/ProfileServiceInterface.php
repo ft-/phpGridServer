@@ -72,4 +72,6 @@ interface ProfileServiceInterface
 	public function getUserAppDatas($userID);
 	public function getUserAppData($userID, $tagID);
 	public function setUserAppData($userAppData);
+	
+	public function searchClassifieds($text, $flags, $category, $query_start, $limit);
 }

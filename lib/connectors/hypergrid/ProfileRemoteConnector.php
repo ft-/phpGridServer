@@ -163,4 +163,9 @@ class HGProfileRemoteConnector implements ProfileServiceInterface
 	{
 
 	}
+	
+	public function searchClassifieds($text, $flags, $category, $query_start, $limit)
+	{
+		return null;
+	}
 }

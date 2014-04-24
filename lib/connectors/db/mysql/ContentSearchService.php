@@ -417,7 +417,7 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 	
 	public function searchPlaces($text, $flags, $category, $query_start, $limit = 101)
 	{
-		$text = mysql_LikeFilterConverter($this->db, $text);
+		$text = $this->db->real_escape_string($text);
 		$flags = intval($flags);
 		$category = intval($category);
 		$query_start = intval($query_start);
@@ -437,7 +437,7 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 		}
 		
 		$extraterms = "";
-		if($category != 0)
+		if($category > 0)
 		{
 			$extraterms .= " AND Category = $category";
 		}
@@ -447,11 +447,13 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 		{
 			$sort = "dwell DESC,";
 		}
-		$sort .= ", Name";
+		$sort .= "Name";
 		
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_parcels." WHERE (Name LIKE '$text' OR Description LIKE '$text') AND IsSearchable AND ($terms) $extraterms $sort LIMIT $query_start, $limit");
+		$query = "SELECT * FROM ".$this->dbtable_parcels." WHERE (Name LIKE '%$text%' OR Description LIKE '%$text%') AND IsSearchable AND ($terms) $extraterms ORDER BY $sort LIMIT $query_start, $limit";
+		$res = $this->db->query($query);
 		if(!$res)
 		{
+			trigger_error(mysqli_error($this->db));
 			throw new Exception("Database access error");
 		}
 		return new MySQLContentSearchParcelIterator($res);
@@ -480,7 +482,7 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 		}
 		
 		$extraterms = "";
-		if($category != 0)
+		if($category > 0)
 		{
 			$extraterms .= " AND Category = $category";
 		}
@@ -534,6 +536,7 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 		$res = $this->db->query("SELECT * FROM ".$this->dbtable_parcels.", SalePrice/ParcelArea AS PricePerMeter WHERE (Name LIKE '$text' OR Description LIKE '$text') AND IsSearchable AND ($terms) $extraterms $sort LIMIT $query_start, $limit");
 		if(!$res)
 		{
+			trigger_error(mysqli_error($this->db));
 			throw new Exception("Database access error");
 		}
 		return new MySQLContentSearchParcelIterator($res);

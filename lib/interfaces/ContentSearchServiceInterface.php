@@ -199,6 +199,14 @@ class ContentSearchObjectData
 
 }
 
+class SearchPlacesFlags
+{
+	const IncludePG = 16777216;
+	const IncludeMature = 33554432;
+	const IncludeAdult = 67108864;
+	const SortByDwell = 1024;
+}
+
 interface ContentSearchServiceInterface
 {
 	public function storeSearchDataHost($searchDataHost);
@@ -224,4 +232,7 @@ interface ContentSearchServiceInterface
 	
 	public function searchParcelsByName($query);
 	public function searchObjectsByName($query);
+	
+	public function searchPlaces($text, $flags, $category, $query_start, $limit = 101);
+	public function searchLandSales($type, $flags, $price, $area, $query_start, $limit = 101);
 }

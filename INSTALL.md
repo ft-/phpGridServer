@@ -104,3 +104,11 @@ Admin pages to be implemented
 8. Enabling search collector
 
 run tools/opensim-collectord.php as a background service
+
+
+8.1. Enabling in-world search function
+
+add the OpenSimSearch module to the bin folder of the OpenSim 
+installation
+
+For module see http://opensimulator.org/wiki/OpenSimSearch

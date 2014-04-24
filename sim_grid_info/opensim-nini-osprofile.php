@@ -190,4 +190,14 @@ printKey("gridname", $serverParams->getParam("gridnick", "phpGridServer"));
 printKey("data_services", "${gridserveruri}/search/register.php");
 printSectionEnd();
 
+printSectionBegin("Search");
+printKey("SearchURL", "$gridserveruri/");
+printSectionEnd();
+
+printSectionBegin("Modules");
+printKey("SearchModule", "OpenSimSearch");
+printKey("LandServices", "RemoteLandServicesConnector");
+printKey("LandServiceConnector", "True");
+printSectionEnd();
+
 echo "</Nini>";

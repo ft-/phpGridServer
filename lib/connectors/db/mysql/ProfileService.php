@@ -11,6 +11,7 @@ require_once("lib/interfaces/ProfileServiceInterface.php");
 require_once("lib/types/UUID.php");
 require_once("lib/types/ProfileTypes.php");
 require_once("lib/connectors/db/mysql/_MySQLConnectionCache.php");
+require_once("lib/connectors/db/mysql/_WildcardLikeConverter.php");
 
 function mysql_ClassifiedFromRow($row)
 {
@@ -167,6 +168,35 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 	{
 		UUID::CheckWithException($creatorID);
 		$res = $this->db->query("SELECT * FROM ".$this->dbtable_classifieds." WHERE creatoruuid LIKE '$creatorID'");
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+
+		return new MySQLProfileClassifiedIterator($res);
+	}
+	
+	public function searchClassifieds($text, $flags, $category, $query_start, $limit = 101)
+	{
+		$text = $this->db->real_escape_string($text);
+		$flags = intval($flags);
+		$category = intval($category);
+		$query_start = intval($query_start);
+		$limit = intval($limit);
+		
+		$w = "(name LIKE '%$text%' OR description LIKE '%test%')";
+		$searchflags = ($flags & (64 | 8 | 4));
+		if($searchflags != 0)
+		{
+			$w .= " AND (classifiedflags & $searchflags) <> 0";
+		}
+		if($category != 0)
+		{
+			$w .= " AND category = $category";
+		}
+		$query = "SELECT * FROM ".$this->dbtable_classifieds." WHERE $w LIMIT $query_start, $limit";
+		$res = $this->db->query($query);
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
