@@ -57,7 +57,7 @@ try
 	$classified->ParentEstate = intval($structParam->parentestate);
 	$classified->SnapshotID = $structParam->snapshotUUID;
 	$classified->SimName = $structParam->sim_name;
-	$classified->GlobalPos = new Vector3($structParam->pos_global);
+	$classified->GlobalPos = new Vector3($structParam->globalpos);
 	$classified->ParcelName = $structParam->parcelname;
 	$classified->Flags = intval($structParam->classifiedFlags);
 	$classified->Price = intval($structParam->classifiedPrice);
