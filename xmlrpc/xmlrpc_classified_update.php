@@ -61,7 +61,7 @@ try
 	$classified->ParcelName = $structParam->parcelname;
 	$classified->Flags = intval($structParam->classifiedFlags);
 	$classified->Price = intval($structParam->classifiedPrice);
-	if($classified->Flags & 76) == 0)
+	if(($classified->Flags & 76) == 0)
 	{
 		$classified->Flags |= 4;
 	}
