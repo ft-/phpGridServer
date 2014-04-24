@@ -50,15 +50,22 @@ try
 	$classified->Category = $structParam->category;
 	$classified->Name = $structParam->name;
 	$classified->Description = $structParam->description;
-	$classified->ParcelID = $structParam->parcelUUID;
+	if($structParam->parcelUUID != "")
+	{
+		$classified->ParcelID = $structParam->parcelUUID;
+	}
 	$classified->ParentEstate = intval($structParam->parentestate);
 	$classified->SnapshotID = $structParam->snapshotUUID;
 	$classified->SimName = $structParam->sim_name;
-	$classified->GlobalPos = new Vector3($structParam->pos_global);
+	$classified->GlobalPos = new Vector3($structParam->globalpos);
 	$classified->ParcelName = $structParam->parcelname;
 	$classified->Flags = intval($structParam->classifiedFlags);
 	$classified->Price = intval($structParam->classifiedPrice);
-	if($classified->Flags == 2)
+	if($classified->Flags & 76) == 0)
+	{
+		$classified->Flags |= 4;
+	}
+	if($classified->Flags & 32)
 	{
 		$classified->ExpirationDate = time() + 7 * 24 * 60 * 60;
 	}
