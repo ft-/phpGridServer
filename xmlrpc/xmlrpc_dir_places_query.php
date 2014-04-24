@@ -62,7 +62,7 @@ $data = array();
 while($parcel = $parcels->getParcel())
 {
 	$rpcStruct = new RPCStruct();
-	$rpcStruct->parcel_id = $parcel->ParcelID;
+	$rpcStruct->parcel_id = $parcel->InfoID;
 	$rpcStruct->name = $parcel->Name;
 	$rpcStruct->for_sale = $parcel->IsForSale ? "True":"False";
 	$rpcStruct->auction = $parcel->IsAuction ? "True":"False";

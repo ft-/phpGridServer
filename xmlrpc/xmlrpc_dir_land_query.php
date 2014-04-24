@@ -67,11 +67,13 @@ $data = array();
 while($parcel = $parcels->getParcel())
 {
 	$rpcStruct = new RPCStruct();
-	$rpcStruct->parcel_id = $parcel->ParcelID;
+	$rpcStruct->parcel_id = $parcel->InfoID;
 	$rpcStruct->name = $parcel->Name;
 	$rpcStruct->for_sale = $parcel->IsForSale ? "True":"False";
 	$rpcStruct->auction = $parcel->IsAuction ? "True":"False";
 	$rpcStruct->dwell = $parcel->Dwell;
+	$rpcStruct->region_UUID = $parcel->RegionID;
+	$rpcStruct->landing_point = $parcel->LandingPoint;
 	$data[] = $rpcStruct;
 }
 $parcels->free();
