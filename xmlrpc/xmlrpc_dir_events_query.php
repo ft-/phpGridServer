@@ -36,7 +36,7 @@ if(!isset($structParam->query_start))
 
 $rpcResponse = new RPCSuccessResponse();
 $rpcData = new RPCStruct();
-$rpcData->success = False;
+$rpcData->success = True;
 $rpcData->errorMessage = "Not supported";
 $rpcResponse->Params[] = $rpcData;
 
