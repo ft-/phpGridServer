@@ -38,8 +38,8 @@ $contentSearchService = getService("ContentSearch");
 
 $rpcResponse = new RPCSuccessResponse();
 $rpcData = new RPCStruct();
-$rpcData->success = False;
-$rpcData->errorMessage = "";
+$rpcData->success = True;
+$rpcData->errorMessage = "Not supported";
 $rpcResponse->Params[] = $rpcData;
 
 $data = array();
