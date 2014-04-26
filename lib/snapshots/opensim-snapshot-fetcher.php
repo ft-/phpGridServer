@@ -18,12 +18,12 @@ class OpenSimDataSnapshotFetcher
 {
 	private $xmlinput;
 	private $contentSearchService;
-	private $RegionID;	
+	private $RegionID;
 	private $unknownParcelsList;
 	private $unknownObjectsList;
 	private $MaturityLevel;
 	private $expireTime = 0;
-	
+
 	private function parseValue($tagname)
 	{
 		$data = xml_parse_text($tagname, $this->xmlinput);
@@ -33,7 +33,7 @@ class OpenSimDataSnapshotFetcher
 		}
 		return $data["text"];
 	}
-	
+
 	private function parseUUID($outertag, $innertag)
 	{
 		$uuid = null;
@@ -67,7 +67,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionInfo()
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -98,7 +98,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionEstate()
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -132,7 +132,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionParcel($parceldata)
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -204,7 +204,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionParcelData()
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -264,7 +264,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionObject($objectdata)
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -328,7 +328,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionObjectData()
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -359,7 +359,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionData()
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -396,7 +396,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegion()
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -438,7 +438,7 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	private function parseRegionDataDocument()
 	{
 		while($tok = xml_tokenize($this->xmlinput))
@@ -472,17 +472,25 @@ class OpenSimDataSnapshotFetcher
 			}
 		}
 	}
-	
+
 	public function __construct($hostname, $port)
 	{
 		$this->contentSearchService = getService("ContentSearch");
 		$this->unknownParcelsList = array();
 		$this->unknownObjectsList = array();
-		
+
 		$httpConnector = getService("HTTPConnector");
-		
-		$this->xmlinput = $httpConnector->doGetRequest("http://$hostname:$port/", array("method"=>"collector"))->Body;
-		
+
+		try
+		{
+			$this->xmlinput = $httpConnector->doGetRequest("http://$hostname:$port/", array("method"=>"collector"))->Body;
+		}
+		catch(Exception $e)
+		{
+			$this->contentSearchService->incrementFailCounter($hostname, $port, time() + 600);
+			return;
+		}
+
 		$encoding="utf-8";
 
 		while($tok = xml_tokenize($this->xmlinput))
@@ -506,7 +514,7 @@ class OpenSimDataSnapshotFetcher
 						$fin = $this->parseRegionDataDocument();
 						$this->contentSearchService->setNewNextCheck($hostname, $port, time() + $this->expireTime);
 					}
-					finally
+					catch(Exception $e)
 					{
 						$this->contentSearchService->incrementFailCounter($hostname, $port, time() + 600);
 					}
@@ -520,6 +528,6 @@ class OpenSimDataSnapshotFetcher
 		}
 
 		throw new OpenSimDataSnapshotParseException();
-		
+
 	}
 }
