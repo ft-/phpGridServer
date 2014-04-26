@@ -176,7 +176,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 
 		return new MySQLProfileClassifiedIterator($res);
 	}
-	
+
 	public function searchClassifieds($text, $flags, $category, $query_start, $limit = 101)
 	{
 		$text = $this->db->real_escape_string($text);
@@ -184,8 +184,8 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 		$category = intval($category);
 		$query_start = intval($query_start);
 		$limit = intval($limit);
-		
-		$w = "(name LIKE '%$text%' OR description LIKE '%test%')";
+
+		$w = "(name LIKE '%$text%' OR description LIKE '%$test%')";
 		$searchflags = ($flags & (64 | 8 | 4));
 		if($searchflags != 0)
 		{
