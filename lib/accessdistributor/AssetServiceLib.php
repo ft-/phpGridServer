@@ -64,13 +64,13 @@ class DistributorAssetService implements AssetServiceInterface
 		throw new AssetNotFoundException();
 	}
 
-	public function store($asset)
+	public function store($asset, $overwriteAlways = False)
 	{
 		foreach($this->services as $service)
 		{
 			try
 			{
-				return $service->store($asset);
+				return $service->store($asset, $overwriteAlways);
 			}
 			catch(Exception $e)
 			{
@@ -109,7 +109,7 @@ class DistributorAssetService implements AssetServiceInterface
 		}
 		throw new AssetNotFoundException();
 	}
-	
+
 	/* parameter is hash array with keys as uuids and values set to False initially and replaced successively */
 	public function existsMultiple($assetIDsHash)
 	{

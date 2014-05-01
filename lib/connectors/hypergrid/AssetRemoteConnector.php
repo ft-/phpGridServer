@@ -70,7 +70,7 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 		return $res;
 	}
 
-	public function store($asset)
+	public function store($asset, $overwriteAlways = False)
 	{
 		$xml = $asset->toXML();
 		try

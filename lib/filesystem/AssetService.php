@@ -97,7 +97,7 @@ class FSAssetService implements AssetServiceInterface
 		return $data;
 	}
 
-	public function store($asset)
+	public function store($asset, $overwriteAlways = false)
 	{
 		$path = $this->getAssetPath($asset->ID);
 		$meta = $asset->toMetadataXML();

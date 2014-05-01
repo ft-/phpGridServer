@@ -53,7 +53,7 @@ interface GridServiceInterface
 
 	public function getNumberOfRegions($scopeID);
 	public function getNumberOfRegionsFlags($scopeID, $flags);
-	
+
 	public function getRegionDefaultsForRegion($scopeID, $regionID, $regionName);
 
 	public function storeRegionDefault($regionDefaults);

@@ -64,7 +64,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 
 		$res->free();
 	}
-	
+
 	public function getAssetList($assettypes)
 	{
 	        $assetwhere = "";
@@ -161,8 +161,16 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 		return $asset;
 	}
 
-	public function store($asset)
+	public function store($asset, $overwriteAlways = False)
 	{
+		if($overwriteAlways)
+		{
+			$assetFlagsCheck = "";
+		}
+		else
+		{
+			$assetFlagsCheck = "AND asset_flags <> 0";
+		}
 		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable." (name, description, assetType, local, temporary, id, create_time, access_time, asset_flags, CreatorID, data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 		if(!$stmt)
 		{
@@ -184,12 +192,12 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 						$asset->Flags,
 						$asset->CreatorID,
 						$null);
-		$stmt->send_long_data(10, "".$asset->Data); /* this prevents us frm having to rewrite max_packet_size */
+		$stmt->send_long_data(10, "".$asset->Data); /* this prevents us from having to rewrite max_packet_size */
 		$stmt->execute();
 		if($stmt->affected_rows == 0)
 		{
 			$stmt->close();
-			$res = $this->db->query("SELECT id FROM assets WHERE id = '$id' AND asset_flags <> 0");
+			$res = $this->db->query("SELECT id FROM assets WHERE id = '$id' $assetFlagsCheck");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -198,7 +206,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 			else if($row= $res->fetch_assoc())
 			{
 				$res->free();
-				$stmt = $this->db->prepare("UPDATE assets SET data=? WHERE id=? AND asset_flags <> 0");
+				$stmt = $this->db->prepare("UPDATE assets SET data=? WHERE id=? $assetFlagsCheck");
 				$stmt->bind_param("bs", $null, $asset->ID->ID);
 				$stmt->send_long_data(0, $asset->Data); /* this prevents us frm having to rewrite max_packet_size */
 				$stmt->execute();

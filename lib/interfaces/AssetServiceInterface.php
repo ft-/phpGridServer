@@ -20,7 +20,7 @@ interface AssetServiceInterface
 	public function get($assetID);
 	public function getMetadata($assetID);
 	public function getData($assetID);
-	public function store($asset);
+	public function store($asset, $overwriteAlways = False); /* second parameter is for admin tools */
 	public function delete($assetID);
 	public function exists($assetID);
 	/* parameter is hash array with keys as uuids and values set to False initially and replaced successively

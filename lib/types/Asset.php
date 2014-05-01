@@ -22,6 +22,8 @@ class AssetFlags
 
 class AssetType
 {
+	const OpenSimMaterial = -2;
+
 	const Texture = 0;
 	const Sound = 1;
 	const CallingCard = 2;

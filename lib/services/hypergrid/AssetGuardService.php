@@ -34,9 +34,9 @@ class HGAssetGuardService implements AssetServiceInterface
 		return $this->service->getData($assetID);
 	}
 
-	public function store($asset)
+	public function store($asset, $overwriteAlways = False)
 	{
-		return $this->service->store($asset);
+		return $this->service->store($asset, False);
 	}
 
 	public function delete($assetID)
