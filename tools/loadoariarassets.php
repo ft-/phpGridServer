@@ -15,6 +15,7 @@ require_once("lib/services.php");
 $overwriteAlways = false;
 $assetService = getService("Asset");
 $cnt = 0;
+$assetfails = array();
 
 for($argi = 1; $argi < $argc; $argi++)
 {
@@ -40,16 +41,29 @@ for($argi = 1; $argi < $argc; $argi++)
 		while($asset = $oarReader->readAsset())
 		{
 			++$cnt;
-			try
+			if(strlen($asset->Data)==0)
 			{
-				$assetService->store($asset, $overwriteAlways);
-				print("$cnt: Asset ".$asset->ID." loaded\n");
+				print("$cnt: Asset ".$asset->ID." has zero-length\n");
+				$assetfails["".$asset->ID] = "zero-length";
 			}
-			catch(Exception $e)
+			else
 			{
-				print("$cnt: Asset ".$asset->ID." skipped\n");
+				try
+				{
+					$assetService->store($asset, $overwriteAlways);
+					print("$cnt: Asset ".$asset->ID." loaded\n");
+				}
+				catch(Exception $e)
+				{
+					print("$cnt: Asset ".$asset->ID." skipped\n");
+				}
 			}
 		}
 		fclose($file);
 	}
+}
+
+foreach($assetfails as $k => $v)
+{
+	echo "Asset $k failed: $v\n";
 }
