@@ -79,6 +79,7 @@ class OarAssetReader extends TarFileReader
 				{
 					$data = $this->readFile();
 					$asset = new Asset();
+					$asset->Data = $data;
 					$asset->ID = $assetparts[1];
 					$asset->Name = "From OAR";
 					$asset->Description = "";
