@@ -20,7 +20,7 @@ class Vector3
 		if($str)
 		{
 			$match = null;
-			if(!preg_match("/^<[ \t]*(?P<x>[\-]{0,1}[0-9\.]*)[ \t]*,[ \t]*(?P<y>[\-]{0,1}[0-9\.]*)[ \t]*,[ \t]*(?P<z>[\-]{0,1}[0-9\.]*)[ \t]*>$/", $str, $match))
+			if(!preg_match("/^<[ \t]*(?P<x>[\-\+]{0,1}[0-9\.]*)[ \t]*,[ \t]*(?P<y>[\-\+]{0,1}[0-9\.]*)[ \t]*,[ \t]*(?P<z>[\-\+]{0,1}[0-9\.]*)[ \t]*>$/", $str, $match))
 			{
 				throw new Vector3ParseException();
 			}
@@ -44,6 +44,6 @@ class Vector3
 	
 	public static function IsVector3($vec)
 	{
-		return preg_match("/^<[ \t]*[\-]{0,1}[0-9\.]*[ \t]*,[ \t]*[\-]{0,1}[0-9\.]*[ \t]*,[ \t]*[\-]{0,1}[0-9\.]*[ \t]*>$/", $vec);
+		return preg_match("/^<[ \t]*[\-\+]{0,1}[0-9\.]*[ \t]*,[ \t]*[\-\+]{0,1}[0-9\.]*[ \t]*,[ \t]*[\-\+]{0,1}[0-9\.]*[ \t]*>$/", $vec);
 	}
 }
