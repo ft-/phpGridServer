@@ -194,6 +194,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 	{
 		$homeGrid = ServerDataURI::getHome();
 		$localFriends = array();
+		$showAsOnline = array();
 		$friendsService = getService("Friends");
 
 		foreach($friends as $friendID)
@@ -218,6 +219,10 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 			{
 				$friend = $friendsService->getFriendByUUID($localUUID, $foreignUserID);
 				$localFriends[$friend->UserID] = $friendID;
+				if($friend->Flags & 1)
+				{
+					$showAsOnline[] = $friendID;
+				}
 			}
 			catch(Exception $e)
 			{
@@ -250,7 +255,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 			{
 			}
 
-			if($localOnline)
+			if($localOnline && in_array($showAsOnline, $foreignUserID))
 			{
 				$localFriendsOnline[] = $localFriendUUI;
 			}
