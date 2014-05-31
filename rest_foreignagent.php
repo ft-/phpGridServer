@@ -164,6 +164,7 @@ try
 	$regionInfo = $gridService->getRegionByUuid(null, $destination->ID);
 	$destination = DestinationInfo::fromRegionInfo($regionInfo);
 	$destination->LocalToGrid = True;
+        $destination->TeleportFlags |= TeleportFlags::ViaHGLogin;
 	for($i = 0; $i < count($_AGENT_POST); ++$i)
 	{
 		if($_AGENT_POST[$i] instanceof DestinationInfo)
