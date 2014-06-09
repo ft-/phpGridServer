@@ -548,7 +548,7 @@ class XMLRPCHandler implements RPCHandler
 		$xmlout = "<struct>";
 		foreach($array->toArray() as $k => $v)
 		{
-			$xmlout.="<member><name>".htmlentities($k)."</name>";
+			$xmlout.="<member><name>".htmlentities($k, ENT_XML1)."</name>";
 			$xmlout.="<value>".XMLRPCHandler::toXML_Data($v)."</value>";
 			$xmlout.="</member>";
 		}
@@ -563,7 +563,7 @@ class XMLRPCHandler implements RPCHandler
 		}
 		else if($var instanceof URI)
 		{
-			return "<string>".htmlentities($var)."</string>";
+			return "<string>".htmlentities($var, ENT_XML1)."</string>";
 		}
 		else if($var instanceof UUID)
 		{
@@ -602,7 +602,7 @@ class XMLRPCHandler implements RPCHandler
 		}
 		else if(is_string($var))
 		{
-			return "<string>".htmlentities($var)."</string>";
+			return "<string>".htmlentities($var, ENT_XML1)."</string>";
 		}
 		else
 		{
@@ -616,7 +616,7 @@ class XMLRPCHandler implements RPCHandler
 		{
 			/* we serialize a request */
 			$xmlout = "<?xml version=\"1.0\" encoding=\"utf-8\"?><methodCall>";
-			$xmlout.="<methodName>".htmlentities($obj->Method)."</methodName>";
+			$xmlout.="<methodName>".htmlentities($obj->Method, ENT_XML1)."</methodName>";
 			$xmlout.="<params>";
 			foreach($obj->Params as $p)
 			{
@@ -645,10 +645,10 @@ class XMLRPCHandler implements RPCHandler
 			/* we serialize a fault response */
 			$xmlout = "<?xml version=\"1.0\" encoding=\"utf-8\"?><methodResponse><fault><value><struct>";
 			$xmlout.="<member><name>faultCode</name><value>";
-			$xmlout.="<int>".htmlentities($obj->Params["faultCode"])."</int>";
+			$xmlout.="<int>".htmlentities($obj->Params["faultCode"], ENT_XML1)."</int>";
 			$xmlout.="</value></member>";
 			$xmlout.="<member><name>faultString</name><value>";
-			$xmlout.="<string>".htmlentities($obj->Params["faultString"])."</string>";
+			$xmlout.="<string>".htmlentities($obj->Params["faultString"], ENT_XML1)."</string>";
 			$xmlout.="</value></member>";
 			$xmlout.="</struct></value></fault></methodResponse>";
 			return $xmlout;
@@ -665,8 +665,8 @@ class XMLRPCHandler implements RPCHandler
 		echo "<fault>";
 		echo "<value>";
 		echo "<struct>";
-		echo "<member><name>faultCode</name><value><int>".htmlentities($faultCode)."</int></value></member>";
-		echo "<member><name>faultString</name><value><string>".htmlentities($faultString)."</string></value></member>";
+		echo "<member><name>faultCode</name><value><int>".htmlentities($faultCode, ENT_XML1)."</int></value></member>";
+		echo "<member><name>faultString</name><value><string>".htmlentities($faultString, ENT_XML1)."</string></value></member>";
 		echo "</struct>";
 		echo "</value>";
 		echo "</fault>";
