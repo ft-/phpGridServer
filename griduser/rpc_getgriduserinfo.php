@@ -20,7 +20,7 @@ header("Content-Type: text/xml");
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 try
 {
-	$gridUser = $gridUserService->getGridUser($_RPC_REQUEST->UserID);
+	$gridUser = $gridUserService->getGridUserHG($_RPC_REQUEST->UserID);
 	$out="<ServerResponse>";
 	$out.=$gridUser->toXML("result", " type=\"List\"");
 	echo $out."</ServerResponse>";

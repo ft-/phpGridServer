@@ -53,6 +53,33 @@ if(!Vector3::IsVector3($_RPC_REQUEST->LookAt))
 
 require_once("lib/services.php");
 $gridUserService = getService("RPC_GridUser");
+$userAccountService = getService("RPC_UserAccount");
+
+if(UUID::IsUUID($_RPC_REQUEST->UserID))
+{
+	try
+	{
+		$userAccountService->getAccountByID(null, $_RPC_REQUEST->UserID);
+	}
+	catch(Exception $e)
+	{
+		/* No account, no GridUser entry */
+		sendBooleanResponse(False);
+		exit;
+	}
+}
+else
+{
+	try
+	{
+		$userAccountService->getAccountByID(null, substr($_RPC_REQUEST->UserID, 0, 36));
+		$_RPC_REQUEST->UserID = substr($_RPC_REQUEST->UserID, 0, 36);
+	}
+	catch(Exception $e)
+	{
+		/* No account, keep it HG */
+	}
+}
 
 try
 {

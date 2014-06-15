@@ -116,7 +116,7 @@ class MySQLGridUserServiceConnector implements GridUserServiceInterface
 
 	public function getGridUsers($userID)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '".$this->db->real_escape_string($userID)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '".$this->db->real_escape_string($userID)."%'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
