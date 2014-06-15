@@ -223,7 +223,7 @@ catch(Exception $e)
 
 try
 {
-	$gridUserService->loggedIn($userAccount->PrincipalID);
+	$gridUserService->loggedIn($UUI);
 }
 catch(Exception $e)
 {
