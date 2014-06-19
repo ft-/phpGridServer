@@ -255,7 +255,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 			{
 			}
 
-			if($localOnline && in_array($showAsOnline, $foreignUserID))
+			if($localOnline && in_array($foreignUserID, $showAsOnline))
 			{
 				$localFriendsOnline[] = $localFriendUUI;
 			}
