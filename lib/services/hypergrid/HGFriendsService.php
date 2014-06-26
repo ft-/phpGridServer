@@ -212,6 +212,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 			if(!UUID::IsUUID($localUUID))
 			{
 				/* not a valid UUID; skip it */
+				trigger_error("UUI error $localUUID");
 				continue;
 			}
 
@@ -221,7 +222,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 				$localFriends[$friend->UserID] = $friendID;
 				if($friend->Flags & 1)
 				{
-					$showAsOnline[] = $friendID;
+					$showAsOnline[] = $foreignUserID;
 				}
 			}
 			catch(Exception $e)
