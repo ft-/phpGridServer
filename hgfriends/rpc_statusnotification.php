@@ -62,14 +62,12 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 echo "<ServerResponse>";
 if(count($onlineFriends))
 {
-	echo "<RESULT Type=\"List\">";
 	$cnt = 0;
 	foreach($onlineFriends as $v)
 	{
-		echo "<friend_$cnt>".xmlentities($v)."</friend_$cnt>";
+		echo "<friend_$cnt>".xmlentities(substr($v, 0, 36))."</friend_$cnt>";
 		++$cnt;
 	}
-	echo "</RESULT>";
 }
 else
 {
