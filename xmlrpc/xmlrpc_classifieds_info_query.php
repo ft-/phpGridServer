@@ -44,6 +44,10 @@ try
 catch(Exception $e)
 {
 	$rpcData->errorMessage = $e->getMessage();
+	if(!$rpcData->errorMessage)
+	{
+		$rpcData->errorMessage = "Could not retrieve classified info";
+	}
 	return $rpcResponse;
 }
 
