@@ -156,7 +156,8 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 								`Dialog` int(11) DEFAULT NULL,
 								PRIMARY KEY (`ID`),
 								KEY `PrincipalID` (`FromAgentID`)
-								) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8"
+								) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8",
+			"ALTER TABLE %tablename% MODIFY TMStamp BIGINT(20)"
 	);
 	public function migrateRevision()
 	{
