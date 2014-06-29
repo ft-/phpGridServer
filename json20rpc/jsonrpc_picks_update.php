@@ -57,12 +57,22 @@ try
 {
 	$profileService->updatePick($pick);
 	$res = new RPCSuccessResponse();
-	$res->result = true;
+	$res->PickId = $pick->ID;
+	$res->CreatorId = $pick->CreatorID;
+	$res->TopPick = $pick->TopPick;
+	$res->Name = $pick->Name;
+	$res->OriginalName = $pick->OriginalName;
+	$res->Desc = $pick->Description;
+	$res->ParcelId = $pick->ParcelID;
+	$res->SnapshotId = $pick->SnapshotID;
+	$res->User = $pick->User;
+	$res->SimName = $pick->SimName;
+	$res->GlobalPos = "".$pick->GlobalPos;
+	$res->SortOrder = $pick->SortOrder;
+	$res->Enabled = $pick->Enabled;
 	return $res;
 }
 catch(Exception $e)
 {
-	$res = new RPCSuccessResponse();
-	$res->result = false;
-	return $res;
+	return new RPCFaultResponse(-32604, "unable to update pick");
 }

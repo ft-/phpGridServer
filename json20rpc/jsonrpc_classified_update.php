@@ -50,10 +50,17 @@ try
 	$classified->SimName = $_RPC_REQUEST->params->SimName;
 	$classified->GlobalPos = new Vector3($_RPC_REQUEST->params->GlobalPos);
 	$classified->ParcelName = $_RPC_REQUEST->params->ParcelName;
-	$classified->Flags = $_RPC_REQUEST->params->Flags;
-	if(isset($_RPC_REQUEST->params->ListingPrice))
+	if(isset($_RPC_REQUEST->params->Flags))
 	{
-		$classified->Price = $_RPC_REQUEST->params->ListingPrice;
+		$classified->Flags = $_RPC_REQUEST->params->Flags;
+	}
+	else
+	{
+		$classified->Flags = 0;
+	}
+	if(isset($_RPC_REQUEST->params->Price))
+	{
+		$classified->Price = $_RPC_REQUEST->params->Price;
 	}
 }
 catch(Exception $e)
@@ -72,9 +79,12 @@ try
 	$res->Category = $classified->Category;
 	$res->Name = $classified->Name;
 	$res->Description = $classified->Description;
+	$res->SnapshotId = $classified->SnapshotID;
 	$res->SimName = $classified->SimName;
 	$res->GlobalPos = "".$classified->GlobalPos;
 	$res->ParcelName = $classified->ParcelName;
+	$res->Flags = $classified->Flags;
+	$res->Price = $classified->Price;
 	return $res;
 }
 catch(Exception $e)
