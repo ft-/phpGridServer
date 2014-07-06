@@ -260,7 +260,7 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 	{
 		$reqValues = array(
 				"PRINCIPAL"=>$principalID,
-				"METHOD"=>"GETFOLDERITEMS"
+				"METHOD"=>"GETACTIVEGESTURES"
 		);
 
 		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
@@ -357,7 +357,7 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 		$reqValues = array(
 				"FOLDERS[]"=>$folderID,
 				"PRINCIPAL"=>$principalID,
-				"METHOD"=>"MOVEITEMS"
+				"METHOD"=>"DELETEFOLDERS"
 		);
 
 		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
@@ -386,17 +386,17 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 	public function getRootFolder($principalID)
 	{
 		$reqValues = array(
-				"ParentID"=>$toFolderID,
 				"ID"=>$folderID,
 				"PRINCIPAL"=>$principalID,
-				"METHOD"=>"MOVEFOLDER"
+				"METHOD"=>"GETROOTFOLDER"
 		);
 
 		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
-		if(!$this->checkResult($res, "RESULT"))
+		if(isset($res->folder))
 		{
-			throw new InventoryAddFailedException();
+			return $this->rpcStructToInventoryFolder($res->folder);
 		}
+		throw new InventoryNotFoundException();
 	}
 
 	public function getFolderForType($principalID, $type)
