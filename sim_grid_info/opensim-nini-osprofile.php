@@ -104,7 +104,7 @@ printKey("MuteListModule", "MuteListModule");
 printKey("MuteListURL", $gridserveruri);
 if($service_uris["HG_HomeURI"])
 {
-	printKey("Gatekeeper", $gridserveruri);
+	printKey("Gatekeeper", $service_uris["HG_GatekeeperURI"]);
 }
 printSectionEnd();
 
