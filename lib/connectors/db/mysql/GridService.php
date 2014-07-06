@@ -664,7 +664,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		$maxY = $locY + $sizeY;
 
 		/* find any neighbouring region including var regions */
-		$res = $this->db->query("SELECT * FROM regions WHERE (
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE (
 				((locX = $maxX OR locX + sizeX = $locX)  AND
 					(locY <= $maxY AND locY + sizeY >= $locY))
 				OR

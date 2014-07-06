@@ -206,8 +206,8 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 			else if($row= $res->fetch_assoc())
 			{
 				$res->free();
-				$stmt = $this->db->prepare("UPDATE assets SET data=? WHERE id=? $assetFlagsCheck");
-				$stmt->bind_param("bs", $null, $asset->ID->ID);
+				$stmt = $this->db->prepare("UPDATE assets SET data=?, assetType=? WHERE id=? $assetFlagsCheck");
+				$stmt->bind_param("bs", $null, $asset->Type, $asset->ID->ID);
 				$stmt->send_long_data(0, $asset->Data); /* this prevents us frm having to rewrite max_packet_size */
 				$stmt->execute();
 				if($stmt->affected_rows == 0)
