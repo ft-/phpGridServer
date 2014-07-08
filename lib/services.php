@@ -17,6 +17,21 @@ ini_set("display_errors", 0);
 $_services_ = array();
 $_rpc_sessionid_ = null;
 
+if(!function_exists("boolval"))
+{
+	function boolval($mixed)
+	{
+		if($mixed)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
 function getService($service)
 {
 	$servicename="${service}Service";

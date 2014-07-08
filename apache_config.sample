@@ -42,7 +42,7 @@ Alias /json_grid_info <Path to phpGridServer>/json_grid_info.php
 Alias /presence <Path to phpGridServer>/rest_presence.php
 Alias /map <Path to phpGridServer>/map.php
 Alias /MAP <Path to phpGridServer>/map.php
-Alias /login <Path to phpGridServer>p/login/index.php
+Alias /login <Path to phpGridServer>/login/index.php
 Alias /offlineim <Path to phpGridServer>/rest_offlineim.php
 Alias /sim_grid_info <Path to phpGridServer>/sim_grid_info.php
 
