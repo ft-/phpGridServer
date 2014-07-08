@@ -1,4 +1,6 @@
-<Directory "/opt/omv-services/php">
+# Replace <Path to phpGridServer> with installation path of phpGridServer
+
+<Directory "<Path to phpGridServer>">
     #
     # Possible values for the Options directive are "None", "All",
     # or any combination of:
@@ -28,30 +30,29 @@
 
 </Directory>
 
-Alias /accounts /opt/omv-services/php/rest_accounts.php
-Alias /auth /opt/omv-services/php/rest_auth.php
-Alias /authorization /opt/omv-services/php/rest_authorization.php
-Alias /avatar /opt/omv-services/php/rest_avatar.php
-Alias /grid /opt/omv-services/php/rest_grid.php
-Alias /griduser /opt/omv-services/php/rest_griduser.php
-Alias /helo /opt/omv-services/php/rest_helo.php
-Alias /get_grid_info /opt/omv-services/php/get_grid_info.php
-Alias /json_grid_info /opt/omv-services/php/json_grid_info.php
-Alias /presence /opt/omv-services/php/rest_presence.php
-Alias /map /opt/omv-services/php/map.php
-Alias /MAP /opt/omv-services/php/map.php
-Alias /login /opt/omv-services/php/login/index.php
-Alias /offlineim /opt/omv-services/php/rest_offlineim.php
-Alias /sim_grid_info /opt/omv-services/php/sim_grid_info.php
+Alias /accounts <Path to phpGridServer>/rest_accounts.php
+Alias /auth <Path to phpGridServer>/rest_auth.php
+Alias /authorization <Path to phpGridServer>/rest_authorization.php
+Alias /avatar <Path to phpGridServer>/rest_avatar.php
+Alias /grid <Path to phpGridServer>/rest_grid.php
+Alias /griduser <Path to phpGridServer>/rest_griduser.php
+Alias /helo <Path to phpGridServer>/rest_helo.php
+Alias /get_grid_info <Path to phpGridServer>/get_grid_info.php
+Alias /json_grid_info <Path to phpGridServer>/json_grid_info.php
+Alias /presence <Path to phpGridServer>/rest_presence.php
+Alias /map <Path to phpGridServer>/map.php
+Alias /MAP <Path to phpGridServer>/map.php
+Alias /login <Path to phpGridServer>p/login/index.php
+Alias /offlineim <Path to phpGridServer>/rest_offlineim.php
+Alias /sim_grid_info <Path to phpGridServer>/sim_grid_info.php
 
-Alias /assets /opt/omv-services/php/rest_assets.php
-Alias /get_assets_exist /opt/omv-services/php/rest_assets_exist.php
-Alias /xinventory /opt/omv-services/php/rest_xinventory.php
-Alias /hgfriends /opt/omv-services/php/rest_hgfriends.php
-Alias /friends /opt/omv-services/php/rest_friends.php
-Alias /groups /opt/omv-services/php/rest_groups.php
-Alias /hg-groups /opt/omv-services/php/rest_hggroups.php
-Alias /cap /opt/omv-services/php/cap.php
-Alias /homeagent /opt/omv-services/php/rest_homeagent.php
-Alias /foreignagent /opt/omv-services/php/rest_foreignagent.php
+Alias /assets <Path to phpGridServer>/rest_assets.php
+Alias /get_assets_exist <Path to phpGridServer>/rest_assets_exist.php
+Alias /xinventory <Path to phpGridServer>/rest_xinventory.php
+Alias /hgfriends <Path to phpGridServer>/rest_hgfriends.php
+Alias /friends <Path to phpGridServer>/rest_friends.php
+Alias /groups <Path to phpGridServer>/rest_groups.php
+Alias /hg-groups <Path to phpGridServer>/rest_hggroups.php
+Alias /homeagent <Path to phpGridServer>/rest_homeagent.php
+Alias /foreignagent <Path to phpGridServer>/rest_foreignagent.php
 
