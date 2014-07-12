@@ -17,14 +17,14 @@ class UnrestrictedMethodAccessControl implements AccessControlServiceInterface
 	{
 		$this->allow = $allow;
 	}
-	
+
 	public function verifyAccess($servicename, $func)
 	{
 		if(!isset($this->allow[$servicename]))
 		{
 			throw new AccessDeniedException("Not validated by unrestricted method access control");
 		}
-		if(!isset($this->allow[$servicename][$func]))
+		if(!in_array($func, $this->allow[$servicename]))
 		{
 			throw new AccessDeniedException("Not validated by unrestricted method access control");
 		}

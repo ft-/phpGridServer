@@ -25,7 +25,10 @@ $cfg_SimulatorACLService = array(
 
 $cfg_UnrestrictedMethodsACLService = array(
 	"use"=>"accesscontrol/providers/UnrestrictedMethodAccessControl",
-	"allow"=>array("Grid"=>array("registerRegion"),"Friends"=>array("getfriends", "getfriends_string"))
+	"allow"=>array(
+			"Grid"=>array("registerRegion"),
+			"UserAccount"=>array("getAccountByName")
+			)
 );
 
 /*=============================================================================*/
@@ -136,6 +139,7 @@ $cfg_RPC_UserAccountService = array(
 	"use"=>"accesscontrol/wrappers/AccessControlWrapper",
 	"service"=>"UserAccount",
 	"acl"=>array(
+		array("check"=>"sufficient", "use"=>"UnrestrictedMethodsACL"), # allow general access to some methods
 		array("check"=>"sufficient", "use"=>"PrivateIPACL"),
 		array("check"=>"sufficient", "use"=>"SimulatorACL"),
 		array("check"=>"required", "use"=>"deny")
