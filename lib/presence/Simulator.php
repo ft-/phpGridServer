@@ -47,8 +47,8 @@ if(!class_exists("SimulatorPresenceHandler"))
 			}
 			else
 			{
-				$hgServerData = getHGServerDataByHome($hgTravelingData->GridExternalName, $hgTravelingData->UserID);
-				$connector = new XmlRpcIMServiceConnector($hgServerData->GatekeeperURI);
+				trigger_error("Forward IM ".$hgTravelingData->GridExternalName);
+				$connector = new XmlRpcIMServiceConnector($hgTravelingData->GridExternalName);
 			}
 
 			$connector->send($message);
