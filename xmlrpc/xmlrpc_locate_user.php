@@ -27,23 +27,14 @@ $rpcStruct = new RPCStruct();
 
 if(isset($structParam->userID))
 {
-	$homeGrid = ServerDataURI::getHome();
 	try
 	{
-		$presence = $presenceService->getAgentByUUID($structParam->userID);
-		$rpcStruct->URL = $homeGrid->HomeURI;
+		$homeGrid = ServerDataURI::getHome();
+		$rpcStruct->URL = $homeGrid->IMServerURI;
 	}
 	catch(Exception $e)
 	{
-		try
-		{
-			$hgTravelingData = $hgTravelingDataService->getHGTravelingDataByAgentUUIDAndNotHomeURI($structParam->userID, $homeGrid->GridExternalName);
-			$rpcStruct->URL = $hgTravelingData->GridExternalName;
-		}
-		catch(Exception $e)
-		{
-			$rpcStruct->result = "Unable to locate user";
-		}
+		$rpcStruct->result = "Unable to locate user";
 	}
 }
 else
