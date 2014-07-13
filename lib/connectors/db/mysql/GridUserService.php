@@ -65,7 +65,8 @@ class MySQLGridUserServiceConnector implements GridUserServiceInterface
 
 	public function getGridUser($userID)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '".$this->db->real_escape_string($userID)."' LIMIT 1");
+		UUID::CheckWithException($userID);
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$userID%' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -90,8 +91,7 @@ class MySQLGridUserServiceConnector implements GridUserServiceInterface
 
 	public function getGridUserHG($userID)
 	{
-		UUID::CheckWithException($userID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$userID%' LIMIT 1");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '".$this->db->real_escape_string($userID)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));

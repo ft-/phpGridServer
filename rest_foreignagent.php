@@ -242,7 +242,7 @@ catch(Exception $e)
 
 try
 {
-	$gridUser = $gridUserService->getGridUser($userAccount->PrincipalID);
+	$gridUser = $gridUserService->getGridUserHG($userAccount->PrincipalID);
 }
 catch(Exception $e)
 {
