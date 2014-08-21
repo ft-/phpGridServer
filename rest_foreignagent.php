@@ -59,7 +59,7 @@ else
 /* we load that PHP file here since we do not need that on the homeagent relaying the sims do */
 require_once("lib/connectors/hypergrid/UserAgentRemoteConnector.php");
 
-$userAgentConnector = new UserAgentRemoteConnector($serverDataUri->GatekeeperURI);
+$userAgentConnector = new UserAgentRemoteConnector($serverDataUri->HomeURI);
 
 /* verify user first before we store anything */
 $servicesessionid = explode(";", $sessionInfo->ServiceSessionID);
@@ -246,7 +246,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to verify GridUser");
+	trigger_error("Failed to verify GridUser ".$e->getMessage());
 	$presenceService->logoutPresence($sessionInfo->SessionID);
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
