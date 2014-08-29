@@ -76,7 +76,7 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 			/* enable output compression */
 			ini_set("zlib.output_compression", 4096);
 			header("Content-Type: ".$asset->getContentType());
-			header("Content-Length ".strlen($asset->Data));
+			header("Content-Length: ".strlen($asset->Data));
 			echo $asset->Data;
 			exit;
 		}
@@ -103,7 +103,7 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 			$asset = $assetService->getMetadata($assetid);
 			header("Content-Type: text/xml");
 			$data = $asset->toXML();
-			header("Content-Length ".strlen($data));
+			header("Content-Length: ".strlen($data));
 			echo $data;
 			exit;
 		}
@@ -132,7 +132,7 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 			ini_set("zlib.output_compression", 4096);
 			header("Content-Type: text/xml");
 			$data = $asset->toXML();
-			header("Content-Length ".strlen($data));
+			header("Content-Length: ".strlen($data));
 			echo $data;
 			exit;
 		}
