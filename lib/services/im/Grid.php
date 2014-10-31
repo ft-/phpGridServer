@@ -38,7 +38,7 @@ class GridIMService implements IMServiceInterface
 			else
 			{
 				/* skip messages that do not refer to something being actually saved */
-				return;
+				throw new Exception("user offline");
 			}
 			$offlineIMService = getService("OfflineIM");
 			$userAccountService = getService("UserAccount");
