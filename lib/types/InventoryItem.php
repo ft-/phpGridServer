@@ -12,8 +12,8 @@ require_once("lib/xmltok.php");
 
 class InventoryType extends AssetType {
 	const Snapshot = 15;
-	const Attachable = 18;
-	const Wearable = 19;
+	const Attachable = 17;
+	const Wearable = 18;
 }
 
 class InventoryPermissions
