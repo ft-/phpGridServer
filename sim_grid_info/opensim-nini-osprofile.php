@@ -171,10 +171,6 @@ printKey("Module", "OpenSimProfile");
 printKey("ProfileURL", $service_uris["ProfileServerURI"]);
 printSectionEnd();
 
-printSectionBegin("Profile");
-printKey("Module", "BasicProfileModule");
-printSectionEnd();
-
 printSectionBegin("MapImageService");
 printKey("MapImageServerURI", $gridserveruri);
 printSectionEnd();
