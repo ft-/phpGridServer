@@ -9,6 +9,7 @@
 
 require_once("lib/types/UUID.php");
 require_once("lib/types/Vector3.php");
+require_once("lib/types/UInt64.php");
 class NotALandmarkFormat extends exception {};
 
 class Landmark
@@ -43,9 +44,9 @@ class Landmark
 			}
 			else if(count($para) == 2 && $para[0] == "region_handle")
 			{
-				$val = gmp_init($para[1]);
-				$landmark->LocX = gmp_intval(gmp_mod($val, gmp_pow("2", "32")));
-				$landmark->LocY = gmp_intval(gmp_div($val, gmp_pow("2", "32")));
+				$val = uint64($para[1]);
+				$landmark->LocX = uint64_intval(uint64_mod($val, uint64_pow("2", "32")));
+				$landmark->LocY = uint64_intval(uint64_div($val, uint64_pow("2", "32")));
 			}
 			else if(count($para) == 2 && $para[0] == "gatekeeper")
 			{

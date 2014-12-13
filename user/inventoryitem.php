@@ -13,6 +13,7 @@ require_once("lib/services.php");
 require_once("lib/types/Asset.php");
 require_once("lib/types/Landmark.php");
 require_once("lib/types/Notecard.php");
+require_once("lib/types/Wearable.php");
 require_once("user/inventoryicons.php");
 require_once("lib/connectors/hypergrid/GatekeeperRemoteConnector.php");
 $nologinpage = true;
@@ -154,8 +155,37 @@ try
 ?><div style="width: 100%; text-align: center;">Asset missing</div><?php
 		}
 	} ?>
-<?php if($inventoryitem->AssetType == AssetType::Clothing) { ?>
-<?php } ?>
+<?php if($inventoryitem->AssetType == AssetType::Clothing) {
+		try
+		{
+			$asset = $assetService->get($inventoryitem->AssetID);
+			try
+			{
+				$wearable = Wearable::fromAsset($asset);
+				$oldflags = $inventoryitem->Flags & 0xFF;
+				if($wearable->Type != $oldflags)
+				{
+					$inventoryitem->Flags &= 0xFFFFFF00;
+					$inventoryitem->Flags |= ($wearable->Type & 0xFF);
+					$inventoryService->storeItem($inventoryitem);
+?>
+<table border="0" style="width: 100%; border-style: none;">
+<tr><td colspan="2">Inventory flags fixed</td></tr>
+<tr><td>Old embedded wearable type:</td><td><?php echo $oldflags ?></td></tr>
+<tr><td>Correct wearable type:</td><td><?php echo $wearable->Type ?></td></tr>
+</table>
+<?php
+				}
+			}
+			catch(Exception $e)
+			{
+			}
+		}
+		catch(Exception $e)
+		{
+?><div style="width: 100%; text-align: center;">Asset missing</div><?php
+		}
+      } ?>
 <?php if($inventoryitem->AssetType == AssetType::Notecard) {
 		try
 		{
@@ -240,8 +270,37 @@ try
 <?php if($inventoryitem->AssetType == AssetType::TextureTGA) { ?>
 <center><img src="/user/fetchasset.php/<?php echo $inventoryitem->AssetID ?>" width="400" height="300"/></center>
 <?php } ?>
-<?php if($inventoryitem->AssetType == AssetType::Bodypart) { ?>
-<?php } ?>
+<?php if($inventoryitem->AssetType == AssetType::Bodypart) {
+		try
+		{
+			$asset = $assetService->get($inventoryitem->AssetID);
+			try
+			{
+				$wearable = Wearable::fromAsset($asset);
+				$oldflags = $inventoryitem->Flags & 0xFF;
+				if($wearable->Type != $oldflags)
+				{
+					$inventoryitem->Flags &= 0xFFFFFF00;
+					$inventoryitem->Flags |= ($wearable->Type & 0xFF);
+					$inventoryService->storeItem($inventoryitem);
+?>
+<table border="0" style="width: 100%; border-style: none;">
+<tr><td colspan="2">Inventory flags fixed</td></tr>
+<tr><td>Old embedded wearable type:</td><td><?php echo $oldflags ?></td></tr>
+<tr><td>Correct wearable type:</td><td><?php echo $wearable->Type ?></td></tr>
+</table>
+<?php
+				}
+			}
+			catch(Exception $e)
+			{
+			}
+		}
+		catch(Exception $e)
+		{
+?><div style="width: 100%; text-align: center;">Asset missing</div><?php
+		}
+      } ?>
 <?php if($inventoryitem->AssetType == AssetType::SoundWAV) { ?>
 <object data="/user/fetchasset.php/<?php echo $inventoryitem->AssetID ?>" width="400"></object>
 <?php } ?>

@@ -9,6 +9,7 @@
 
 require_once("lib/types/UUID.php");
 require_once("lib/xmltok.php");
+require_once("lib/types/UInt64.php");
 
 class GroupPowers
 {
@@ -63,60 +64,60 @@ class GroupPowers
 
 	public static function DefaultEveryonePowers()
 	{
-		$powers = gmp_or(GroupPowers::AllowSetHome, GroupPowers::Accountable);
-		$powers = gmp_or($powers, GroupPowers::JoinChat);
-		$powers = gmp_or($powers, GroupPowers::AllowVoiceChat);
-		$powers = gmp_or($powers, GroupPowers::ReceiveNotices);
-		$powers = gmp_or($powers, GroupPowers::StartProposal);
-		$powers = gmp_or($powers, GroupPowers::VoteOnProposal);
+		$powers = uint64_add(GroupPowers::AllowSetHome, GroupPowers::Accountable);
+		$powers = uint64_add($powers, GroupPowers::JoinChat);
+		$powers = uint64_add($powers, GroupPowers::AllowVoiceChat);
+		$powers = uint64_add($powers, GroupPowers::ReceiveNotices);
+		$powers = uint64_add($powers, GroupPowers::StartProposal);
+		$powers = uint64_add($powers, GroupPowers::VoteOnProposal);
 		return $powers;
 	}
 	public static function OwnerPowers()
 	{
-		$powers = gmp_or(GroupPowers::Accountable, GroupPowers::AllowEditLand);
-		$powers = gmp_or($powers, GroupPowers::AllowFly);
-		$powers = gmp_or($powers, GroupPowers::AllowLandmark);
-		$powers = gmp_or($powers, GroupPowers::AllowRez);
-		$powers = gmp_or($powers, GroupPowers::AllowSetHome);
-		$powers = gmp_or($powers, GroupPowers::AllowVoiceChat);
-		$powers = gmp_or($powers, GroupPowers::AssignMember);
-		$powers = gmp_or($powers, GroupPowers::AssignMemberLimited);
-		$powers = gmp_or($powers, GroupPowers::ChangeActions);
-		$powers = gmp_or($powers, GroupPowers::ChangeIdentity);
-		$powers = gmp_or($powers, GroupPowers::ChangeMedia);
-		$powers = gmp_or($powers, GroupPowers::ChangeOptions);
-		$powers = gmp_or($powers, GroupPowers::CreateRole);
-		$powers = gmp_or($powers, GroupPowers::DeedObject);
-		$powers = gmp_or($powers, GroupPowers::DeleteRole);
-		$powers = gmp_or($powers, GroupPowers::Eject);
-		$powers = gmp_or($powers, GroupPowers::FindPlaces);
-		$powers = gmp_or($powers, GroupPowers::Invite);
-		$powers = gmp_or($powers, GroupPowers::JoinChat);
-		$powers = gmp_or($powers, GroupPowers::LandChangeIdentity);
-		$powers = gmp_or($powers, GroupPowers::LandDeed);
-		$powers = gmp_or($powers, GroupPowers::LandDivideJoin);
-		$powers = gmp_or($powers, GroupPowers::LandEdit);
-		$powers = gmp_or($powers, GroupPowers::LandEjectAndFreeze);
-		$powers = gmp_or($powers, GroupPowers::LandGardening);
-		$powers = gmp_or($powers, GroupPowers::LandManageAllowed);
-		$powers = gmp_or($powers, GroupPowers::LandManageBanned);
-		$powers = gmp_or($powers, GroupPowers::LandManagePasses);
-		$powers = gmp_or($powers, GroupPowers::LandOptions);
-		$powers = gmp_or($powers, GroupPowers::LandRelease);
-		$powers = gmp_or($powers, GroupPowers::LandSetSale);
-		$powers = gmp_or($powers, GroupPowers::ModerateChat);
-		$powers = gmp_or($powers, GroupPowers::ObjectManipulate);
-		$powers = gmp_or($powers, GroupPowers::ObjectSetForSale);
-		$powers = gmp_or($powers, GroupPowers::ReceiveNotices);
-		$powers = gmp_or($powers, GroupPowers::RemoveMember);
-		$powers = gmp_or($powers, GroupPowers::ReturnGroupOwned);
-		$powers = gmp_or($powers, GroupPowers::ReturnGroupSet);
-		$powers = gmp_or($powers, GroupPowers::ReturnNonGroup);
-		$powers = gmp_or($powers, GroupPowers::RoleProperties);
-		$powers = gmp_or($powers, GroupPowers::SendNotices);
-		$powers = gmp_or($powers, GroupPowers::SetLandingPoint);
-		$powers = gmp_or($powers, GroupPowers::StartProposal);
-		$powers = gmp_or($powers, GroupPowers::VoteOnProposal);
+		$powers = uint64_add(GroupPowers::Accountable, GroupPowers::AllowEditLand);
+		$powers = uint64_add($powers, GroupPowers::AllowFly);
+		$powers = uint64_add($powers, GroupPowers::AllowLandmark);
+		$powers = uint64_add($powers, GroupPowers::AllowRez);
+		$powers = uint64_add($powers, GroupPowers::AllowSetHome);
+		$powers = uint64_add($powers, GroupPowers::AllowVoiceChat);
+		$powers = uint64_add($powers, GroupPowers::AssignMember);
+		$powers = uint64_add($powers, GroupPowers::AssignMemberLimited);
+		$powers = uint64_add($powers, GroupPowers::ChangeActions);
+		$powers = uint64_add($powers, GroupPowers::ChangeIdentity);
+		$powers = uint64_add($powers, GroupPowers::ChangeMedia);
+		$powers = uint64_add($powers, GroupPowers::ChangeOptions);
+		$powers = uint64_add($powers, GroupPowers::CreateRole);
+		$powers = uint64_add($powers, GroupPowers::DeedObject);
+		$powers = uint64_add($powers, GroupPowers::DeleteRole);
+		$powers = uint64_add($powers, GroupPowers::Eject);
+		$powers = uint64_add($powers, GroupPowers::FindPlaces);
+		$powers = uint64_add($powers, GroupPowers::Invite);
+		$powers = uint64_add($powers, GroupPowers::JoinChat);
+		$powers = uint64_add($powers, GroupPowers::LandChangeIdentity);
+		$powers = uint64_add($powers, GroupPowers::LandDeed);
+		$powers = uint64_add($powers, GroupPowers::LandDivideJoin);
+		$powers = uint64_add($powers, GroupPowers::LandEdit);
+		$powers = uint64_add($powers, GroupPowers::LandEjectAndFreeze);
+		$powers = uint64_add($powers, GroupPowers::LandGardening);
+		$powers = uint64_add($powers, GroupPowers::LandManageAllowed);
+		$powers = uint64_add($powers, GroupPowers::LandManageBanned);
+		$powers = uint64_add($powers, GroupPowers::LandManagePasses);
+		$powers = uint64_add($powers, GroupPowers::LandOptions);
+		$powers = uint64_add($powers, GroupPowers::LandRelease);
+		$powers = uint64_add($powers, GroupPowers::LandSetSale);
+		$powers = uint64_add($powers, GroupPowers::ModerateChat);
+		$powers = uint64_add($powers, GroupPowers::ObjectManipulate);
+		$powers = uint64_add($powers, GroupPowers::ObjectSetForSale);
+		$powers = uint64_add($powers, GroupPowers::ReceiveNotices);
+		$powers = uint64_add($powers, GroupPowers::RemoveMember);
+		$powers = uint64_add($powers, GroupPowers::ReturnGroupOwned);
+		$powers = uint64_add($powers, GroupPowers::ReturnGroupSet);
+		$powers = uint64_add($powers, GroupPowers::ReturnNonGroup);
+		$powers = uint64_add($powers, GroupPowers::RoleProperties);
+		$powers = uint64_add($powers, GroupPowers::SendNotices);
+		$powers = uint64_add($powers, GroupPowers::SetLandingPoint);
+		$powers = uint64_add($powers, GroupPowers::StartProposal);
+		$powers = uint64_add($powers, GroupPowers::VoteOnProposal);
 		return $powers;
 	}
 }
@@ -310,7 +311,7 @@ function groupMemberToXML($groupsService, $presenceService, $groupMember, $tagna
 	$xmlout.="<AgentID>".xmlentities($groupMember->PrincipalID)."</AgentID>";
 	try
 	{
-		$xmlout.="<AgentPowers>".gmp_strval($groupsService->getAgentPowers($groupMember->GroupID, $groupMember->PrincipalID))."</AgentPowers>";
+		$xmlout.="<AgentPowers>".uint64_strval($groupsService->getAgentPowers($groupMember->GroupID, $groupMember->PrincipalID))."</AgentPowers>";
 	}
 	catch(Exception $e)
 	{
@@ -436,7 +437,7 @@ function groupMembershipToXML($group, $grouprole, $groupmember, $tagname = "tag"
 	$xmlout.="<GroupID>".$group->ID."</GroupID>";
 	$xmlout.="<GroupName>".xmlentities($group->Name)."</GroupName>";
 	$xmlout.="<GroupPicture>".$group->InsigniaID."</GroupPicture>";
-	$xmlout.="<GroupPowers>".gmp_strval($grouprole->Powers)."</GroupPowers>";
+	$xmlout.="<GroupPowers>".uint64_strval($grouprole->Powers)."</GroupPowers>";
 	$xmlout.="<GroupTitle>".xmlentities($grouprole->Title)."</GroupTitle>";
 	$xmlout.="<ListInProfile>".boolean2string($groupmember->ListInProfile)."</ListInProfile>";
 	$xmlout.="<MaturePublish>".boolean2string($group->MaturePublish)."</MaturePublish>";
@@ -564,7 +565,7 @@ class GroupRolemember
 		$xmlout.="<MemberID>".$this->PrincipalID."</MemberID>";
 		if(!$excludePowers)
 		{
-			$xmlout.="<Powers>".gmp_strval($this->Powers)."</Powers>";
+			$xmlout.="<Powers>".uint64_strval($this->Powers)."</Powers>";
 		}
 		$xmlout.="</$tagname>";
 		return $xmlout;
@@ -641,7 +642,7 @@ class GroupRole
 		$xmlout .= "<Description>".xmlentities($this->Description)."</Description>";
 		$xmlout .= "<Members>".intval($this->Members)."</Members>";
 		$xmlout .= "<Name>".xmlentities($this->Name)."</Name>";
-		$xmlout .= "<Powers>".gmp_strval($this->Powers)."</Powers>";
+		$xmlout .= "<Powers>".uint64_strval($this->Powers)."</Powers>";
 		$xmlout .= "<RoleID>".$this->ID."</RoleID>";
 		$xmlout .= "<Title>".xmlentities($this->Title)."</Title>";
 		$xmlout .= "</$tagname>";

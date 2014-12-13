@@ -9,6 +9,7 @@
 
 require_once("lib/types/UUID.php");
 require_once("lib/xmltok.php");
+require_once("lib/types/UInt64.php");
 
 class RegionFlags
 {
@@ -209,10 +210,10 @@ class RegionInfo
 		if($name == "RegionHandle")
 		{
 			/* let us make up a region handle based on X and Y position */
-			$val = gmp_init($this->LocX);
-			$val = gmp_mul($val, gmp_pow("2", "32"));
-			$val = gmp_add($val, $this->LocY);
-			return gmp_strval($val);
+			$val = uint64_init($this->LocX);
+			$val = uint64_mul($val, uint64_pow("2", "32"));
+			$val = uint64_add($val, $this->LocY);
+			return uint64_strval($val);
 		}
 		$trace = debug_backtrace();
 		trigger_error(

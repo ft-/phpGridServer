@@ -126,7 +126,11 @@ function getItemIcon($principalID, $invtype, $assettype, $flags, $refid)
 		{
 			$asset = $assetService->get($refid);
 			$wearable = Wearable::fromAsset($asset);
-			if(isset($wearableicon_mapping[$wearable->Type]))
+			if($wearable->Type != ($flags & 0xFF))
+			{
+				$icon = "inv_invalid.png";
+			}
+			else if(isset($wearableicon_mapping[$wearable->Type]))
 			{
 				$icon = $wearableicon_mapping[$wearable->Type];
 			}

@@ -14,6 +14,7 @@ require_once("lib/interfaces/GroupsServiceInterface.php");
 require_once("lib/types/UUID.php");
 require_once("lib/helpers/groupsService.php");
 require_once("lib/connectors/db/mysql/_MySQLConnectionCache.php");
+require_once("lib/types/UInt64.php");
 
 function mysql_GroupFromRow($row, $memberCount = "MemberCount")
 {
@@ -43,7 +44,7 @@ function mysql_GroupRoleFromRow($row, $prefix = "")
 	$role->Name = $row["${prefix}Name"];
 	$role->Description = $row["${prefix}Description"];
 	$role->Title = $row["${prefix}Title"];
-	$role->Powers = gmp_init($row["${prefix}Powers"]);
+	$role->Powers = uint64_init($row["${prefix}Powers"]);
 	$role->Members = $row["RoleMembers"];
 	if($role->ID == "".UUID::ZERO())
 	{
@@ -763,7 +764,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 			$res->free();
 			throw new GroupRoleNotFoundException("Group role not found");
 		}
-		$rolePowers = gmp_init($row["Powers"]);
+		$rolePowers = uint64_init($row["Powers"]);
 		$res->free();
 		return $rolePowers;
 	}
@@ -777,7 +778,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 			trigger_error(mysqli_error($this->db));
 			throw new Exception("addGroupRole: Database access error: ".mysqli_error($this->db));
 		}
-		$powers = gmp_strval($groupRole->Powers);
+		$powers = uint64_strval($groupRole->Powers);
 		$stmt->bind_param("ssssss",
 				$groupRole->GroupID,
 				$groupRole->ID,
@@ -802,7 +803,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 			trigger_error(mysqli_error($this->db));
 			throw new Exception("updateGroupRole: Database access error: ".mysqli_error($this->db));
 		}
-		$powers = gmp_strval($groupRole->Powers);
+		$powers = uint64_strval($groupRole->Powers);
 		$stmt->bind_param("ssssss",
 				$groupRole->Name,
 				$groupRole->Description,
@@ -1277,7 +1278,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 		while($row = $res->fetch_assoc())
 		{
-			$powers = gmp_or($powers, $row["Powers"]);
+			$powers = uint64_or($powers, $row["Powers"]);
 		}
 		$res->free();
 		return $powers;
@@ -1298,7 +1299,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 		foreach($powers as $power)
 		{
-			if(gmp_cmp(gmp_and($agentPowers, $power), "0") == 0)
+			if(!uint64_and($agentPowers, $power))
 			{
 				throw new GroupInsufficientPowersException("Missing power $power");
 			}

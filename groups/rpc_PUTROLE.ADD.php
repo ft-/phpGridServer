@@ -7,13 +7,15 @@
  *
  */
 
+require_once("lib/types/UInt64.php");
+
 $role = new GroupRole();
 $role->ID = $_RPC_REQUEST->RoleID;
 $role->GroupID = $_RPC_REQUEST->GroupID;
 $role->Name = $_RPC_REQUEST->Name;
 $role->Description = $_RPC_REQUEST->Description;
 $role->Title = $_RPC_REQUEST->Title;
-$role->Powers = gmp_init($_RPC_REQUEST->Powers);
+$role->Powers = uint64_init($_RPC_REQUEST->Powers);
 try
 {
 	if(!isGroupOwner($_RPC_REQUEST->GroupID, $_RPC_REQUEST->RequestingAgentID))
