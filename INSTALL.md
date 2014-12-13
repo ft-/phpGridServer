@@ -83,6 +83,11 @@ about                      yes                                   http://<yourgri
 GridURI                    no                                    http://<yourgridserver>               this is the GridURI and used for all entries (DO NOT ADD / at the end)
 
 
+Optional Parameters
+
+WelcomeMessage             no                                    Greetings Programs                    Welcome message displayed during login
+
+
 5.1. Setting up Grid Library
 
 The following steps are required whether migrating or setting up from scratch.
