@@ -26,7 +26,7 @@ $cfg_SimulatorACLService = array(
 $cfg_UnrestrictedMethodsACLService = array(
 	"use"=>"accesscontrol/providers/UnrestrictedMethodAccessControl",
 	"allow"=>array(
-			"Grid"=>array("registerRegion"),
+			"Grid"=>array("registerRegion","getRegionDefaultsForRegion"),
 			"UserAccount"=>array("getAccountByName")
 			)
 );
