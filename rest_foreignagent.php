@@ -30,6 +30,7 @@ else
 	$gridUserService = getService("GridUser");
 	$presenceService = getService("Presence");
 	$gridService = getService("Grid");
+	$serverParamService = getService("ServerParam");
 
 	/* we take the remaining data here */
 	$userAccount = getUserAccountFromAgentData($_AGENT_POST);
@@ -60,6 +61,19 @@ else
 require_once("lib/connectors/hypergrid/UserAgentRemoteConnector.php");
 
 $userAgentConnector = new UserAgentRemoteConnector($serverDataUri->HomeURI);
+
+$lockedmsg = $serverParamService->getParam("lockmessage", "");
+if($lockedmsg != "")
+{
+	$res = new RPCSuccessResponse();
+	$res->Params[] = new RPCStruct();
+	$res->Params[0]->reason = $lockedmsg;
+	$res->Params[0]->success = False;
+	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	header("Content-Type: application/json");
+	echo $serializer->serializeRPC($res);
+	exit;
+}
 
 /* verify user first before we store anything */
 $servicesessionid = explode(";", $sessionInfo->ServiceSessionID);
