@@ -3,3 +3,5 @@ CREATE TABLE `phpgridserverusermap` (
   `binding` char(36) NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+INSERT INTO `authenticationtypes` VALUES (6,'phpgridserver','phpGridServer',0,0,0);
