@@ -15,7 +15,16 @@ ini_set("default_charset", "UTF-8");
 ini_set("display_errors", 0);
 
 $_services_ = array();
+$_servicecfgs_ = array();
 $_rpc_sessionid_ = null;
+
+foreach($GLOBALS as $k => $v)
+{
+	if(substr($k, 0, 4) == "cfg_")
+	{
+		$_servicecfgs_[$k] = $v;
+	}
+}
 
 if(!function_exists("boolval"))
 {
@@ -36,12 +45,11 @@ function getService($service)
 {
 	$servicename="${service}Service";
 	$servicecfg="cfg_${servicename}";
-	global $$servicename;
-	global $$servicecfg;
+	global $_servicecfgs_;
 	global $_services_;
 	if(!isset($_services_[$service]))
 	{
-		$_SERVICE_PARAMS = $$servicecfg;
+		$_SERVICE_PARAMS = $_servicecfgs_[$servicecfg];
 		$module = $_SERVICE_PARAMS["use"];
 		if(!$module)
 		{
