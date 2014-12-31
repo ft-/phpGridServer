@@ -93,7 +93,7 @@ class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
 	{
 		UUID::CheckWithException($principalID);
 		$token=UUID::Random();
-		$validity = strftime("%F %T", time() + 60 * $lifeTime);
+		$validity = time() + 60 * $lifeTime;
 		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_tokens." (UUID, token, validity) VALUES ('$principalID',?,?)");
 		if(!$stmt)
 		{
@@ -102,12 +102,13 @@ class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
 		}
 		try
 		{
-			$stmt->bind_param("ss", $token, $validity);
+			$stmt->bind_param("si", $token, $validity);
 			$stmt->execute();
 			if($stmt->affected_rows == 0)
 			{
 				throw new AuthTokenAddFailedException();
 			}
+			trigger_error("added token ".$token);
 		}
 		catch(Exception $e)
 		{
@@ -121,8 +122,8 @@ class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
 	public function verifyToken($principalID, $token, $lifeTime)
 	{
 		UUID::CheckWithException($principalID);
-		$validity = strftime("%F %T", time() + 60 * $lifeTime);
-		$current = strftime("%F %T", time());
+		$validity = time() + 60 * $lifeTime;
+		$current = time();
 		$query = "UPDATE ".$this->dbtable_tokens." SET validity='$validity' WHERE UUID='$principalID' AND token='".$this->db->real_escape_string($token)."' AND validity >= '$current'";
 		$stmt = $this->db->prepare($query);
 		if(!$stmt)
@@ -205,7 +206,8 @@ class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
   								KEY `UUID` (`UUID`),
   								KEY `token` (`token`),
   								KEY `validity` (`validity`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+								) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+			"ALTER TABLE %tablename% MODIFY validity BIGINT(20) UNSIGNED NOT NULL "
 	);
 
 	public function migrateRevision()
