@@ -41,6 +41,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 		chdir("llsd_rpc");
 		require_once("llsd_rpc/llsd_binary.php");
 	}
+	else if($_SERVER["CONTENT_TYPE"] == "application/x-www-form-urlencoded")
+	{
+		require_once("frontpage.php");
+	}
 	else
 	{
 		http_response_code("400");
