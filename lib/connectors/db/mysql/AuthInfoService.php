@@ -108,7 +108,6 @@ class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
 			{
 				throw new AuthTokenAddFailedException();
 			}
-			trigger_error("added token ".$token);
 		}
 		catch(Exception $e)
 		{
