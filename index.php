@@ -45,6 +45,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		require_once("frontpage.php");
 	}
+	else if(substr($_SERVER["CONTENT_TYPE"],0, 19) == "multipart/form-data")
+	{
+		require_once("frontpage.php");
+	}
 	else
 	{
 		http_response_code("400");
