@@ -7,6 +7,7 @@
  *
  */
 
+$_servicecfgs_ = array();
 require_once("config.php");
 
 /* we run everything through this file, so we set the timezone we need right here */
@@ -15,14 +16,13 @@ ini_set("default_charset", "UTF-8");
 ini_set("display_errors", 0);
 
 $_services_ = array();
-$_servicecfgs_ = array();
 $_rpc_sessionid_ = null;
 
 foreach($GLOBALS as $k => $v)
 {
 	if(substr($k, 0, 4) == "cfg_")
 	{
-		$_servicecfgs_[$k] = $v;
+		$_servicecfgs_[substr($k, 4)] = $v;
 	}
 }
 
@@ -43,10 +43,10 @@ if(!function_exists("boolval"))
 
 function getService($service)
 {
-	$servicename="${service}Service";
-	$servicecfg="cfg_${servicename}";
 	global $_servicecfgs_;
 	global $_services_;
+	$servicename="${service}Service";
+	$servicecfg="${servicename}";
 	if(!isset($_services_[$service]))
 	{
 		$_SERVICE_PARAMS = $_servicecfgs_[$servicecfg];
