@@ -1,4 +1,4 @@
-CREATE TABLE `phpGridServerUserMap` (
+CREATE TABLE `PhpGridServerUserMap` (
   `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `binding` char(36) NOT NULL,
   PRIMARY KEY (`user_id`)
