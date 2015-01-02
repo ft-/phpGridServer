@@ -7,7 +7,7 @@
  *
  */
 
-require_once("InventoryItem.php");
+require_once("lib/types/InventoryItem.php");
 require_once("lib/xmltok.php");
 
 class InventoryFolder
