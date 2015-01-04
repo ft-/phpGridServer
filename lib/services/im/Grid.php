@@ -35,6 +35,9 @@ class GridIMService implements IMServiceInterface
 			if($im->Dialog==GridInstantMessageDialog::MessageFromAgent)
 			{
 			}
+			else if($im->Dialog==GridInstantMessageDialog::InventoryOffered)
+			{
+			}
 			else
 			{
 				/* skip messages that do not refer to something being actually saved */
@@ -51,6 +54,11 @@ class GridIMService implements IMServiceInterface
 			catch(Exception $e)
 			{
 
+			}
+			if($im->Dialog==GridInstantMessageDialog::InventoryOffered)
+			{
+				/* generate error message for return */
+				throw new Exception("user offline");
 			}
 		}
 	}
