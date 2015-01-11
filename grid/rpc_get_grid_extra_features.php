@@ -35,6 +35,8 @@ $serverParamService = getService("ServerParam");
 $Map_ServerURI = $serverParamService->getParam("Map_ServerURI", "");
 $DestinationGuideURI = $serverParamService->getParam("DestinationGuideURI", "");
 $SearchURI = $serverParamService->getParam("SearchURI", "");
+$GridName = $serverParamService->getParam("gridname", "");
+$GridURL = $serverParamService->getParam("HG_HomeURI", "");
 $cnt = 0;
 if($Map_ServerURI != "")
 {
@@ -45,6 +47,26 @@ if($Map_ServerURI != "")
 	++$cnt;
 	echo "<map-server-url>". xmlentities($Map_ServerURI). "</map-server-url>";
 }
+if($GridName != "")
+{
+	if($cnt == 0)
+	{
+		echo "<ServerResponse>";
+	}
+	++$cnt;
+	echo "<GridName>". xmlentities($GridName). "</GridName>";
+}
+
+if($GridURL != "")
+{
+	if($cnt == 0)
+	{
+		echo "<ServerResponse>";
+	}
+	++$cnt;
+	echo "<GridURL>". xmlentities($GridURL). "</GridURL>";
+}
+
 if($DestinationGuideURI != "")
 {
 	if($cnt == 0)
