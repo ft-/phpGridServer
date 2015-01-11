@@ -34,7 +34,13 @@ for($argi = 1; $argi < $argc; $argi++)
 		$asset->ID = $uuid;
 		$asset->Name = "From IAR";
 		$asset->Type = 0;
-		$asset->Data = file_get_contents($uuid.".jp2");
+		$data = file_get_contents($uuid."jp2");
+		if($data == "")
+		{
+			echo "failed to load asset";
+			exit;
+		}
+		$asset->Data = $data;
 		$assetService->store($asset);
 		echo "stored\n";
 	}
