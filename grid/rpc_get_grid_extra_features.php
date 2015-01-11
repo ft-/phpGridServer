@@ -19,6 +19,7 @@ if(isset($_RPC_REQUEST->SCOPEID))
 }
 
 require_once("lib/services.php");
+require_once("lib/types/ServerDataURI.php");
 
 $gridService = getService("RPC_Grid");
 
@@ -32,11 +33,13 @@ header("Content-Type: text/xml");
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 $serverParamService = getService("ServerParam");
 
+$homeGrid = ServerDataURI::getHome();
 $Map_ServerURI = $serverParamService->getParam("Map_ServerURI", "");
 $DestinationGuideURI = $serverParamService->getParam("DestinationGuideURI", "");
 $SearchURI = $serverParamService->getParam("SearchURI", "");
 $GridName = $serverParamService->getParam("gridname", "");
-$GridURL = $serverParamService->getParam("HG_HomeURI", "");
+$GridURL = $homeGrid->GatekeeperURI;
+
 $cnt = 0;
 if($Map_ServerURI != "")
 {
