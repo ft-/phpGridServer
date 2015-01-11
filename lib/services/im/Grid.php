@@ -35,6 +35,12 @@ class GridIMService implements IMServiceInterface
 			if($im->Dialog==GridInstantMessageDialog::MessageFromAgent)
 			{
 			}
+			else if($im->Dialog==GridInstantMessageDialog::MessageFromObject)
+			{
+			}
+			else if($im->Dialog==GridInstantMessageDialog::GroupNotice)
+			{
+			}
 			else if($im->Dialog==GridInstantMessageDialog::InventoryOffered)
 			{
 				/* generate error message for return */
