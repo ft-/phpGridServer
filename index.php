@@ -58,7 +58,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 		exit;
 	}
 }
-else
+else if(file_exists("frontpage.php"))
 {
 	require_once("frontpage.php");
+}
+else
+{
+	require_once("frontpage.sample.php");
 }
