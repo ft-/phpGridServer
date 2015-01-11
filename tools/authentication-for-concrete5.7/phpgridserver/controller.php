@@ -218,6 +218,10 @@ class Controller extends AuthenticationTypeController
         try
         {
             $userid = $this->getBoundUserID("".$account->ID);
+	    if($userid == "")
+	    {
+		throw new Exception();
+	    }
         }
         catch(\Exception $e)
         {
@@ -226,7 +230,7 @@ class Controller extends AuthenticationTypeController
             $data['uPassword'] = "";
             $data['uEmail'] = $account->Email;
             $data['uIsValidated'] = 1;
-
+	    
             $user = \UserInfo::add($data);
             $key = \UserAttributeKey::getByHandle('first_name');
             if ($key) {
@@ -249,7 +253,7 @@ class Controller extends AuthenticationTypeController
             }
             return $user;
         }
-        trigger_error("Login error for $userid");
+        trigger_error("Login error for $uFirstName $uLastName as $userid");
         return null;
     }
 
