@@ -174,7 +174,8 @@ class GridInstantMessage
 		}
 		$xmlout.="<SessionID>".$this->IMSessionID."</SessionID>";
 		$xmlout.="<Message>".xmlentities($this->Message)."</Message>";
-		$xmlout.="<Offline>".$this->Offline."</Offline>";
+		$offline = $this->Offline ? 1 : 0;
+		$xmlout.="<Offline>".$offline."</Offline>";
 		$xmlout.="<EstateID>".intval($this->ParentEstateID)."</EstateID>";
 		$xmlout.="<Position>".xmlentities($this->Position)."</Position>";
 		$xmlout.="<RegionID>".$this->RegionID."</RegionID>";

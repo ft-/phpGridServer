@@ -92,7 +92,7 @@ if(!UUID::IsUUID($_RPC_REQUEST->FromAgentID))
 
 $im->ToAgentID = $_RPC_REQUEST->ToAgentID;
 
-$im->Offline = 1;
+$im->Offline = true;
 $offlineIMService = getService("RPC_OfflineIM");
 
 header("Content-Type: text/xml");
