@@ -117,3 +117,12 @@ add the OpenSimSearch module to the bin folder of the OpenSim
 installation (copying only on non-ArribaSim regions)
 
 For module see http://opensimulator.org/wiki/OpenSimSearch
+
+
+9. Changing the frontpage (Optional step)
+
+Copy frontpage.sample.php to frontpage.php and adjust its content to your needs.
+
+Prodived frontpages:
+
+tools/frontpage-for-concrete5.7-integration contains files for concrete5 CMS V5.7.X
