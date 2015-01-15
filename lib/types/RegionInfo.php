@@ -232,6 +232,7 @@ class RegionInfo
 		$xmlout.="<locY>".$this->LocY."</locY>";
 		$xmlout.="<sizeX>".$this->SizeX."</sizeX>";
 		$xmlout.="<sizeY>".$this->SizeY."</sizeY>";
+		$xmlout.="<flags>".$this->Flags."</flags>";
 		$xmlout.="<regionName>".xmlentities($this->RegionName)."</regionName>";
 		$xmlout.="<serverIP>".xmlentities($this->ServerIP)."</serverIP>";
 		$xmlout.="<serverHttpPort>".$this->ServerHttpPort."</serverHttpPort>";
