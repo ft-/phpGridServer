@@ -74,7 +74,7 @@ gridnick                   yes                                   <your grid's ni
 register                   yes                                   http://<yourgridserver>/register
 welcome		           yes                                   http://<yourgridserver>/
 RegionDeleteOnUnregister   no                                    false OR true                         Either a region is removed from grid or just marked offline
-Map_ServerURI              no                                    http://<yourgridserver>/
+Map_ServerURI              no                                    http://<yourgridserver>/map/
 UserRegistrationsEnabled   no                                    false OR true                         Set to true if you accept user registrations
 gridlibraryownerid         no                                    11111111-1111-0000-0000-000100bba000  default ownerid for Grid Library
 gridlibraryfolderid        no                                    00000112-000f-0000-0000-000100bba000  default folderid for Grid Library
