@@ -30,6 +30,7 @@ class ConfigurableIPMethodAccessControl implements AccessControlServiceInterface
 		}
 		if(in_array($_SERVER["REMOTE_ADDR"], $this->ipacl))
 		{
+			trigger_error($_SERVER["REMOTE_ADDR"]." is not in IP ACL"); 
 			return;
 		}
 		throw new AccessDeniedException("Not validated by Private IP access control");
