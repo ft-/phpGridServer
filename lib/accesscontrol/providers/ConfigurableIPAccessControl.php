@@ -12,7 +12,7 @@ require_once("lib/interfaces/AccessControlServiceInterface.php");
 class ConfigurableIPAccessControl implements AccessControlServiceInterface
 {
 	private $allowed;
-	public function __construct($allow, $ipacl)
+	public function __construct($ipacl)
 	{
 		$this->ipacl = $ipacl;
 	}
