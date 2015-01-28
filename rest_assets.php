@@ -235,6 +235,12 @@ else if($_SERVER["REQUEST_METHOD"]=="DELETE")
 		echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 		echo "<boolean>false</boolean>";
 	}
+	catch(AssetPermissionsInsufficientException $e)
+	{
+		header("Content-Type: text/xml");
+		echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+		echo "<boolean>false</boolean>";
+	}
 	catch(Exception $e)
 	{
 		http_response_code(500);
