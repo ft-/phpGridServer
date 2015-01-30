@@ -13,7 +13,7 @@ if(isset($_GET["confirm"]))
 		while($presence = $presenceIterator->getAgent())
 		{
 			$presenceService->logoutPresence($presence->SessionID);
-			$hgTravelingDataService->deleteHGTravelingData();
+			$hgTravelingDataService->deleteHGTravelingData($presence->SessionID);
 			++$count;
 		}
 		$presenceIterator->free();
