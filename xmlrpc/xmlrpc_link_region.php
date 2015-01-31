@@ -111,7 +111,8 @@ if($region)
 	$rpcStruct->uuid = $region->ID;
 	$rpcStruct->handle = $region->RegionHandle;
 	/* we serve from the capability GetTexture here (probably later we may have one that actually accesses Warp3DImageModule) */
-	$rpcStruct->region_image = getWebGetTextureCapsURI()."cap/GetTexture/?texture_id=".$region->RegionMapTexture;
+	$idstr = str_replace("-", "", "".$region->ID);
+	$rpcStruct->region_image = $region->ServerURI."index.php?method=".$idstr;
 	$rpcStruct->external_name = $homeGrid->HomeURI." ".$region->RegionName;
 	$rpcStruct->result = "true";
 }
