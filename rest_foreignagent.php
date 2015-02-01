@@ -94,9 +94,9 @@ $servicesessionid[0] = ServerDataURI::appendPortToURI($servicesessionid[0]);
 
 $homeGrid = ServerDataURI::getHome();
 
-if($homeGrid->HomeURI != $servicesessionid[0])
+if($homeGrid->GatekeeperURI != $servicesessionid[0])
 {
-	trigger_error("Failed to verify user identity. Invalid grid Name in ServiceSessionID: ".$homeGrid->HomeURI." != ${servicesessionid[0]}");
+	trigger_error("Failed to verify user identity. Invalid grid Name in ServiceSessionID: ".$homeGrid->GatekeeperURI." != ${servicesessionid[0]}");
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
