@@ -27,25 +27,26 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		$scopeID = "".$maptile->ScopeID;
 		$data = "".$maptile->Data;
 
-		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable." (locX, locY, scopeID, ContentType,  data) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE data = ?");
+		$stmt = $this->db->prepare("REPLACE INTO ".$this->dbtable." (locX, locY, scopeID, ContentType,  data, zoomLevel, lastUpdate) VALUES (?,?,?,?,?,?, ?)");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
 			throw new Exception("Database access error");
 		}
-		$stmt->bind_param("iissbb", $maptile->LocX, $maptile->LocY, $scopeID, $maptile->ContentType, $NULL, $NULL);
+		$updateTime = time();
+		$stmt->bind_param("iissbii", $maptile->LocX, $maptile->LocY, $scopeID, $maptile->ContentType, $NULL, $maptile->ZoomLevel, $updateTime);
 		$stmt->send_long_data(4, $data);
-		$stmt->send_long_data(5, $data);
 		$stmt->execute();
 		$stmt->close();
 	}
 
-	public function getMaptile($scopeID, $locX, $locY)
+	public function getMaptile($scopeID, $locX, $locY, $zoomLevel = 1)
 	{
 		$locX = intval($locX);
 		$locY = intval($locY);
+		$zoomLevel = intval($zoomLevel);
 		UUID::CheckWithException($scopeID);
-		$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE scopeID LIKE '$scopeID' AND locX = $locX AND locY = $locY");
+		$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE scopeID LIKE '$scopeID' AND locX = $locX AND locY = $locY AND zoomLevel = $zoomLevel");
 		if(!$res)
 		{
 			throw new Exception("Database access error");
@@ -71,7 +72,8 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
   								`data` longblob NOT NULL,
   								PRIMARY KEY (`locX`,`locY`),
   								KEY `scopeID` (`scopeID`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8"
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8",
+		"ALTER TABLE %tablename% ADD zoomLevel INT(11) NOT NULL DEFAULT '1', ADD lastUpdate BIGINT(20) NOT NULL DEFAULT '0'"
 	);
 	public function migrateRevision()
 	{

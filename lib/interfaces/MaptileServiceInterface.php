@@ -15,5 +15,6 @@ class MaptileStoreFailedException extends Exception {}
 interface MaptileServiceInterface
 {
 	public function storeMaptile($maptile);
-	public function getMaptile($scopeID, $locX, $locY);
+	/* = 1 default viewer zoom, = 2 4 grid coords per maptile */
+	public function getMaptile($scopeID, $locX, $locY, $zoom = 1);
 }

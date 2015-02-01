@@ -17,6 +17,8 @@ class Maptile
 	public $Data = "";
 	public $ContentType = "";
 	private $ScopeID;
+	public $ZoomLevel = 1;
+	public $lastUpdate = 0;
 	
 	public function __construct()
 	{
