@@ -9,7 +9,7 @@
 
 set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include_path());
 
-if($_SERVER["REQUEST_METHOD"] == "POST")
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SERVER["CONTENT_TYPE"]))
 {
 	$contentType = explode(";", $_SERVER["CONTENT_TYPE"])[0];
 	if($contentType == "text/xml")

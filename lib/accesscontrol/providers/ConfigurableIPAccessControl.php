@@ -23,7 +23,7 @@ class ConfigurableIPAccessControl implements AccessControlServiceInterface
 		{
 			return;
 		}
-		trigger_error("\"".$_SERVER["REMOTE_ADDR"]."\" is not in IP ACL"); 
+//		trigger_error("\"".$_SERVER["REMOTE_ADDR"]."\" is not in IP ACL"); 
 		throw new AccessDeniedException("Not validated by Private IP access control");
 	}
 }
