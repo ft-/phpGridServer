@@ -119,7 +119,6 @@ if($region)
 	}
 	$rpcStruct->region_image = $serveruri."index.php?method=regionImage".$idstr;
 	$rpcStruct->external_name = $homeGrid->GatekeeperURI." ".$region->RegionName;
-	trigger_error("shown Gatekeeper Data ".$rpcStruct->external_name);
 	$rpcStruct->result = "true";
 }
 
