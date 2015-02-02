@@ -20,7 +20,7 @@ if(!UUID::IsUUID($_RPC_REQUEST->PRINCIPALID))
 }
 
 /* enable output compression */
-if(!isset($_GET["rpc_debug"]))
+if(!isset($_GET["rpc_debug"]) && $enablegzipcompression)
 {
 	ini_set("zlib.output_compression", 4096);
 }

@@ -33,7 +33,7 @@ catch(Exception $e)
 }
 
 /* enable output compression */
-if(!isset($_GET["rpc_debug"]))
+if(!isset($_GET["rpc_debug"]) && $enablegzipcompression)
 {
 	ini_set("zlib.output_compression", 4096);
 }

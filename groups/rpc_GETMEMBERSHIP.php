@@ -37,7 +37,7 @@ if(isset($_RPC_REQUEST->ALL))
 		$gmems = $groupsService->getGroupMembershipsForAgent($_RPC_REQUEST->RequestingAgentID, $_RPC_REQUEST->AgentID);
 
 		/* enable output compression */
-		if(!isset($_GET["rpc_debug"]))
+		if(!isset($_GET["rpc_debug"]) && $enablegzipcompression)
 		{
 			ini_set("zlib.output_compression", 4096);
 		}

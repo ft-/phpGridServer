@@ -42,7 +42,7 @@ try
 	$members = $groupsService->getGroupMembers($_RPC_REQUEST->RequestingAgentID, $_RPC_REQUEST->GroupID);
 
 	/* enable output compression */
-	if(!isset($_GET["rpc_debug"]))
+	if(!isset($_GET["rpc_debug"]) && $enablegzipcompression)
 	{
 		ini_set("zlib.output_compression", 4096);
 	}

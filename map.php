@@ -47,10 +47,11 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 		}
 	}
 	$matches = array();
-	if(preg_match("/^map-[0-9]+-(?P<X>[0-9]+)-(?P<Y>[0-9]+)-.+\\.jpg$/", $mapid, $matches))
+	if(preg_match("/^map-(?<ZOOM>[0-9]+)-(?P<X>[0-9]+)-(?P<Y>[0-9]+)-.+\\.jpg$/", $mapid, $matches))
 	{
 		$x = $matches["X"] * 256;
 		$y = $matches["Y"] * 256;
+		$zoomLevel = $matches["ZOOM"];
 		try
 		{
 			$maptile = $maptileService->getMaptile($scopeid, $x, $y);

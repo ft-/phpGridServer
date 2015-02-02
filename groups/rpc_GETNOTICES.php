@@ -50,7 +50,7 @@ if(isset($_RPC_REQUEST->NoticeID))
 		$notice = $groupsService->getGroupNotice($_RPC_REQUEST->RequestingAgentID, $_RPC_REQUEST->NoticeID);
 		
 		/* enable output compression */
-		if(!isset($_GET["rpc_debug"]))
+		if(!isset($_GET["rpc_debug"]) && $enablegzipcompression)
 		{
 			ini_set("zlib.output_compression", 4096);
 		}

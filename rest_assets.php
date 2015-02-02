@@ -74,7 +74,10 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 		{
 			$asset = $assetService->get($assetid);
 			/* enable output compression */
-			ini_set("zlib.output_compression", 4096);
+			if($enablegzipcompression)
+			{
+				ini_set("zlib.output_compression", 4096);
+			}
 			header("Content-Type: ".$asset->getContentType());
 			header("Content-Length: ".strlen($asset->Data));
 			echo $asset->Data;
@@ -129,7 +132,10 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 		{
 			$asset = $assetService->get($assetid);
 			/* enable output compression */
-			ini_set("zlib.output_compression", 4096);
+			if($enablegzipcompression)
+			{
+				ini_set("zlib.output_compression", 4096);
+			}
 			header("Content-Type: text/xml");
 			$data = $asset->toXML();
 			header("Content-Length: ".strlen($data));

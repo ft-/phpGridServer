@@ -15,6 +15,12 @@ date_default_timezone_set('UTC');
 ini_set("default_charset", "UTF-8");
 ini_set("display_errors", 0);
 
+
+if(!isset($enablegzipcompression))
+{
+	$enablegzipcompression = false;
+}
+
 $_services_ = array();
 $_rpc_sessionid_ = null;
 
