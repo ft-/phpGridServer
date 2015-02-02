@@ -7,6 +7,17 @@ $assetService = getService("Asset");
 $folders = array();
 $brokenitems = array();
 
+if(isset($_GET["delete"]))
+{
+	try
+	{
+		$inventoryService->deleteItem($principalID, $_GET["id"]);
+	}
+	catch
+	{
+	}
+}
+
 echo "Checking folders...<br/>";
 function traversefolders($principalID, $folderID, $path = "/")
 {
@@ -108,12 +119,11 @@ foreach($brokenitems as $id => $data)
 <td class="listingtable">
 <?php 
 ?>
-<!--
 <form action="/user/" method="get">
 <input type="hidden" name="page" value="missinginventory"/>
 <input type="hidden" name="id" value="<x?php echo $id ?>"/>
 <input type="submit" name="delete" value="Delete"/>
-</form>-->
+</form>
 </td></tr>
 <?php
 }

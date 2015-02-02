@@ -60,6 +60,7 @@ if(isset($_GET["page"]))
 <a class="navbar" href="/user">Details</a><br/><br/>
 <a class="navbar" href="/user/?page=changepassword">Change password</a><br/><br/>
 <a class="navbar" href="/user/?page=inventory">Inventory</a><br/><br/>
+<a class="navbar" href="/user/?page=missinginventory">Check Inventory</a><br/><br/>
 <a class="navbar" href="/user/?page=appearances">Appearances</a><br/>
 <a class="navbar" href="/user/?page=purgeappearance">Purge Appearance</a><br/><br/>
 <a class="navbar" href="/user/?page=purgepresences">Purge Presences</a><br/><br/>
