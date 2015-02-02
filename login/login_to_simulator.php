@@ -80,6 +80,7 @@ require_once("lib/helpers/gridlibrary.php");
 
 function LoginFailResponse($reason, $message)
 {
+	trigger_error("Login Error: $reason $message");
 	$structParam = new RPCStruct();
 	$structParam->reason = $reason;
 	$structParam->message = $message;
@@ -211,8 +212,6 @@ if($option_inventory_skeleton)
 	}
 	catch(Exception $e)
 	{
-		echo $e->getMessage()." / ". $userAccount->PrincipalID." / ". $rootfolder->ID;
-		exit;
 		$authInfoService->releaseToken($userAccount->PrincipalID, $secureSessionID);
 		return LoginFailResponse("key", "The inventory service is not responding.  Please notify your login region operator (B)");
 	}
