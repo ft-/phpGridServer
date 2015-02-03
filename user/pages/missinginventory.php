@@ -13,7 +13,7 @@ if(isset($_GET["delete"]))
 	{
 		$inventoryService->deleteItem($principalID, $_GET["id"]);
 	}
-	catch
+	catch(Exception $e)
 	{
 	}
 }
