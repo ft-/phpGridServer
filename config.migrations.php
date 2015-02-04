@@ -9,7 +9,7 @@ $migrateservices=array(
 	"GridData",
 	"UserAccount",
 	"Presence",
-	"Maptile",
+	"MaptileDB",
 	"AuthInfo",
 	"Avatar",
 	"Friends",

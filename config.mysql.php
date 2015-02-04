@@ -92,13 +92,18 @@ $cfg_PresenceService = array(
 		"dbtable"=>"Presence"
 );
 
-$cfg_MaptileService = array(
+$cfg_MaptileDBService = array(
 		"use"=>"connectors/db/mysql/MaptileService",
 		"dbhost"=>$dbhost,
 		"dbname"=>$dbname,
 		"dbuser"=>$dbuser,
 		"dbpass"=>$dbpass,
 		"dbtable"=>"maptiles"
+);
+
+$cfg_MaptileService = array(
+		"use"=>"services/MaptileZoomGenerator",
+		"service"=>"MaptileDB"
 );
 
 $cfg_AuthInfoService = array(

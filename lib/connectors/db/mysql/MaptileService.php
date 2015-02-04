@@ -56,9 +56,37 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		if(!$row)
 		{
 			$res->free();
-			throw new MaptileNotFoundException();
+			trigger_error("missing maptile $locX $locY $zoomLevel");
+			throw new MaptileNotFoundException("$locX $locY $zoomLevel");
 		}
 		$data = $row["data"];
+		$res->free();
+		return $data;
+	}
+	
+	public function getMaptileUpdateTimes($scopeID, $locXLow, $locYLow, $locXHigh, $locYHigh, $zoomLevel)
+	{
+		$locXLow = intval($locXLow);
+		$locYLow = intval($locYLow);
+		$locXHigh = intval($locXHigh);
+		$locYHigh = intval($locYHigh);
+		$zoomLevel = intval($zoomLevel);
+		UUID::CheckWithException($scopeID);
+		$res = $this->db->query("SELECT locX, locY, lastUpdate FROM ".$this->dbtable." WHERE scopeID LIKE '$scopeID' AND locX >= $locXLow AND locY >= $locYLow AND locX <= $locXHigh AND locY <= $locYHigh AND zoomLevel = $zoomLevel");
+		if(!$res)
+		{
+			throw new Exception("Database access error");
+		}
+		
+		$updatetimes = array();
+		while($row = $res->fetch_assoc())
+		{
+			$updatetimes[] = array(
+				"locX" => intval($row["locX"]),
+				"locY" => intval($row["locY"]),
+				"updateTime" => intval($row["lastUpdate"]));
+		}
+
 		$res->free();
 		return $data;
 	}
@@ -73,7 +101,8 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
   								PRIMARY KEY (`locX`,`locY`),
   								KEY `scopeID` (`scopeID`)
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8",
-		"ALTER TABLE %tablename% ADD zoomLevel INT(11) NOT NULL DEFAULT '1', ADD lastUpdate BIGINT(20) NOT NULL DEFAULT '0'"
+		"ALTER TABLE %tablename% ADD zoomLevel INT(11) NOT NULL DEFAULT '1', ADD lastUpdate BIGINT(20) NOT NULL DEFAULT '0'",
+		"ALTER TABLE %tablename% DROP PRIMARY KEY, ADD PRIMARY KEY(locX, locY, zoomLevel)"
 	);
 	public function migrateRevision()
 	{

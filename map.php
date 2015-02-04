@@ -49,16 +49,17 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 	$matches = array();
 	if(preg_match("/^map-(?<ZOOM>[0-9]+)-(?P<X>[0-9]+)-(?P<Y>[0-9]+)-.+\\.jpg$/", $mapid, $matches))
 	{
-		$x = $matches["X"] * 256;
-		$y = $matches["Y"] * 256;
-		$zoomLevel = $matches["ZOOM"];
+		$x = intval($matches["X"]) * 256;
+		$y = intval($matches["Y"]) * 256;
+		$zoomLevel = intval($matches["ZOOM"]);
 		try
 		{
-			$maptile = $maptileService->getMaptile($scopeid, $x, $y);
+			$maptile = $maptileService->getMaptile($scopeid, $x, $y, $zoomLevel);
 		}
 		catch(Exception $e)
 		{
 			http_response_code("404");
+			trigger_error(($x/256).",".($y/256)." $zoomLevel => ".$e->Message." ; ".get_class($e));
 			exit;
 		}
 		header("Content-Type: image/jpeg");
