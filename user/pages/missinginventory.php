@@ -11,7 +11,7 @@ if(isset($_GET["delete"]))
 {
 	try
 	{
-		$inventoryService->deleteItem($principalID, $_GET["id"]);
+		$inventoryService->deleteItem($userAccount->ID, $_GET["id"]);
 	}
 	catch(Exception $e)
 	{
