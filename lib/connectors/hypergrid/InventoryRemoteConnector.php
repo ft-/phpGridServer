@@ -103,7 +103,7 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 	public function __construct($uri, $sessionID)
 	{
 		$this->httpConnector = getService("HTTPConnector");
-		$this->uri = $uri."/inventory";
+		$this->uri = $uri."/xinventory";
 		$this->SessionID = $sessionID;
 	}
 
@@ -135,7 +135,8 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 				"METHOD"=>"GETITEM"
 		);
 
-		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$resdata = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$res = OpenSimResponseXMLHandler::parseResponse($resdata);
 		if(isset($res->item))
 		{
 			return $this->rpcStructToInventoryItem($res->item);
@@ -242,7 +243,8 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 				"METHOD"=>"GETFOLDERITEMS"
 		);
 
-		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$resdata = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$res = OpenSimResponseXMLHandler::parseResponse($resdata);
 
 		if(isset($res->ITEMS))
 		{
@@ -251,7 +253,7 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 			{
 				$itlist[] = $this->rpcStructToInventoryItem($v);
 			}
-			return HGInventoryRemoteItemIterator($itlist);
+			return new HGInventoryRemoteItemIterator($itlist);
 		}
 		throw new InventoryNotFoundException();
 	}
@@ -272,7 +274,7 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 			{
 				$itlist[] = $this->rpcStructToInventoryItem($v);
 			}
-			return HGInventoryRemoteItemIterator($itlist);
+			return new HGInventoryRemoteItemIterator($itlist);
 		}
 		throw new InventoryNotFoundException();
 	}
@@ -282,10 +284,11 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 		$reqValues = array(
 				"FOLDER"=>$folderID,
 				"PRINCIPAL"=>$principalID,
-				"METHOD"=>"GETFOLDERITEMS"
+				"METHOD"=>"GETFOLDERCONTENT"
 		);
 
-		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$resdata = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$res = OpenSimResponseXMLHandler::parseResponse($resdata);
 
 		if(isset($res->FOLDERS))
 		{
@@ -294,7 +297,7 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 			{
 				$itlist[] = $this->rpcStructToInventoryFolder($v);
 			}
-			return HGInventoryRemoteFolderIterator($itlist);
+			return new HGInventoryRemoteFolderIterator($itlist);
 		}
 		throw new InventoryNotFoundException();
 	}
@@ -306,7 +309,8 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 			"METHOD"=>"GETFOLDER"
 		);
 
-		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$resdata = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$res = OpenSimResponseXMLHandler::parseResponse($resdata);
 		if(isset($res->folder))
 		{
 			return $this->rpcStructToInventoryFolder($res->folder);
@@ -386,12 +390,12 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 	public function getRootFolder($principalID)
 	{
 		$reqValues = array(
-				"ID"=>$folderID,
 				"PRINCIPAL"=>$principalID,
 				"METHOD"=>"GETROOTFOLDER"
 		);
 
-		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$resdata = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$res = OpenSimResponseXMLHandler::parseResponse($resdata);
 		if(isset($res->folder))
 		{
 			return $this->rpcStructToInventoryFolder($res->folder);
@@ -407,7 +411,8 @@ class HGInventoryRemoteConnector implements InventoryServiceInterface
 				"METHOD"=>"GETFOLDERFORTYPE"
 		);
 
-		$res = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$resdata = $this->httpConnector->doPostRequest($this->uri, $reqValues)->Body;
+		$res = OpenSimResponseXMLHandler::parseResponse($resdata);
 		if(isset($res->folder))
 		{
 			return $this->rpcStructToInventoryFolder($res->folder);
