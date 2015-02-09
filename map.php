@@ -59,7 +59,6 @@ else if($_SERVER["REQUEST_METHOD"]=="GET")
 		catch(Exception $e)
 		{
 			http_response_code("404");
-			trigger_error(($x/256).",".($y/256)." $zoomLevel => ".$e->Message." ; ".get_class($e));
 			exit;
 		}
 		header("Content-Type: image/jpeg");
