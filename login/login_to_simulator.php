@@ -437,6 +437,7 @@ catch(Exception $e)
 	$presenceService->logoutPresence($sessionID);
 	$gridUserService->loggedOut($userAccount->PrincipalID);
 	$authInfoService->releaseToken($userAccount->PrincipalID, $secureSessionID);
+	trigger_error("Could not launch agent at destination. ".$e->getMessage()." ".get_class($e));
 	return LoginFailResponse("key", "Could not launch agent at destination. ".$e->getMessage());
 }
 
