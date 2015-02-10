@@ -88,7 +88,7 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		}
 
 		$res->free();
-		return $data;
+		return $updatetimes;
 	}
 
 	private $revisions = array(
