@@ -46,11 +46,13 @@ if(!isset($structParam->version))
 	return new RPCFaultResponse(4, "Missing parameter version");
 }
 
+/*
 if(!isset($structParam->platform))
 {
 	return new RPCFaultResponse(4, "Missing parameter platform");
 	exit;
 }
+*/
 
 if(!isset($structParam->mac))
 {
