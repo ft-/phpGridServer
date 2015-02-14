@@ -34,7 +34,7 @@ class PresenceHandlerConnectorIterator
 			$presence = $this->presenceIterator->getAgent();
 			if($presence)
 			{
-				$this->handledSessionIDs[] = $presence->SessionID;
+				$this->handledSessionIDs[] = "".$presence->SessionID;
 				return $presence->getConnector();
 			}
 			else
@@ -55,7 +55,7 @@ class PresenceHandlerConnectorIterator
 					$this->hgTravelingDataIterator = null;
 					return null;
 				}
-			} while(in_array($hgTravelingData->SessionID, $this->handledSessionIDs));
+			} while(in_array("".$hgTravelingData->SessionID, $this->handledSessionIDs));
 			return $hgTravelingData->getConnector();
 		}
 
