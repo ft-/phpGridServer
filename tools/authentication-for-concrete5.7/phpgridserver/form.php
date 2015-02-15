@@ -24,13 +24,6 @@ $form = Loader::helper('form');
                placeholder="<?php echo t('Password')?>" />
     </div>
 
-    <div class="checkbox">
-        <label style="font-weight:normal">
-            <input type="checkbox" name="uMaintainLogin" value="1">
-            <?php echo t('Stay signed in for two weeks') ?>
-        </label>
-    </div>
-
     <?php
     if (isset($locales) && is_array($locales) && count($locales) > 0) {
         ?>
