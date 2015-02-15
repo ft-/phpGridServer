@@ -105,7 +105,11 @@ class LLSDXMLHandler implements RPCHandler
 	{
 		if($tag["type"] == "single")
 		{
-			if($tag["name"]=="map" || $tag["name"]=="array")
+			if($tag["name"]=="map")
+			{
+				return new RPCStruct();
+			}
+			else if($tag["name"]=="array")
 			{
 				return array();
 			}
