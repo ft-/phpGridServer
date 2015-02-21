@@ -30,7 +30,7 @@ if(isset($structParam->userID))
 	try
 	{
 		$homeGrid = ServerDataURI::getHome();
-		$rpcStruct->URL = $homeGrid->IMServerURI;
+		$rpcStruct->URL = $homeGrid->GatekeeperURI;
 	}
 	catch(Exception $e)
 	{
