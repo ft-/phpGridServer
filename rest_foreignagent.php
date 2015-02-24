@@ -36,7 +36,7 @@ else
 	$userAccount = getUserAccountFromAgentData($_AGENT_POST);
 	$sessionInfo = getSessionInfoFromAgentData($_AGENT_POST);
 	
-	if(substr($userAccount, 0, 1) == "@")
+	if(substr($userAccount->LastName, 0, 1) == "@")
 	{
 		/* do not replace the name in this case */
 	}
