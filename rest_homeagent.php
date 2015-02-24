@@ -43,8 +43,11 @@ if(!$serverDataUri->isHome())
 /* we got a Home Agent here, check that it is definitely in our account table */
 try
 {
-	$userAccountService->getAccountByID(null, $userAccount->PrincipalID);
+	$localAccount = $userAccountService->getAccountByID(null, $userAccount->PrincipalID);
 	$userAccount->LocalToGrid = True; /* set it to being known at this grid */
+	/* correct data with local name */
+	$userAccount->FirstName = $localAccount->FirstName;
+	$userAccount->LastName = $localAccount->LastName;
 }
 catch(Exception $e)
 {
