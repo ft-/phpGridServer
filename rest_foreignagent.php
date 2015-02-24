@@ -36,25 +36,6 @@ else
 	$userAccount = getUserAccountFromAgentData($_AGENT_POST);
 	$sessionInfo = getSessionInfoFromAgentData($_AGENT_POST);
 	
-	if(substr("".$userAccount->LastName, 0, 1) == "@")
-	{
-		/* do not replace the name in this case */
-	}
-	else
-	{
-		$userAccount->FirstName = $userAccount->FirstName.".".$userAccount->LastName;
-	}
-
-	$uricomponents = parse_url($serverDataUri->HomeURI);
-	if(!isset($uricomponents["port"]))
-	{
-		$userAccount->LastName = "@".$uricomponents["host"];
-	}
-	else
-	{
-		$userAccount->LastName = "@".$uricomponents["host"].":".$uricomponents["port"];
-	}
-
 	/* from going through opensim code, it seems that it makes problems to have colliding UUIDs than it is worth about handling those on the sim */
 	/* that would require a proxy for separation */
 	try
@@ -291,6 +272,26 @@ catch(Exception $e)
 	echo $serializer->serializeRPC($res);
 	exit;
 }
+
+if(substr("".$userAccount->LastName, 0, 1) == "@")
+{
+	/* do not replace the name in this case */
+}
+else
+{
+	$userAccount->FirstName = $userAccount->FirstName.".".$userAccount->LastName;
+}
+
+$uricomponents = parse_url($serverDataUri->HomeURI);
+if(!isset($uricomponents["port"]))
+{
+	$userAccount->LastName = "@".$uricomponents["host"];
+}
+else
+{
+	$userAccount->LastName = "@".$uricomponents["host"].":".$uricomponents["port"];
+}
+
 
 try
 {
