@@ -192,6 +192,24 @@ class MySQLHGTravelingDataService implements HGTravelingDataServiceInterface
 		$stmt->close();
 	}
 
+	public function deleteHGTravelingDataByAgentUUID($userid)
+	{
+		$userid = substr($userid, 0, 36);
+		UUID::CheckWithException($userid);
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE UserID LIKE '$userid'");
+		if(!$stmt)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		if(!$stmt->execute())
+		{
+			$stmt->close();
+			throw new HGTravelingDataDeleteFailedException();
+		}
+		$stmt->close();
+	}
+
 	private $revisions = array(
 		" CREATE TABLE %tablename% (
   							`SessionID` varchar(36) NOT NULL,

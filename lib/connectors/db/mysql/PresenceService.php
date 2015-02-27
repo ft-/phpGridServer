@@ -200,6 +200,32 @@ class MySQLPresenceServiceConnector implements PresenceServiceInterface
 		$stmt->close();
 	}
 
+	public function deletePresenceByAgentUUID($userid)
+	{
+		UUID::CheckWithException(substr($userid, 0, 36));
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE UserID LIKE ?");
+		if(!$stmt)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		$stmt->bind_param("s", substr($userid, 0, 36));
+		$stmt->execute();
+		try
+		{
+			if(0 == $stmt->affected_rows)
+			{
+				throw new PresenceUpdateFailedException();
+			}
+		}
+		catch(Exception $e)
+		{
+			$stmt->close();
+			throw $e;
+		}
+		$stmt->close();
+	}
+
 	public function logoutRegion($regionID)
 	{
 		UUID::CheckWithException($regionID);

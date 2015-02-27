@@ -324,6 +324,25 @@ foreach($appearance as $k => $v)
 }
 
 $presenceService = getService("Presence");
+$hgTravelingDataService = getService("HGTravelingData");
+
+if(!string2boolean($serverParamService->getParam("AllowMultiplePresences", "false")))
+{
+	try
+	{
+		$presenceService->deletePresenceByAgentUUID($userAccount->PrincipalID);
+	}
+	catch(Exception $e)
+	{
+	}
+	try
+	{
+		$hgTravelingDataService->deleteHGTravelingDataByAgentUUID($userAccount->PrincipalID);
+	}
+	catch(Exception $e)
+	{
+	}
+}
 
 try
 {
@@ -395,7 +414,6 @@ $sessionInfo = new SessionInfo();
 $sessionInfo->SessionID = $sessionID;
 $sessionInfo->SecureSessionID = $secureSessionID;
 
-$hgTravelingDataService = getService("HGTravelingData");
 
 $hgTravelingData = new HGTravelingData();
 $hgTravelingData->SessionID = $sessionID;

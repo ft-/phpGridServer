@@ -28,4 +28,5 @@ interface PresenceServiceInterface
 	public function logoutPresence($sessionID);
 	public function logoutRegion($regionID);
 	public function setRegion($sessionID, $regionID);
+	public function deletePresenceByAgentUUID($userid);
 }

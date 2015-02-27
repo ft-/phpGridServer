@@ -26,4 +26,5 @@ interface HGTravelingDataServiceInterface
 	public function getHGTravelingDataByAgentUUIDAndNotHomeURI($uuid, $homeURI);
 	public function storeHGTravelingData($travelingData);
 	public function deleteHGTravelingData($sessionID);
+	public function deleteHGTravelingDataByAgentUUID($uuid);
 }
