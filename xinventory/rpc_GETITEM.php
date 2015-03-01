@@ -36,6 +36,7 @@ try
 {
 	$principalID = $inventoryService->getPrincipalIDForItem($_RPC_REQUEST->ID);
 	$item = $inventoryService->getItem($principalID, $_RPC_REQUEST->ID);
+	getCreatorData($item);
 	echo "<ServerResponse>";
 	echo $item->toXML("item", " type=\"List\"");
 	echo "</ServerResponse>";

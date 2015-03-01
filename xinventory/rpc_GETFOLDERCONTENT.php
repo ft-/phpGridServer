@@ -73,6 +73,7 @@ try
 	$res = $inventoryService->getItemsInFolder($principalID, $_RPC_REQUEST->FOLDER);
 	while($row = $res->getItem())
 	{
+		getCreatorData($row);
 		echo $row->toXML("item_$cnt", " type=\"List\"");
 		$cnt++;
 	}

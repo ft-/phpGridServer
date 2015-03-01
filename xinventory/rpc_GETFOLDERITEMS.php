@@ -53,6 +53,7 @@ echo "<ITEMS type=\"List\">";
 $cnt = 0;
 while($item = $res->getItem())
 {
+	getCreatorData($item);
 	echo $item->toXML("item_$cnt", " type=\"List\"");
 	$cnt++;
 }

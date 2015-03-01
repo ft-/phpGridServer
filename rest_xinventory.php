@@ -23,6 +23,31 @@ if($_SERVER["REQUEST_METHOD"] != "POST")
 	exit;
 }
 
+$db_uuid_cache = array();
+function getCreatorData($item)
+{
+	global $db_uuid_cache;
+	$serverParamService = getService("ServerParam");
+	$userAccountService = getService("UserAccount");
+	if(isset($db_uuid_cache["".$item->CreatorID]))
+	{
+		return $db_uuid_cache["".$item->CreatorID];
+	}
+	$homeURI = $serverParamService->getParam("HG_HomeURI", "http://${_SERVER["SERVER_NAME"]}:${_SERVER["SERVER_PORT"]}/");
+	try
+	{
+		$userAccount = $userAccountService->getAccountByID(null, $uuid);
+		$item->CreatorData = "$homeURI;".$userAccount->FirstName." ".$userAccount->LastName;
+		$db_uuid_cache["".$item->CreatorID] = $item->CreatorData;
+	}
+	catch(Exception $e)
+	{
+		$db_uuid_cache["".$item->CreatorID] = "";
+	}
+	return $db_uuid_cache["".$item->CreatorID];
+}
+
+
 function sendBooleanResponse($result, $msg="")
 {
 	if($result)
