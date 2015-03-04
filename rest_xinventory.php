@@ -11,6 +11,16 @@ set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include
 require_once("lib/services.php");
 require_once("lib/rpc/restrpc.php");
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 /* variable is disabling deletion, so no user injected parameter can enable it at all */
 if(!isset($disallow_delete))
 {
@@ -21,6 +31,16 @@ if($_SERVER["REQUEST_METHOD"] != "POST")
 {
 	http_response_code("400");
 	exit;
+}
+
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
 }
 
 $db_uuid_cache = array();

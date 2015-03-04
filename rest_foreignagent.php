@@ -9,6 +9,16 @@
 
 require_once("lib/services.php");
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 $_AGENT_POST = require_once("lib/rpc/agentpost.php");
 
 /* this is the only needed data, we need to know for actually relaying the home agent correctly */

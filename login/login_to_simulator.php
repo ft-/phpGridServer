@@ -9,6 +9,16 @@
 
 /* common implementation to LLSD and XMLRPC */
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 if(count($_RPC_REQUEST)!=1)
 {
 	return new RPCFaultResponse(4, "Missing struct parameter");

@@ -13,6 +13,16 @@ require_once("lib/types/DestinationInfo.php");
 require_once("lib/connectors/hypergrid/GatekeeperRemoteConnector.php");
 require_once("lib/types/ServerDataURI.php");
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 $hgServerDataService = getService("HGServerData");
 $userAccountService = getService("UserAccount");
 $presenceService = getService("Presence");

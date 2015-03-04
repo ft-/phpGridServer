@@ -11,6 +11,16 @@ set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include
 require_once("lib/services.php");
 require_once("lib/rpc/restrpc.php");
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 try
 {
 	$_RPC_REQUEST=RESTRPCHandler::parseREST($_POST);

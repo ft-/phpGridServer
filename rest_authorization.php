@@ -12,6 +12,16 @@ if($_SERVER["REQUEST_METHOD"] != "POST")
 	exit;
 }
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 $dom = new DOMDocument;
 $dom->loadXML(file_get_contents("php://input"));
 function getNode($node, $name)

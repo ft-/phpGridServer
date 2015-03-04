@@ -12,6 +12,16 @@ set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include
 require_once("lib/services.php");
 require_once("lib/xmltok.php");
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 function parseArrayOfString(&$input)
 {
 	$assetids = array();

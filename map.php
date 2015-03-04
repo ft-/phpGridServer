@@ -12,6 +12,16 @@ require_once("lib/services.php");
 
 $urlPath=$_SERVER["REQUEST_URI"];
 
+if(function_exists("apache_request_headers"))
+{
+	$headers = apache_request_headers();
+	if(isset($headers["X-SecondLife-Shard"]))
+	{
+		http_response_code("400");
+		exit;
+	}
+}
+
 $mapid = substr($_SERVER["REQUEST_URI"], 1 + strlen($_SERVER["SCRIPT_NAME"]));
 $detail = "";
 
