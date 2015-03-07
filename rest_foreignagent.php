@@ -297,6 +297,10 @@ if(!isset($uricomponents["port"]))
 {
 	$userAccount->LastName = "@".$uricomponents["host"];
 }
+else if($uricomponents["port"] == 80)
+{
+	$userAccount->LastName = "@".$uricomponents["host"];
+}
 else
 {
 	$userAccount->LastName = "@".$uricomponents["host"].":".$uricomponents["port"];
