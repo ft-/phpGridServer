@@ -620,16 +620,16 @@ class MySQLGridServiceConnector implements GridServiceInterface
 
 	public function getRegionsByRange($scopeID, $xmin, $ymin, $xmax, $ymax)
 	{
+		$xmin = intval($xmin);
+		$ymin = intval($ymin);
+		$xmax = intval($xmax);
+		$ymax = intval($ymax);
 		UUID::CheckWithException($scopeID);
 		/* we have to give checks for all intersection variants */
 		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE
-				(
-					(locX >= $xmin AND locY >= $ymin AND locX <= $xmax AND locY <= $ymax) OR
-					(locX + sizeX >= $xmin AND locY+sizeY >= $ymin AND locX + sizeX <= $xmax AND locY + sizeY <= $ymax) OR
-					(locX >= $xmin AND locY >= $ymin AND locX + sizeX > $xmin AND locY + sizeY > $ymin) OR
-					(locX >= $xmax AND locY >= $ymax AND locX + sizeX > $xmax AND locY + sizeY > $ymax)
-				) AND
-				ScopeID='$scopeID'");
+				(locX between $xmin and $xmax) AND
+				(locY between $ymin and $ymax) AND
+				ScopeID LIKE '$scopeID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
