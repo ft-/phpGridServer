@@ -189,6 +189,12 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 		$res->free();
 		return $item;
 	}
+	
+	public function incrementVersion($folderID)
+	{
+		UUID::CheckWithException($folderID);
+		$this->db->query("UPDATE ".$this->dbtable_folders." SET version = version + 1 WHERE folderID LIKE '$folderID'");
+	}
 
 	public function addItem($item)
 	{
@@ -245,6 +251,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 			{
 				throw new InventoryAddFailedException();
 			}
+			$this->incrementVersion($item->ParentFolderID);
 		}
 		catch(Exception $e)
 		{
@@ -295,6 +302,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 			{
 				throw new InventoryStoreFailedException();
 			}
+			$this->incrementVersion($item->ParentFolderID);
 		}
 		catch(Exception $e)
 		{
@@ -306,6 +314,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 
 	public function deleteItem($principalID, $itemID, $linkOnlyAllowed = false)
 	{
+		$thisitem = $this->getItem($principalID, $itemID);
 		UUID::CheckWithException($itemID);
 		if($linkOnlyAllowed)
 		{
@@ -326,6 +335,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 		{
 			throw new InventoryDeleteFailedException();
 		}
+		$this->incrementVersion($thisitem->ParentFolderID);
 	}
 
 	public function moveItem($principalID, $itemID, $toFolderID)
@@ -333,6 +343,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 		UUID::CheckWithException($itemID);
 		UUID::CheckWithException($toFolderID);
 
+		$thisitem = $this->getItem($principalID, $itemID);
+		
 		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_items." SET parentFolderID=? WHERE inventoryID LIKE ?");
 		if(!$stmt)
 		{
@@ -354,6 +366,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 			throw $e;
 		}
 		$stmt->close();
+		$this->incrementVersion($toFolderID);
+		$this->incrementVersion($thisitem->ParentFolderID);
 	}
 
 
@@ -485,6 +499,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 			{
 				throw new InventoryStoreFailedException("Storing failed for ".$folder->ID."/".$folder->OwnerID);
 			}
+			$this->incrementVersion($folder->ParentFolderID);
 		}
 		catch(Exception $e)
 		{
@@ -518,6 +533,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 			{
 				throw new InventoryAddFailedException();
 			}
+			$this->incrementVersion($folder->ParentFolderID);
 		}
 		catch(Exception $e)
 		{
@@ -530,6 +546,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 	public function deleteFolder($principalID, $folderID)
 	{
 		UUID::CheckWithException($folderID);
+		$thisfolder = $this->getFolder($principalID, $folderID);
+		
 		$res = $this->getFoldersInFolder($principalID, $folderID);
 		while($item = $res->getFolder())
 		{
@@ -550,6 +568,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 			{
 				throw new InventoryDeleteFailedException();
 			}
+			$this->incrementVersion($thisfolder->ParentFolderID);
 		}
 		catch(Exception $e)
 		{
@@ -563,6 +582,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 	{
 		UUID::CheckWithException($folderID);
 		UUID::CheckWithException($toFolderID);
+		
+		$thisfolder = $this->getFolder($principalID, $folderID);
 
 		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_folders." SET parentFolderID=? WHERE folderID LIKE ?");
 		if(!$stmt)
@@ -578,6 +599,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 			{
 				throw new InventoryStoreFailedException();
 			}
+			$this->incrementVersion($toFolderID);
+			$this->incrementVersion($thisfolder->ParentFolderID);
 		}
 		catch(Exception $e)
 		{
