@@ -697,7 +697,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 								KEY inventoryitems_parentFolderid (parentFolderID)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8",
 		"ALTER TABLE %tablename% ADD COLUMN creatorRefID BIGINT(20) NOT NULL DEFAULT '0' AFTER creationDate",
-		"ALTER TABLE %tablename% ADD KEY inventoryitems_agentid_type (avatarID, assetType)"
+		"ALTER TABLE %tablename% ADD KEY inventoryitems_agentid_type (avatarID, assetType)",
+		"ALTER TABLE %tablename% ADD KEY inventoryitems_agentid_parentfolderid (avatarID, parentFolderID)"
 	);
 	private $revisions_folders = array(
 		" CREATE TABLE %tablename% (
@@ -711,7 +712,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 										KEY inventoryfolders_agentid (agentID),
 										KEY inventoryfolders_parentFolderid (parentFolderID)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-		"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_type (agentID, type)"
+		"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_type (agentID, type)",
+		"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_parentfolderid (agentID, parentFolderID)"
 	);
 	
 	public $revisions_creators = array(
