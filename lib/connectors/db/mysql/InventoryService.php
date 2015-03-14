@@ -709,7 +709,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 										PRIMARY KEY (folderID),
 										KEY inventoryfolders_agentid (agentID),
 										KEY inventoryfolders_parentFolderid (parentFolderID)
-										) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+										) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+		"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_type (agentID, type)"
 	);
 	
 	public $revisions_creators = array(
