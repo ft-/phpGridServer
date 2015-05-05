@@ -56,7 +56,7 @@ function getCreatorData($item)
 	$homeURI = $serverParamService->getParam("HG_HomeURI", "http://${_SERVER["SERVER_NAME"]}:${_SERVER["SERVER_PORT"]}/");
 	try
 	{
-		$userAccount = $userAccountService->getAccountByID(null, $uuid);
+		$userAccount = $userAccountService->getAccountByID(null, $item->CreatorID);
 		$item->CreatorData = "$homeURI;".$userAccount->FirstName." ".$userAccount->LastName;
 		$db_uuid_cache["".$item->CreatorID] = $item->CreatorData;
 	}
