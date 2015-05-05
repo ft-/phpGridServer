@@ -88,10 +88,9 @@ if($presence)
 	$membership->levels = $membership_levels;
 
 	$rpcStruct["success"] = True;
-	$rpcStruct["currency"] = True;
-	$rpcStruct["membership"] = True;
-	$rpcStruct["landUse"] = True;
-	$rpcStruct["currency"] = True;
+	$rpcStruct["membership"] = $membership;
+	$rpcStruct["landUse"] = $landUse;
+	$rpcStruct["currency"] = $currency;
 	$rpcStruct["confirm"] = "";
 }
 else
