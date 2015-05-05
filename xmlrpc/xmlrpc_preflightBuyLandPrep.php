@@ -87,18 +87,18 @@ if($presence)
 	$membership->action = $thisurl;
 	$membership->levels = $membership_levels;
 
-	$rpcStruct->success = True;
-	$rpcStruct->currency = True;
-	$rpcStruct->membership = True;
-	$rpcStruct->landUse = True;
-	$rpcStruct->currency = True;
-	$rpcStruct->confirm = "";
+	$rpcStruct["success"] = True;
+	$rpcStruct["currency"] = True;
+	$rpcStruct["membership"] = True;
+	$rpcStruct["landUse"] = True;
+	$rpcStruct["currency"] = True;
+	$rpcStruct["confirm"] = "";
 }
 else
 {
-	$rpcStruct->success = False;
-        $rpcStruct->errorMessage = "\n\nUnable to Authenticate\n\nClick URL for more info.";
-        $rpcStruct->errorURI = $thisurl;
+	$rpcStruct["success"] = False;
+        $rpcStruct["errorMessage"] = "\n\nUnable to Authenticate\n\nClick URL for more info.";
+        $rpcStruct["errorURI"] = $thisurl;
 }
 
 $response = new RPCSuccessResponse();
