@@ -64,7 +64,7 @@ while($presence = $presenceIterator->getAgent())
 }
 $presenceIterator->free();
 
-$rpcStruct = array();
+$rpcStruct = new RPCStruct();
 
 if($presence)
 {
@@ -87,17 +87,17 @@ if($presence)
 	$membership->action = $thisurl;
 	$membership->levels = $membership_levels;
 
-	$rpcStruct["success"] = True;
-	$rpcStruct["membership"] = $membership;
-	$rpcStruct["landUse"] = $landUse;
-	$rpcStruct["currency"] = $currency;
-	$rpcStruct["confirm"] = "";
+	$rpcStruct->success = True;
+	$rpcStruct->membership = $membership;
+	$rpcStruct->landUse = $landUse;
+	$rpcStruct->currency = $currency;
+	$rpcStruct->confirm = "";
 }
 else
 {
-	$rpcStruct["success"] = False;
-        $rpcStruct["errorMessage"] = "\n\nUnable to Authenticate\n\nClick URL for more info.";
-        $rpcStruct["errorURI"] = $thisurl;
+	$rpcStruct->success = False;
+        $rpcStruct->errorMessage = "\n\nUnable to Authenticate\n\nClick URL for more info.";
+        $rpcStruct->errorURI = $thisurl;
 }
 
 $response = new RPCSuccessResponse();
