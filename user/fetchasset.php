@@ -39,22 +39,45 @@ catch(Exception $e)
 
 if($asset->Type == AssetType::Texture)
 {
-	$tmpfile = "../tmp/".UUID::Random().".jp2";
-	file_put_contents($tmpfile, $asset->Data->Data);
-	try
+	if(class_exists("GMagick"))
 	{
-		$im = new GMagick($tmpfile);
-		$im->setimageformat("png");
-		header("Content-Type: image/png");
-		echo (string)$im;
+		$tmpfile = "../tmp/".UUID::Random().".jp2";
+		file_put_contents($tmpfile, $asset->Data->Data);
+		try
+		{
+			$im = new GMagick($tmpfile);
+			$im->setimageformat("png");
+			header("Content-Type: image/png");
+			echo (string)$im;
+		}
+		catch(Exception $e)
+		{
+			http_response_code("500");
+			header("Content-Type: text/plain");
+			echo $e->getMessage();
+		}
+		unlink($tmpfile);
 	}
-	catch(Exception $e)
+	else if(class_exists("Imagick"))
 	{
-		http_response_code("500");
-		header("Content-Type: text/plain");
-		echo $e->getMessage();
+		$tmpfile = "../tmp/".$asset->ID.".png";
+		try
+		{
+			$im = new Imagick();
+			$im->readImageBlob($asset->Data->Data);
+			$im->setFormat("png");
+			$im->writeImage("$tmpfile");
+			header("Content-Type: image/png");
+			echo file_get_contents("$tmpfile");
+		}
+		catch(Exception $e)
+		{
+			http_response_code("500");
+			header("Content-Type: text/plain");
+			echo $e->getMessage();
+		}
+		@unlink($tmpfile);
 	}
-	unlink($tmpfile);
 }
 else if($asset->Type == AssetType::Sound)
 {
