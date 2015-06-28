@@ -204,6 +204,7 @@ class JSON_LaunchAgentServiceConnector implements LaunchAgentServiceInterface
 		}
 
 		$appearancePack = new RPCStruct();
+		$appearancePack->serial = $serial;
 		$appearancePack->height = $height;
 		$appearancePack->wearables = $wearables;
 		$appearancePack->textures = $textures;
