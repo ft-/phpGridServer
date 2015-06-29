@@ -672,7 +672,7 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 	{
 		$creatorUUID = substr($creatorID, 0, 36);
 		UUID::CheckWithException($creatorUUID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_creators." WHERE creatorID LIKE '".$creatorUUID."%'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_creators." WHERE creatorID LIKE '".$creatorUUID."%' ORDER BY creatorID LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -692,6 +692,42 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 		$creatorRefId = $row["creatorRefID"];
 		$res->free();
 		return $creatorRefId;
+	}
+	
+	private function fixTableStructure()
+	{
+		$res = $this->db->query("SELECT creatorID, creatorRefID FROM ".$this->dbtable_creators." ORDER BY creatorID, creatorRefID");
+		$lastcreator = "";
+		$lastcreatorid = 0;
+		if(!$res)
+		{
+			trigger_error(mysqli_error($this->db));
+			throw new Exception("Database access error");
+		}
+		while($row = mysqli_fetch_assoc($res))
+		{
+			if($lastcreator == $row["creatorID"])
+			{
+				echo "Changing references to duplicate ".$lastcreator." (".$row["creatorRefID"]." to $lastcreatorid)\n";
+				$query = "UPDATE ".$this->dbtable_items." SET creatorRefID = $lastcreatorid WHERE creatorRefID = ".$row["creatorRefID"];
+				if(!$this->db->query($query))
+				{
+					throw new Exception("Database access error");
+				}
+				echo "Deleting duplicate ".$lastcreator."\n";
+				$query = "DELETE FROM ".$this->dbtable_creators." WHERE creatorRefID = ".$row["creatorRefID"];
+				if(!$this->db->query($query))
+				{
+					throw new Exception("Database access error");
+				}
+			}
+			else
+			{
+				$lastcreator = $row["creatorID"];
+				$lastcreatorid = $row["creatorRefID"];
+			}
+		}
+		$res->close();
 	}
 
 	private $revisions_items = array(
@@ -745,15 +781,36 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 				creatorID VARCHAR(255) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
 				PRIMARY KEY (creatorRefID),
 				UNIQUE KEY CreatorRefId_UNIQUE (creatorRefID)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+		"ALTER TABLE %tablename% DROP KEY CreatorRefId_UNIQUE"
 	);
-	
+
+	public $revisions_creators2 = array(
+		"", /* intentionally left empty */
+		"", /* intentionally left empty */
+		"ALTER TABLE %tablename% ADD UNIQUE KEY creatorid_UNIQUE (creatorID)"
+	);
+
 	public function migrateRevision()
 	{
 		mysql_migrationExecuter($this->db, "MySQL.Inventory", $this->dbtable_folders, $this->revisions_folders);
 		mysql_migrationExecuter($this->db, "MySQL.Inventory", $this->dbtable_items, $this->revisions_items);
 		mysql_migrationExecuter($this->db, "MySQL.Inventory", $this->dbtable_creators, $this->revisions_creators);
 		$this->migrateInventory();
+		$process = true;
+		while($process)
+		{
+			$this->fixTableStructure();
+			try
+			{
+				mysql_migrationExecuter($this->db, "MySQL.Inventory", $this->dbtable_creators, $this->revisions_creators2);
+				$process = false;
+			}
+			catch(Exception $e)
+			{
+				echo $e->Message;
+			}
+		}
 	}
 	
 	public function migrateInventory()
