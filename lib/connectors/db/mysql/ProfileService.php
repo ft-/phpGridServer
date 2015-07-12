@@ -493,6 +493,10 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 		$props->AboutText = $row["profileAboutText"];
 		$props->FirstLifeImageID = $row["profileFirstImage"];
 		$props->FirstLifeText = $row["profileFirstText"];
+		if(!$props->FirstLifeText)
+		{
+			$props->FirstLifeText = "";
+		}
 
 		return $props;
 	}
