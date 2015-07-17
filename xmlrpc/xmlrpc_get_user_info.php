@@ -33,6 +33,8 @@ $userAccountService = getService("UserAccount");
 try
 {
 	$userAccount = $userAccountService->getAccountByID(null, $structParam->userID);
+	$rpcStruct->user_firstname = $userAccount->FirstName;
+	$rpcStruct->user_lastname = $userAccount->LastName;
 	$rpcStruct->user_flags = $userAccount->UserFlags;
 	$rpcStruct->user_created = $userAccount->Created;
 	$rpcStruct->user_title = $userAccount->UserTitle;
