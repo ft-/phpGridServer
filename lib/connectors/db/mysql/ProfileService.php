@@ -817,7 +817,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 
 
 return new MySQLProfileServiceConnector(
-					"p:".$_SERVICE_PARAMS["dbhost"],
+					$_SERVICE_PARAMS["dbhost"],
 					$_SERVICE_PARAMS["dbuser"],
 					$_SERVICE_PARAMS["dbpass"],
 					$_SERVICE_PARAMS["dbname"],
