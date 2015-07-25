@@ -235,8 +235,8 @@ if(!isset($gridmap_included_once))
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.css"/>
 <script src="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.js" type="text/javascript"></script>
 
-<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/minimap/Control.MiniMap.css"/>
-<script src="/lib/js/leaflet-plugins/minimap/Control.MiniMap.js" type="text/javascript"></script>
+<!--<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/minimap/Control.MiniMap.css"/>
+<script src="/lib/js/leaflet-plugins/minimap/Control.MiniMap.js" type="text/javascript"></script>-->
 
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/geocoder/Control.Geocoder.css"/>
 <script src="/lib/js/leaflet-plugins/geocoder/Control.Geocoder.js" type="text/javascript"></script>
