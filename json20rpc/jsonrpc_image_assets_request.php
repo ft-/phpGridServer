@@ -27,6 +27,7 @@ try
 {
 	$assetids = $profileService->getUserImageAssets($_RPC_REQUEST->params->avatarId);
 	$res = new RPCSuccessResponse();
+	$res->__unnamed_params__ = true;
 	$res->result = $assetids;
 	return $res;
 }
