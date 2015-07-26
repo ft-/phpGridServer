@@ -31,7 +31,10 @@ try
 	$res->__unnamed_params__ = true;
 	foreach($assetids as $assetid)
 	{
-		$res->$cnt = $assetid;
+		if($assetid != UUID::ZERO())
+		{
+			$res->$cnt = $assetid;
+		}
 		++$cnt;
 	}
 	return $res;
