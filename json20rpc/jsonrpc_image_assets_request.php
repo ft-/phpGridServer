@@ -28,12 +28,12 @@ try
 	$assetids = $profileService->getUserImageAssets($_RPC_REQUEST->params->avatarId);
 	$res = new RPCSuccessResponse();
 	$cnt = 0;
+	$res->__unnamed_params__ = true;
 	foreach($assetids as $assetid)
 	{
 		$res->$cnt = $assetid;
 		++$cnt;
 	}
-	$res->result = $assetids;
 	return $res;
 }
 catch(Exception $e)
