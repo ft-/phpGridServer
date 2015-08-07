@@ -496,6 +496,8 @@ catch(Exception $e)
 $rpcStruct->look_at = "[r".$destination->LookAt->X.",r".$destination->LookAt->Y.",r".$destination->LookAt->Z."]";
 $rpcStruct->agent_access_max = "A";
 $rpcStruct->seed_capability = new URI($destination->ServerURI."CAPS/".$circuitInfo->CapsPath."0000/");
+$structMember = "max-agent-groups";
+$rpcStruct->$structMember = intval($serverParamService->getParam("MaxAgentGroups", "42"));
 $rpcStruct->region_x = $destination->LocX;
 $rpcStruct->region_y = $destination->LocY;
 $rpcStruct->region_size_x = $destination->SizeX;
