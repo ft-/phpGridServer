@@ -66,13 +66,5 @@ function llsdCategoryFromInventoryFolder($inventoryFolder)
 	$childfoldermap->parent_id = $inventoryFolder->ParentFolderID;
 	$childfoldermap->name = $inventoryFolder->Name;
 	$childfoldermap->type = $inventoryFolder->Type;
-	if(AssetType::Folder != $inventoryFolder->Type)
-	{
-		$childfoldermap->preferred_type = $inventoryFolder->Type;
-	}
-	else
-	{
-		$childfoldermap->preferred_type = -1;
-	}
 	return $childfoldermap;
 }

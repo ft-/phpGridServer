@@ -32,8 +32,7 @@ class AssetType
 	const Clothing = 5;
 	const PrimObject = 6;
 	const Notecard = 7;
-	const Folder = 8;
-	const RootFolder = 9;
+	const RootFolder = 8;
 	const LSLText = 10;
 	const LSLBytecode = 11;
 	const TextureTGA = 12;

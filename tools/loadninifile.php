@@ -39,7 +39,7 @@ function setupInventory()
 		$rootfolder->ID = UUID::Random();
 		$rootfolder->OwnerID = $inventoryowner;
 		$rootfolder->Name = "My Inventory";
-		$rootfolder->Type = AssetType::Folder;
+		$rootfolder->Type = AssetType::RootFolder;
 		$rootfolder->ParentFolderID = UUID::ZERO();
 
 		$inventoryService->addFolder($rootfolder);
@@ -56,7 +56,7 @@ function setupInventory()
 		$inventoryfolder->ID = $inventoryfolderid;
 		$inventoryfolder->OwnerID = $inventoryowner;
 		$inventoryfolder->Name = "OpenSim Library";
-		$inventoryfolder->Type = AssetType::Folder;
+		$inventoryfolder->Type = AssetType::RootFolder;
 		$inventoryfolder->ParentFolderID = $rootfolder->ID;
 
 		$inventoryService->addFolder($inventoryfolder);
