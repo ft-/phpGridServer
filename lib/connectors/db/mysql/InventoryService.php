@@ -772,7 +772,8 @@ class MySQLInventoryServiceConnector implements InventoryServiceInterface
 										KEY inventoryfolders_parentFolderid (parentFolderID)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8",
 		"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_type (agentID, type)",
-		"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_parentfolderid (agentID, parentFolderID)"
+		"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_parentfolderid (agentID, parentFolderID)",
+		"update inventoryfolders set type = 8 where type = 9 AND ParentFolderID LIKE '00000000-0000-0000-0000-000000000000'"
 	);
 	
 	public $revisions_creators = array(
