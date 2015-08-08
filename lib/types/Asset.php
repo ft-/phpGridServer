@@ -57,6 +57,9 @@ class AssetType
 	const Mesh = 49;
 	const Inbox = 50;
 	const Outbox = 51;
+	const BasicRoot = 52;
+	const MarketplaceListings = 53;
+	const MarketplaceStock = 54;
 }
 
 class AssetMetadata
