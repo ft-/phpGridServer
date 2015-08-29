@@ -411,7 +411,7 @@ contextmenuWidth: 140,
 			)
 			.bindLabel('",addslashes($region->RegionName)."', {noHide: true})
 			.addTo(map);";
-	echo "L.polyline([[$x1, $y1], [$x2, $y1]], {dashArray: \"none\",weight: 1, color:'#0080ff'}).addTo(map).setText('",addslashes($region->RegionName)."', {repeat:false});";
+	echo "L.polyline([[$x1, $y1], [$x2, $y1]], {dashArray: \"none\",weight: 1, color:'#0080ff'}).addTo(map).setText('",addslashes($region->RegionName)."', {repeat:false, attributes: {fill:'white'}});";
 }
 $res->free();
 echo "map.panTo([$x,$y]);\n";
