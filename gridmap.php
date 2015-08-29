@@ -256,6 +256,7 @@ if(!isset($gridmap_included_once))
 <script src="/lib/js/leaflet-plugins/label/Path.Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/Map.Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/FeatureGroup.Label.js"></script>
+<script src="/lib/js/leaflet-plugins/textpath/leaflet.textpath.js"></script>
 <?php } if($gridmap_htmlframing) { ?>
 </head>
 <body>
@@ -410,6 +411,7 @@ contextmenuWidth: 140,
 			)
 			.bindLabel('",addslashes($region->RegionName)."', {noHide: true})
 			.addTo(map);";
+	echo "L.polyline([[$x1, $y1], [$x2, $y1]], {dashArray: \"none\",weight: 1, color:'#0080ff'}).addTo(map).setText('",addslashes($region->RegionName)."', {repeat:false});";
 }
 $res->free();
 echo "map.panTo([$x,$y]);\n";
