@@ -378,7 +378,7 @@ var tileLayer2 = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_
  maxZoom:-5,
  minZoom:-9,
 });
-var miniMap = new L.Control.MiniMap(tileLayer2).addTo(map);
+//var miniMap = new L.Control.MiniMap(tileLayer2).addTo(map);
 <?php } ?>
 L.Polygon.include(L.Mixin.ContextMenu);
 <?php
