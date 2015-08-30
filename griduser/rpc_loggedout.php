@@ -95,6 +95,18 @@ else
 	}
 }
 
+if(!UUID:IsUUID($_RPC_REQUEST->UserID))
+{
+	try
+	{
+		$presenceService = getService("Presence");
+		$presenceService->deletePresenceByAgentUUID($RPC_REQUEST->UserID);
+	}
+	catch(Exception $e)
+	{
+	}
+}
+
 try
 {
 	$gridUserService->loggedOut($_RPC_REQUEST->UserID, $_RPC_REQUEST->RegionID, $_RPC_REQUEST->Position, $_RPC_REQUEST->LookAt);
