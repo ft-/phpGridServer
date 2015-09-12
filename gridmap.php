@@ -314,6 +314,12 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 		}
 		$res->free();
 	}
+	else
+	{
+		$serverParams = getService("ServerParam");
+		$x = floatval($serverParams->getParam("map-defaultx", "1000"));
+		$y = floatval($serverParams->getParam("map-defaulty", "1000"));
+	}
 }
 else
 {
