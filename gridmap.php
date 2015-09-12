@@ -305,6 +305,12 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 				$x = ($region->LocX / 256) + 0.5;
 				$y = ($region->LocY / 256) + 0.5;
 			}
+			else
+			{
+				$serverParams = getService("ServerParam");
+				$x = floatval($serverParams->getParam("map-defaultx", "1000"));
+				$y = floatval($serverParams->getParam("map-defaulty", "1000"));
+			}
 		}
 		$res->free();
 	}
