@@ -308,8 +308,8 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 			else
 			{
 				$serverParams = getService("ServerParam");
-				$x = floatval($serverParams->getParam("map-defaultx", "1000"));
-				$y = floatval($serverParams->getParam("map-defaulty", "1000"));
+				$x = floatval($serverParams->getParam("map-defaultx", "1000")) + 0.5;
+				$y = floatval($serverParams->getParam("map-defaulty", "1000")) + 0.5;
 			}
 		}
 		$res->free();
@@ -317,8 +317,8 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 	else
 	{
 		$serverParams = getService("ServerParam");
-		$x = floatval($serverParams->getParam("map-defaultx", "1000"));
-		$y = floatval($serverParams->getParam("map-defaulty", "1000"));
+		$x = floatval($serverParams->getParam("map-defaultx", "1000")) + 0.5;
+		$y = floatval($serverParams->getParam("map-defaulty", "1000")) + 0.5;
 	}
 }
 else
