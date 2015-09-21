@@ -95,7 +95,7 @@ else
 	}
 }
 
-if(!UUID:IsUUID($_RPC_REQUEST->UserID))
+if(!UUID::IsUUID($_RPC_REQUEST->UserID))
 {
 	try
 	{
