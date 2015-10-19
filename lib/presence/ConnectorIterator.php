@@ -44,6 +44,7 @@ class PresenceHandlerConnectorIterator
 			}
 		}
 
+/*
 		if($this->hgTravelingDataIterator)
 		{
 			do
@@ -58,7 +59,7 @@ class PresenceHandlerConnectorIterator
 			} while(in_array("".$hgTravelingData->SessionID, $this->handledSessionIDs));
 			return $hgTravelingData->getConnector();
 		}
-
+*/
 		return null;
 	}
 }
