@@ -618,7 +618,7 @@ if($option_classified_categories)
 }
 
 //seconds_since_epoch
-$rpcStruct->seconds_since_epoch = $userAccount->Created;
+$rpcStruct->seconds_since_epoch = time(NULL);
 
 if($inventory_skeleton)
 {
