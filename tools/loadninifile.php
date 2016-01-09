@@ -56,7 +56,7 @@ function setupInventory()
 		$inventoryfolder->ID = $inventoryfolderid;
 		$inventoryfolder->OwnerID = $inventoryowner;
 		$inventoryfolder->Name = "OpenSim Library";
-		$inventoryfolder->Type = AssetType::RootFolder;
+		$inventoryfolder->Type = -1;
 		$inventoryfolder->ParentFolderID = $rootfolder->ID;
 
 		$inventoryService->addFolder($inventoryfolder);
