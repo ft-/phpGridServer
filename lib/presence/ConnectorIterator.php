@@ -15,7 +15,8 @@ class PresenceHandlerConnectorIterator
 	private $presenceIterator;
 	private $hgTravelingDataIterator;
 	private $handledSessionIDs;
-	public function __construct($uuid)
+	private $EnableHGTravelingData;
+	public function __construct($uuid, $enablehgtravelingdata = false)
 	{
 		UUID::CheckWithException($uuid);
 		$presenceService = getService("Presence");
@@ -23,7 +24,7 @@ class PresenceHandlerConnectorIterator
 
 		$this->presenceIterator = $presenceService->getAgentsByID($uuid);
 		$this->hgTravelingDataIterator = $hgTravelingDataService->getHGTravelingDatasByAgentUUID($uuid);
-
+		$this->EnableHGTravelingData = $enablehgtravelingdata;
 		$this->handledSessionIDs = array();
 	}
 
@@ -44,8 +45,7 @@ class PresenceHandlerConnectorIterator
 			}
 		}
 
-/*
-		if($this->hgTravelingDataIterator)
+		if($this->hgTravelingDataIterator && $this->EnableHGTravelingData)
 		{
 			do
 			{
@@ -59,7 +59,7 @@ class PresenceHandlerConnectorIterator
 			} while(in_array("".$hgTravelingData->SessionID, $this->handledSessionIDs));
 			return $hgTravelingData->getConnector();
 		}
-*/
+
 		return null;
 	}
 }

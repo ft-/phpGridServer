@@ -16,7 +16,7 @@ class GridIMService implements IMServiceInterface
 	public function send($im)
 	{
 		$foundPresence = false;
-		$connectorIterator = new PresenceHandlerConnectorIterator($im->ToAgentID);
+		$connectorIterator = new PresenceHandlerConnectorIterator($im->ToAgentID, true);
 		while($connector = $connectorIterator->getConnector())
 		{
 			try
