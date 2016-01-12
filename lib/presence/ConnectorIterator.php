@@ -47,6 +47,7 @@ class PresenceHandlerConnectorIterator
 
 		if($this->hgTravelingDataIterator && $this->EnableHGTravelingData)
 		{
+			$homeGrid = ServerDataURI::getHome();
 			do
 			{
 				$hgTravelingData = $this->hgTravelingDataIterator->getHGTravelingData();
@@ -56,7 +57,9 @@ class PresenceHandlerConnectorIterator
 					$this->hgTravelingDataIterator = null;
 					return null;
 				}
-			} while(in_array("".$hgTravelingData->SessionID, $this->handledSessionIDs));
+			} while(in_array("".$hgTravelingData->SessionID, $this->handledSessionIDs) || 
+				$homeGrid->HomeURI == $hgTravelingData->GridExternalName ||
+				$homeGrid->GatekeeperURI == $hgTravelingData->GridExternalName);
 			return $hgTravelingData->getConnector();
 		}
 
