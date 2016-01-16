@@ -9,7 +9,23 @@
 
 function xmlentities($raw)
 {
-	return htmlspecialchars($raw, ENT_NOQUOTES);
+	$prelowarea = htmlspecialchars($raw, ENT_NOQUOTES);
+    $postlowarea = "";
+    /* further characters not being ok for xml */
+    for($i = 0; $i < strlen($prelowarea); ++$i)
+    {
+        $c = substr($prelowarea, $i, 1);
+        $ci = ord($c);
+        if($ci < 9 || $ci == 0xB || $ci == 0xC || ($ci >= 0xE && $ci <= 0x1F))
+        {
+            $postlowarea = $postlowarea . "&#$ci;";
+        }
+        else
+        {
+            $postlowarea = $postlowarea . $c;
+        }
+    }
+    return $postlowarea;
 }
 
 function is_xml_name_character($xml)
