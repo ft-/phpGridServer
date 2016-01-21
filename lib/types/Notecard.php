@@ -10,6 +10,7 @@
 require_once("lib/types/UUID.php");
 require_once("lib/types/InventoryItem.php");
 require_once("lib/types/Asset.php");
+require_once("lib/rpc/llsdxml.php");
 class NotANotecardFormat extends exception {};
 
 
@@ -22,6 +23,7 @@ class Notecard
 {
 	public $Text = "";
 	public $InventoryItems;
+	public $AppearanceAssets = array();
 
 	public function __construct()
 	{
@@ -305,6 +307,53 @@ class Notecard
 		}
 	}
 
+	private static function checkNPCNotecard($nc)
+	{
+		if(substr($nc->Text, 0, 6) != "<llsd>")
+		{
+			return;
+		}
+		$text = $nc->Text;
+		
+		$llsd = LLSDXMLHandler::parseLLSD($text);
+		foreach($llsd->wearables as $wearables)
+		{
+			foreach($wearables as $wearable)
+			{
+				try
+				{
+					if(!in_array("".$wearable->asset, $nc->AppearanceAssets))
+					{
+						$nc->AppearanceAssets[] = "".$wearable->asset;
+					}
+				}
+				catch(Exception $e)
+				{
+				}
+			}
+		}
+		foreach($llsd->textures as $texture)
+		{
+			if(!in_array("".$texture->asset, $nc->AppearanceAssets))
+			{
+				$nc->AppearanceAssets[] = "".$texture->asset;
+			}
+		}
+		foreach($llsd->attachments as $attachment)
+		{
+			try
+			{
+				if(!in_array("".$attachment->asset, $nc->AppearanceAssets))
+				{
+					$nc->AppearanceAssets[] = "".$attachment->asset;
+				}
+			}
+			catch(Exception $e)
+			{
+			}
+		}
+	}
+	
 	private static function readNotecard(&$assetdata)
 	{
 		$notecard = new Notecard();
@@ -317,6 +366,13 @@ class Notecard
 			$line = Notecard::getLine($assetdata);
 			if($line == "}")
 			{
+				try
+				{
+					Notecard::checkNPCNotecard($notecard);
+				}
+				atch(Exception $e)
+				{
+				}
 				return $notecard;
 			}
 
