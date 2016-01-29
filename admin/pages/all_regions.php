@@ -144,6 +144,17 @@ else if(isset($_GET["RemoveDefaults"]))
 	{
 	}
 }
+else if(isset($_GET["Remove"]))
+{
+	try
+	{
+		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
+		$gridService->unregisterRegion($region->ScopeID, $region->Uuid);
+	}
+	catch(Exception $e)
+	{
+	}
+}
 	
 $regions = $gridService->getAllRegions();
 while($region = $regions->getRegion())
@@ -204,7 +215,8 @@ while($region = $regions->getRegion())
 <input type="submit" name="ClearDefault" value="Clear Default"/><br/>
 <input type="submit" name="SetFallback" value="Set Fallback"/>
 <input type="submit" name="ClearFallback" value="Clear Fallback"/><br/>
-<input type="submit" name="RemoveDefaults" value="Remove Defaults"/>
+<input type="submit" name="RemoveDefaults" value="Remove Defaults"/><br/>
+<input type="submit" name="Remove" value="Remove Region"/><br/>
 </form>
 <?php
 	echo "</td>";
