@@ -83,7 +83,7 @@ while($region = $regions->getRegion())
 <form action="/user/" method="GET">
 <input type="hidden" name="page" value="regionslist"/>
 <input type="hidden" name="regionid" value="<?php echo $region->Uuid; ?>"/>
-<input type="submit" name="Remove" value="Remove"/>
+<input style="color: red;" type="submit" name="Remove" value="Remove"/>
 </form>
 <?php
 	echo "</td>";
