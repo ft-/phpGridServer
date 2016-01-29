@@ -215,7 +215,11 @@ while($region = $regions->getRegion())
 <input type="submit" name="ClearDefault" value="Clear Default"/><br/>
 <input type="submit" name="SetFallback" value="Set Fallback"/>
 <input type="submit" name="ClearFallback" value="Clear Fallback"/><br/>
-<input type="submit" name="RemoveDefaults" value="Remove Defaults"/><br/>
+<input type="submit" name="RemoveDefaults" value="Remove Defaults"/>
+</form><br/>
+<form action="/admin/" method="GET" onsubmit="return confirm('Do you really want to delete the region?');">
+<input type="hidden" name="page" value="all_regions"/>
+<input type="hidden" name="regionid" value="<?php echo $region->Uuid; ?>"/>
 <input style="color: red;" type="submit" name="Remove" value="Remove Region"/><br/>
 </form>
 <?php

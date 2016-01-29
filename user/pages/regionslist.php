@@ -80,7 +80,7 @@ while($region = $regions->getRegion())
 	echo "</td>";
 	echo "<td>";
 ?>
-<form action="/user/" method="GET">
+<form action="/user/" method="GET" onsubmit="return confirm('Do you really want to delete the region?');">
 <input type="hidden" name="page" value="regionslist"/>
 <input type="hidden" name="regionid" value="<?php echo $region->Uuid; ?>"/>
 <input style="color: red;" type="submit" name="Remove" value="Remove"/>
