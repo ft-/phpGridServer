@@ -42,7 +42,7 @@ while($region = $regions->getRegion())
 	echo "<tr>";
 	echo "<td class=\"listingtable\">".htmlentities($region->RegionName)."</td>";
 	echo "<td class=\"listingtable\">".$region->Uuid."</td>";
-	echo "<td class=\"listingtable\">".$region->LocX.",".$region->LocY."</td>";
+	echo "<td class=\"listingtable\">".intval($region->LocX / 256).",".intval($region->LocY)."</td>";
 	echo "<td class=\"listingtable\">".$region->SizeX.",".$region->SizeY."</td>";
 	if($region->Flags & RegionFlags::RegionOnline)
 	{
