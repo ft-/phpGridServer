@@ -215,6 +215,22 @@ catch(Exception $e)
 	exit;
 }
 
+/* filter @ */
+while(substr($userAccount->LastName, 0, 1) == "@")
+{
+	$sp = split(".", $userAccount->FirstName, 2);
+	if(count($sp) == 1)
+	{
+		$userAccount->FirstName = $sp;
+		$userAccount->LastName = "";
+	}
+	else
+	{
+		$userAccount->FirstName = $sp[0];
+		$userAccount->LastName = $sp[1];
+	}
+}
+
 /* we have to add a Presence and we need that GridUser entry */
 /* the following is the UUI we use within GridUserInfo */
 $UUI = $userAccount->PrincipalID.";".$serverDataUri->HomeURI.";".$userAccount->FirstName." ".$userAccount->LastName;
