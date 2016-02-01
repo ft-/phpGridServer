@@ -218,7 +218,7 @@ catch(Exception $e)
 /* filter @ */
 while(substr($userAccount->LastName, 0, 1) == "@")
 {
-	$sp = split(".", $userAccount->FirstName, 2);
+	$sp = explode(".", $userAccount->FirstName, 2);
 	if(count($sp) == 1)
 	{
 		$userAccount->FirstName = $sp;
