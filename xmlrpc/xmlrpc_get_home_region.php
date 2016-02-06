@@ -25,12 +25,12 @@ $structParam = $_RPC_REQUEST->Params[0];
 
 if(!isset($structParam->userID))
 {
-	return new RPCFaultResponse(4, "Missing parameter uuid");
+	return new RPCFaultResponse(4, "Missing parameter userID");
 }
 
 if(!UUID::IsUUID($structParam->userID))
 {
-	return new RPCFaultResponse(4, "Invalid parameter uuid");
+	return new RPCFaultResponse(4, "Invalid parameter userID");
 }
 
 try
