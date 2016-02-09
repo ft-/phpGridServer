@@ -309,7 +309,7 @@ class Notecard
 
 	private static function checkNPCNotecard($nc)
 	{
-		if(substr($nc->Text, 0, 6) != "<llsd>")
+//		if(substr($nc->Text, 0, 6) != "<llsd>")
 		{
 			return;
 		}
@@ -370,7 +370,7 @@ class Notecard
 				{
 					Notecard::checkNPCNotecard($notecard);
 				}
-				atch(Exception $e)
+				catch(Exception $e)
 				{
 				}
 				return $notecard;
