@@ -232,6 +232,9 @@ while(substr($userAccount->LastName, 0, 1) == "@")
 	}
 }
 
+$userAccount->FirstName = trim($userAccount->FirstName);
+$userAccount->LastName = trim($userAccount->LastName);
+
 /* we have to add a Presence and we need that GridUser entry */
 /* the following is the UUI we use within GridUserInfo */
 $UUI = $userAccount->PrincipalID.";".$serverDataUri->HomeURI.";".$userAccount->FirstName." ".$userAccount->LastName;
