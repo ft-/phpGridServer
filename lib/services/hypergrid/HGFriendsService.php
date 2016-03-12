@@ -237,7 +237,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 			/* lookup for presences */
 			try
 			{
-				$uui = new UUI($friendID);
+				$uui = new UUI($localFriendUUI);
 			
 				$connectorIterator = new PresenceHandlerConnectorIterator($uui->ID);
 
