@@ -193,8 +193,7 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 						$asset->CreatorID,
 						$null);
 		$stmt->send_long_data(10, "".$asset->Data); /* this prevents us from having to rewrite max_packet_size */
-		$stmt->execute();
-		if($stmt->affected_rows == 0)
+		if(!$stmt->execute())
 		{
 			$stmt->close();
 			$res = $this->db->query("SELECT id FROM assets WHERE id = '$id' $assetFlagsCheck");
@@ -207,10 +206,9 @@ class MySQLAssetServiceConnector implements AssetServiceInterface
 			{
 				$res->free();
 				$stmt = $this->db->prepare("UPDATE assets SET data=?, assetType=? WHERE id=? $assetFlagsCheck");
-				$stmt->bind_param("bs", $null, $asset->Type, $asset->ID->ID);
+				$stmt->bind_param("bis", $null, $asset->Type, $id);
 				$stmt->send_long_data(0, $asset->Data); /* this prevents us frm having to rewrite max_packet_size */
-				$stmt->execute();
-				if($stmt->affected_rows == 0)
+				if(!$stmt->execute())
 				{
 					$stmt->close();
 					throw new AssetStoreFailedException("Could not update asset");
