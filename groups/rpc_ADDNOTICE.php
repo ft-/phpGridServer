@@ -55,6 +55,7 @@ if(!UUID::IsUUID($_RPC_REQUEST->NoticeID))
 
 $notice = new GroupNotice();
 $notice->ID = $_RPC_REQUEST->NoticeID;
+$notice->TMStamp = time();
 $notice->GroupID = $_RPC_REQUEST->GroupID;
 $notice->FromName = $_RPC_REQUEST->FromName;
 $notice->Subject = $_RPC_REQUEST->Subject;
