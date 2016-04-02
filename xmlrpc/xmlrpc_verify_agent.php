@@ -43,6 +43,10 @@ try
 	{
 		throw new Exception();
 	}
+	if(substr($data[0], -1) != "/")
+	{
+		$data[0] = $data[0]."/";
+	}
 	if($hgTravelingData->ServiceToken != $data[1] ||
 		$hgTravelingData->GridExternalName != $data[0])
 	{
