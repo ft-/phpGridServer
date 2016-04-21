@@ -144,6 +144,17 @@ else if(isset($_GET["RemoveDefaults"]))
 	{
 	}
 }
+else if(isset($_GET["Remove"]))
+{
+	try
+	{
+		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
+		$gridService->unregisterRegion($region->ScopeID, $region->Uuid);
+	}
+	catch(Exception $e)
+	{
+	}
+}
 	
 $regions = $gridService->getAllRegions();
 while($region = $regions->getRegion())
@@ -152,7 +163,7 @@ while($region = $regions->getRegion())
 	echo "<td class=\"listingtable\">".htmlentities($region->RegionName)."</td>";
 	echo "<td class=\"listingtable\">".$region->Uuid."</td>";
 	echo "<td class=\"listingtable\">".$region->ScopeID."</td>";
-	echo "<td class=\"listingtable\">".$region->LocX.",".$region->LocY."</td>";
+	echo "<td class=\"listingtable\">".intval($region->LocX / 256).",".intval($region->LocY / 256)."</td>";
 	echo "<td class=\"listingtable\">".$region->SizeX.",".$region->SizeY."</td>";
 	if($region->Flags & RegionFlags::RegionOnline)
 	{
@@ -205,6 +216,11 @@ while($region = $regions->getRegion())
 <input type="submit" name="SetFallback" value="Set Fallback"/>
 <input type="submit" name="ClearFallback" value="Clear Fallback"/><br/>
 <input type="submit" name="RemoveDefaults" value="Remove Defaults"/>
+</form><br/>
+<form action="/admin/" method="GET" onsubmit="return confirm('Do you really want to delete the region?');">
+<input type="hidden" name="page" value="all_regions"/>
+<input type="hidden" name="regionid" value="<?php echo $region->Uuid; ?>"/>
+<input style="color: red;" type="submit" name="Remove" value="Remove Region"/><br/>
 </form>
 <?php
 	echo "</td>";

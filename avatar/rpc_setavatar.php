@@ -40,6 +40,11 @@ foreach($_POST as $var=>$val)
 	}
 }
 
+if(isset($avatar_info["Serial"]) && $avatar_info["Serial"] == "0")
+{
+	$avatar_info["Serial"] = "1";
+}
+
 require_once("lib/services.php");
 $avatarService = getService("RPC_Avatar");
 try

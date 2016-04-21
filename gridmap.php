@@ -235,8 +235,8 @@ if(!isset($gridmap_included_once))
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.css"/>
 <script src="/lib/js/leaflet-plugins/zoomslider/L.Control.Zoomslider.js" type="text/javascript"></script>
 
-<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/minimap/Control.MiniMap.css"/>
-<script src="/lib/js/leaflet-plugins/minimap/Control.MiniMap.js" type="text/javascript"></script>
+<!--<link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/minimap/Control.MiniMap.css"/>
+<script src="/lib/js/leaflet-plugins/minimap/Control.MiniMap.js" type="text/javascript"></script>-->
 
 <link rel="stylesheet" type="text/css" href="/lib/js/leaflet-plugins/geocoder/Control.Geocoder.css"/>
 <script src="/lib/js/leaflet-plugins/geocoder/Control.Geocoder.js" type="text/javascript"></script>
@@ -256,6 +256,7 @@ if(!isset($gridmap_included_once))
 <script src="/lib/js/leaflet-plugins/label/Path.Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/Map.Label.js"></script>
 <script src="/lib/js/leaflet-plugins/label/FeatureGroup.Label.js"></script>
+<script src="/lib/js/leaflet-plugins/textpath/leaflet.textpath.js"></script>
 <?php } if($gridmap_htmlframing) { ?>
 </head>
 <body>
@@ -304,8 +305,20 @@ if(!isset($_GET["mapx"]) || !isset($_GET["mapy"]))
 				$x = ($region->LocX / 256) + 0.5;
 				$y = ($region->LocY / 256) + 0.5;
 			}
+			else
+			{
+				$serverParams = getService("ServerParam");
+				$x = floatval($serverParams->getParam("map-defaultx", "1000")) + 0.5;
+				$y = floatval($serverParams->getParam("map-defaulty", "1000")) + 0.5;
+			}
 		}
 		$res->free();
+	}
+	else
+	{
+		$serverParams = getService("ServerParam");
+		$x = floatval($serverParams->getParam("map-defaultx", "1000")) + 0.5;
+		$y = floatval($serverParams->getParam("map-defaulty", "1000")) + 0.5;
 	}
 }
 else
@@ -378,7 +391,7 @@ var tileLayer2 = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_
  maxZoom:-5,
  minZoom:-9,
 });
-var miniMap = new L.Control.MiniMap(tileLayer2).addTo(map);
+//var miniMap = new L.Control.MiniMap(tileLayer2).addTo(map);
 <?php } ?>
 L.Polygon.include(L.Mixin.ContextMenu);
 <?php
@@ -410,6 +423,7 @@ contextmenuWidth: 140,
 			)
 			.bindLabel('",addslashes($region->RegionName)."', {noHide: true})
 			.addTo(map);";
+	echo "L.polyline([[$x1, $y1], [$x2, $y1]], {dashArray: \"none\",weight: 1, color:'#0080ff'}).addTo(map).setText('",addslashes($region->RegionName)."', {repeat:false, attributes: {fill:'white'}});";
 }
 $res->free();
 echo "map.panTo([$x,$y]);\n";

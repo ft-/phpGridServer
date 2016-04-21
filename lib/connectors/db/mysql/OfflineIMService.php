@@ -100,7 +100,7 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 				$null,
 
 				$offlineIM->Dialog);
-		$stmt->send_long_data(9, $offlineIM->BinaryBucket);
+		$stmt->send_long_data(9, $offlineIM->BinaryBucket->Data);
 		$stmt->execute();
 		if($stmt->affected_rows == 0)
 		{
@@ -166,7 +166,7 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 }
 
 return new MySQLOfflineIMServiceConnector(
-					"p:".$_SERVICE_PARAMS["dbhost"],
+					$_SERVICE_PARAMS["dbhost"],
 					$_SERVICE_PARAMS["dbuser"],
 					$_SERVICE_PARAMS["dbpass"],
 					$_SERVICE_PARAMS["dbname"],

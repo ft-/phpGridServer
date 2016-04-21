@@ -16,7 +16,7 @@ class GridIMService implements IMServiceInterface
 	public function send($im)
 	{
 		$foundPresence = false;
-		$connectorIterator = new PresenceHandlerConnectorIterator($im->ToAgentID);
+		$connectorIterator = new PresenceHandlerConnectorIterator($im->ToAgentID, true);
 		while($connector = $connectorIterator->getConnector())
 		{
 			try
@@ -43,7 +43,6 @@ class GridIMService implements IMServiceInterface
 			}
 			else if($im->Dialog==GridInstantMessageDialog::InventoryOffered)
 			{
-				/* generate error message for return */
 				throw new Exception("user offline");
 			}
 			else

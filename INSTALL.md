@@ -57,6 +57,23 @@ run tools/dbmigration.php
 your former admin accounts will become admin accounts as well
 
 
+
+4.3. Remarks about ACL system
+
+in config.acl.php all entries are defined as ACLized methods
+
+The default ACL system needs to use SYSTEMIP based simulator logins with IPv4.
+So, connect either have a domain resolving IPv4 only or connect via IPv4 address.
+
+However, if you believe that you can trust the connections.
+All entries containing "accesscontrol/wrappers/AccessControlWrapper" in config.acl.php
+can be changed to be like the following example for AssetService:
+
+$cfg_RPC_AssetService = array(
+	"use"=>"linkto:AssetService"
+};
+
+
 5. Configuring phpGridServer
 
 Go to page All Server Params on the admin pages.
@@ -123,6 +140,7 @@ For module see http://opensimulator.org/wiki/OpenSimSearch
 
 Copy frontpage.sample.php to frontpage.php and adjust its content to your needs.
 
-Prodived frontpages:
+Provided frontpages:
 
 tools/frontpage-for-concrete5.7-integration contains files for concrete5 CMS V5.7.X
+

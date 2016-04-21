@@ -8,3 +8,4 @@ RemoteSystemsTempFiles
 .metadata
 simulator/bin
 
+/lib/js/leaflet-plugins/fullscreen/*.db

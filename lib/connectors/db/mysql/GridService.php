@@ -779,7 +779,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 
 
 return new MySQLGridServiceConnector(
-					"p:".$_SERVICE_PARAMS["dbhost"],
+					$_SERVICE_PARAMS["dbhost"],
 					$_SERVICE_PARAMS["dbuser"],
 					$_SERVICE_PARAMS["dbpass"],
 					$_SERVICE_PARAMS["dbname"],

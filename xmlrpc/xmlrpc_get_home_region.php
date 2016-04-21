@@ -23,19 +23,19 @@ if(count($_RPC_REQUEST->Params)!=1)
 
 $structParam = $_RPC_REQUEST->Params[0];
 
-if(!isset($structParam->uuid))
+if(!isset($structParam->userID))
 {
-	return new RPCFaultResponse(4, "Missing parameter uuid");
+	return new RPCFaultResponse(4, "Missing parameter userID");
 }
 
-if(!UUID::IsUUID($structParam->uuid))
+if(!UUID::IsUUID($structParam->userID))
 {
-	return new RPCFaultResponse(4, "Invalid parameter uuid");
+	return new RPCFaultResponse(4, "Invalid parameter userID");
 }
 
 try
 {
-	$gridUser = $gridUserService->getGridUser($structParam->uuid);
+	$gridUser = $gridUserService->getGridUser($structParam->userID);
 	$region = $gridService->getRegionByUuid(null, $gridUser->HomeRegionID);
 }
 catch(Exception $e)

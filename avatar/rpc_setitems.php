@@ -59,6 +59,11 @@ for($idx = 0; $idx < count($_RPC_REQUEST->Names); ++$idx)
 	$avatarInfo[str_replace("_", " ", $_RPC_REQUEST->Names[$idx])] = $_RPC_REQUEST->Values[$idx];
 }
 
+if(isset($avatarInfo["Serial"]) && $avatarInfo["Serial"] == "0")
+{
+	$avatarInfo["Serial"] = "1";
+}
+
 try
 {
 	$avatarService->setItems($_RPC_REQUEST->UserID, $avatarInfo);

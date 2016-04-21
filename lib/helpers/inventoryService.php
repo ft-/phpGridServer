@@ -42,7 +42,7 @@ function verifyInventoryHelper($inventoryService, $principalID)
 		$rootfolder->ID = UUID::Random();
 		$rootfolder->OwnerID = $principalID;
 		$rootfolder->Name = "My Inventory";
-		$rootfolder->Type = AssetType::Folder;
+		$rootfolder->Type = AssetType::RootFolder;
 		$rootfolder->ParentFolderID = UUID::ZERO();
 
 		$inventoryService->addFolder($rootfolder);

@@ -1419,7 +1419,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 
 return new MySQLGroupsServiceConnector(
-					"p:".$_SERVICE_PARAMS["dbhost"],
+					$_SERVICE_PARAMS["dbhost"],
 					$_SERVICE_PARAMS["dbuser"],
 					$_SERVICE_PARAMS["dbpass"],
 					$_SERVICE_PARAMS["dbname"],

@@ -32,8 +32,7 @@ class AssetType
 	const Clothing = 5;
 	const PrimObject = 6;
 	const Notecard = 7;
-	const Folder = 8;
-	const RootFolder = 9;
+	const RootFolder = 8;
 	const LSLText = 10;
 	const LSLBytecode = 11;
 	const TextureTGA = 12;
@@ -58,6 +57,9 @@ class AssetType
 	const Mesh = 49;
 	const Inbox = 50;
 	const Outbox = 51;
+	const BasicRoot = 52;
+	const MarketplaceListings = 53;
+	const MarketplaceStock = 54;
 }
 
 class AssetMetadata
