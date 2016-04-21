@@ -89,7 +89,7 @@ if($lockedmsg != "")
 $servicesessionid = explode(";", $sessionInfo->ServiceSessionID);
 if(count($servicesessionid) != 2)
 {
-	trigger_error("Failed to verify user identity. Invalid Service Session ID: ".$sessionInfo->ServiceSessionID);
+	trigger_error("Failed to verify user identity (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI."). Invalid Service Session ID: ".$sessionInfo->ServiceSessionID);
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
@@ -106,7 +106,7 @@ $homeGrid = ServerDataURI::getHome();
 
 if($homeGrid->GatekeeperURI != $servicesessionid[0])
 {
-	trigger_error("Failed to verify user identity. Invalid grid Name in ServiceSessionID: ".$homeGrid->GatekeeperURI." != ${servicesessionid[0]}");
+	trigger_error("Failed to verify user identity (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI."). Invalid grid Name in ServiceSessionID: ".$homeGrid->GatekeeperURI." != ${servicesessionid[0]}");
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
@@ -127,7 +127,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to verify user identity. Agent verification failed:".get_class($e).".:".$e->getMessage());
+	trigger_error("Failed to verify user identity (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI."). Agent verification failed:".get_class($e).".:".$e->getMessage());
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
@@ -148,7 +148,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to verify user identity. Client IP is not valid:".get_class($e).".:".$e->getMessage());
+	trigger_error("Failed to verify user identity (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI."). Client IP is not valid:".get_class($e).".:".$e->getMessage());
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
@@ -169,7 +169,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to store HyperGrid Server URIs");
+	trigger_error("Failed to store HyperGrid Server URIs (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI.")");
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
@@ -203,7 +203,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Incoming foreign agent: Could not get target region information ".$e->getMessage()." ; ".get_class($e));
+	trigger_error("Incoming foreign agent (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI."): Could not get target region information ".$e->getMessage()." ; ".get_class($e));
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
@@ -232,7 +232,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to add presence");
+	trigger_error("Failed to add presence (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI.")");
 	$gridUserService->loggedOut($UUI);
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
@@ -251,7 +251,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to add GridUser");
+	trigger_error("Failed to add GridUser (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI.")");
 	$presenceService->logoutPresence($sessionInfo->SessionID);
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
@@ -270,7 +270,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to verify GridUser ".$e->getMessage());
+	trigger_error("Failed to verify GridUser (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI.") ".$e->getMessage());
 	$presenceService->logoutPresence($sessionInfo->SessionID);
 	/* failed respond with JSON */
 	$res = new RPCSuccessResponse();
@@ -314,7 +314,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to launch foreign agent ".get_class($e).":".$e->getMessage());
+	trigger_error("Failed to launch foreign agent (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI.") ".get_class($e).":".$e->getMessage());
 	try
 	{
 		$gridUserService->loggedOut($UUI);
