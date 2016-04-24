@@ -74,6 +74,7 @@ try
 	$item->SaleType = intval($_RPC_REQUEST->SaleType);
 	$item->GroupID = $_RPC_REQUEST->GroupID;
 	$item->GroupOwned = intval($_RPC_REQUEST->GroupOwned);
+	$item->Flags = intval($_RPC_REQUEST->Flags);
 	$inventoryService->storeItem($item);
 	sendBooleanResponse(True);
 }
