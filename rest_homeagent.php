@@ -79,6 +79,7 @@ $hgTravelingDataService = getService("HGTravelingData");
 try
 {
 	$hgTravelingData = $hgTravelingDataService->getHGTravelingData($sessionInfo->SessionID);
+	$oldHgTravelingData = clone $hgTravelingData;
 }
 catch(Exception $e)
 {
@@ -208,6 +209,15 @@ catch(Exception $e)
 	trigger_error("Launching agent failed ".get_class($e).":".$e->getMessage());
 	$msg = $e->getMessage();
 	/* we should not delete HGTravelingData here, that user is still at remote grid */
+	try
+	{
+		$hgTravelingDataService->storeHGTravelingData($oldHgTravelingData);
+	}
+	catch(Exception $e)
+	{
+	
+	}
+	
 	try
 	{
 		$presenceService->logoutPresence($sessionInfo->SessionID);
