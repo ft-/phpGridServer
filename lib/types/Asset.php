@@ -608,6 +608,13 @@ class Asset extends AssetMetadata
 						throw new AssetXMLParseException();
 					}
 				}
+				else if($tok["name"]=="CreateTime")
+				{
+					if(!xml_skip_nodes($tok["name"], $input))
+					{
+						throw new AssetXMLParseException();
+					}
+				}
 				else if($tok["name"]=="ID")
 				{
 					$data = xml_parse_text($tok["name"], $input);
