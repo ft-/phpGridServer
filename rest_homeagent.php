@@ -218,15 +218,6 @@ catch(Exception $e)
 	
 	}
 	
-	try
-	{
-		$presenceService->logoutPresence($sessionInfo->SessionID);
-	}
-	catch(Exception $e)
-	{
-
-	}
-
 	/* respond with launch failure */
 	$res = new RPCSuccessResponse();
 	$res->Params[] = new RPCStruct();
@@ -236,6 +227,18 @@ catch(Exception $e)
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
+}
+
+if(!$destination->LocalToGrid)
+{
+	try
+	{
+		$presenceService->logoutPresence($sessionInfo->SessionID);
+	}
+	catch(Exception $e)
+	{
+
+	}
 }
 
 $res = new RPCSuccessResponse();
