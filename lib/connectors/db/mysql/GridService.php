@@ -21,6 +21,7 @@ function mysql_RegionInfoFromRow($row)
 	$region->SizeY = $row["sizeY"];
 	$region->RegionName = $row["regionName"];
 	$region->ServerIP = $row["serverIP"];
+	$region->ResolvedServerIP = $row["resolvedServerIP"];
 	$region->ServerHttpPort = intval($row["serverHttpPort"]);
 	$region->ServerURI = $row["serverURI"];
 	$region->ServerPort = intval($row["serverPort"]);
@@ -282,7 +283,8 @@ class MySQLGridServiceConnector implements GridServiceInterface
 			"Token"=>$region->Token,
 			"PrincipalID"=>$region->PrincipalID,
 			"flags"=>$region->Flags,
-			"ScopeID"=>$region->ScopeID
+			"ScopeID"=>$region->ScopeID,
+			"resolvedServerIP"=>$region->ResolvedServerIP
 		);
 
 		$updatequery = "";
@@ -416,7 +418,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 
 	public function getRegionByIP($ipAddress)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE serverIP LIKE '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE serverIP LIKE '".$this->db->real_escape_string($ipAddress)."' OR resolvedServerIP LIKE '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -755,7 +757,8 @@ class MySQLGridServiceConnector implements GridServiceInterface
 							KEY `regionName` (`regionName`),
 							KEY `ScopeID` (`ScopeID`),
 							KEY `flags` (`flags`)
-							) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED"
+							) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED",
+		"ALTER TABLE %tablename% ADD resolvedServerIP varchar(64) default ''"
 	);
 
 	private $revisions_regionDefaults = array(
