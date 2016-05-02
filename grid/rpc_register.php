@@ -162,6 +162,7 @@ $gridService = getService("RPC_Grid");
 
 try
 {
+	$region_info->ResolvedServerIP = gethostbyname($region_info->ServerIP);
 	$region_info->Flags &= RegionFlags::AllowedFlagsForRegistration;
 	$region_info->Flags |= $gridService->getRegionDefaultsForRegion($region_info->ScopeID, $region_info->ID, $region_info->RegionName);
 	$gridService->registerRegion($region_info);

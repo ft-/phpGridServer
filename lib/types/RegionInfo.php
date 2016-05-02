@@ -110,6 +110,8 @@ class RegionInfo
 	/* Authentication Info */
 	private $PrincipalID;
 	private $Token;
+	
+	public $ResolvedServerIP; /* we store the actual IP here */
 
 	/* Informational only for retrieval */
 	private $ScopeID;
