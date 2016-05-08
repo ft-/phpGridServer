@@ -408,6 +408,7 @@ if($userAccount->UserLevel >= 200)
 {
 	$destination->TeleportFlags |= TeleportFlags::Godlike;
 }
+$destination->TeleportFlags |= TeleportFlags::ViaLogin;
 
 require_once("lib/types/ClientInfo.php");
 require_once("lib/types/SessionInfo.php");

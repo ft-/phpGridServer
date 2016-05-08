@@ -198,7 +198,7 @@ catch(Exception $e)
 	exit;
 }
 
-$destination->TeleportFlags = TeleportFlags::ViaLogin;
+$destination->TeleportFlags |= TeleportFlags::ViaHGLogin;
 try
 {
 	$launchAgentService = getService("LaunchAgent");
