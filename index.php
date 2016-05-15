@@ -12,7 +12,7 @@ set_include_path(dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.get_include
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SERVER["CONTENT_TYPE"]))
 {
 	$contentType = explode(";", $_SERVER["CONTENT_TYPE"])[0];
-	if($contentType == "text/xml")
+	if($contentType == "text/xml" || $contentType == "application/xml")
 	{
 		/* xmlrpc */
 		chdir("xmlrpc");
