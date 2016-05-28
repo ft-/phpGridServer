@@ -368,7 +368,10 @@ class AssetMetadata
 				}
 				else
 				{
-					throw new AssetXMLParseException();
+					if(!xml_skip_nodes($tok["name"], $input))
+					{
+						throw new AssetXMLParseException();
+					}
 				}
 			}
 			else if($tok["type"]=="closing")
@@ -418,10 +421,6 @@ class AssetMetadata
 				else if($tok["name"]=="Flags")
 				{
 					$asset->Flags=0;
-				}
-				else
-				{
-					throw new AssetXMLParseException();
 				}
 			}
 		}
@@ -719,7 +718,10 @@ class Asset extends AssetMetadata
 				}
 				else
 				{
-					throw new AssetXMLParseException();
+					if(!xml_skip_nodes($tok["name"], $input))
+					{
+						throw new AssetXMLParseException();
+					}
 				}
 			}
 			else if($tok["type"]=="closing")
@@ -769,10 +771,6 @@ class Asset extends AssetMetadata
 				else if($tok["name"]=="Flags")
 				{
 					$asset->Flags=0;
-				}
-				else
-				{
-					throw new AssetXMLParseException();
 				}
 			}
 		}
