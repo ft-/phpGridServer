@@ -365,7 +365,7 @@ var map = L.map('map', {center: [<?php echo "$x,$y"; ?>], fullscreenControl: tru
 	      }]
 });
 
-var tileLayer = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
+var tileLayer = new L.TileLayer.Grid('<?php echo @explode('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
  tms:true,
  zoomOffset:0,
@@ -383,7 +383,7 @@ geocoder: geocoder
 }).addTo(map);
 
 <?php if(!isset($_GET["nominimap"]) && $gridmap_enable_minimap) { ?>
-var tileLayer2 = new L.TileLayer.Grid('<?php echo @split('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
+var tileLayer2 = new L.TileLayer.Grid('<?php echo @explode('?', $_SERVER["REQUEST_URI"])[0] ?>?zoom={z}&x={x}&y={y}', {
  continuousWorld: true,
  tms:true,
  zoomOffset:0,
