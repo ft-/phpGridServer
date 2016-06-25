@@ -49,6 +49,7 @@ else if(isset($_GET["ClearDefaultHG"]))
 	trigger_error("RegionFlagsAdmin:ClearDefaultHG ".$_GET["regionid"]);
 	try
 	{
+		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
 		$regionDefault->Name = $region->Name;
 		$regionDefault->ScopeID = $region->ScopeID;
@@ -92,6 +93,7 @@ else if(isset($_GET["ClearDefault"]))
 	trigger_error("RegionFlagsAdmin:ClearDefault ".$_GET["regionid"]);
 	try
 	{
+		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
 		$regionDefault->Name = $region->Name;
 		$regionDefault->ScopeID = $region->ScopeID;
@@ -135,6 +137,7 @@ else if(isset($_GET["ClearFallback"]))
 	trigger_error("RegionFlagsAdmin:ClearFallback ".$_GET["regionid"]);
 	try
 	{
+		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
 		$regionDefault->Name = $region->Name;
 		$regionDefault->ScopeID = $region->ScopeID;
