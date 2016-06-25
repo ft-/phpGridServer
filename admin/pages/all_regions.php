@@ -18,7 +18,7 @@ $gridService = getService("Grid");
 if(!isset($_GET["regionid"]))
 {
 }
-else if(isset($_GET["SetDefaultHG"]))
+else if(isset($_GET["SetDefaultHG"]) && $_GET["SetDefaultHG"] != "")
 {
 	try
 	{
@@ -42,7 +42,7 @@ else if(isset($_GET["SetDefaultHG"]))
 		trigger_error("SetDefaultHG ".$e->getMessage());
 	}
 }
-else if(isset($_GET["ClearDefaultHG"]))
+else if(isset($_GET["ClearDefaultHG"]) && $_GET["ClearDefaultHG"] != "")
 {
 	try
 	{
@@ -56,7 +56,7 @@ else if(isset($_GET["ClearDefaultHG"]))
 		trigger_error("ClearDefaultHG ".$e->getMessage());
 	}
 }
-else if(isset($_GET["SetDefault"]))
+else if(isset($_GET["SetDefault"]) && $_GET["SetDefault"] != "")
 {
 	try
 	{
@@ -80,7 +80,7 @@ else if(isset($_GET["SetDefault"]))
 		trigger_error("SetDefault ".$e->getMessage());
 	}
 }
-else if(isset($_GET["ClearDefault"]))
+else if(isset($_GET["ClearDefault"]) && $_GET["ClearDefault"] != "")
 {
 	try
 	{
@@ -94,7 +94,7 @@ else if(isset($_GET["ClearDefault"]))
 		trigger_error("ClearDefault ".$e->getMessage());
 	}
 }
-else if(isset($_GET["SetFallback"]))
+else if(isset($_GET["SetFallback"]) && $_GET["SetFallback"] != "")
 {
 	try
 	{
@@ -118,7 +118,7 @@ else if(isset($_GET["SetFallback"]))
 		trigger_error("SetFallback ".$e->getMessage());
 	}
 }
-else if(isset($_GET["ClearFallback"]))
+else if(isset($_GET["ClearFallback"]) && $_GET["ClearFallback"] != "")
 {
 	try
 	{
@@ -132,7 +132,7 @@ else if(isset($_GET["ClearFallback"]))
 		trigger_error("ClearFallback ".$e->getMessage());
 	}
 }
-else if(isset($_GET["RemoveDefaults"]))
+else if(isset($_GET["RemoveDefaults"]) && $_GET["RemoveDefaults"] != "")
 {
 	try
 	{
@@ -144,7 +144,7 @@ else if(isset($_GET["RemoveDefaults"]))
 	{
 	}
 }
-else if(isset($_GET["Remove"]))
+else if(isset($_GET["Remove"]) && $_GET["Remove"] != "")
 {
 	try
 	{
