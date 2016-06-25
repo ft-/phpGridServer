@@ -154,7 +154,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		{
 			throw new Exception("Database access error");
 		}
-		$stmt->bind_param("ssisi",
+		$stmt->bind_param("ssis",
 						$regionDefault->ID,
 						$regionDefault->RegionName,
 						$regionDefault->Flags,
