@@ -148,7 +148,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 
 	public function storeRegionDefault($regionDefault)
 	{
-		$query = "INSERT INTO ".$this->dbtable_defaults." (uuid, regionName, flags, scopeID) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE flags=?";
+		$query = "REPLACE INTO ".$this->dbtable_defaults." (uuid, regionName, flags, scopeID) VALUES (?, ?, ?, ?)";
 		$stmt = $this->db->prepare($query);
 		if(!$stmt)
 		{
@@ -158,8 +158,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 						$regionDefault->ID,
 						$regionDefault->RegionName,
 						$regionDefault->Flags,
-						$regionDefault->ScopeID,
-						$regionDefault->Flags);
+						$regionDefault->ScopeID);
 		if(!$stmt->execute())
 		{
 			$stmt->close();
@@ -245,13 +244,13 @@ class MySQLGridServiceConnector implements GridServiceInterface
 	}
 	public function deleteRegionDefault($regionDefault)
 	{
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_defaults." WHERE scopeID LIKE ? AND uuid LIKE ? AND regionName LIKE ?");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_defaults." WHERE (scopeID LIKE ? AND regionName LIKE ?) OR uuid LIKE ?");
 		if(!$stmt)
 		{
 			throw new Exception("Database access error");
 		}
 
-		$stmt->bind_param("sss", $regionDefault->ScopeID, $regionDefault->ID, $regionDefault->RegionName);
+		$stmt->bind_param("sss", $regionDefault->ScopeID, $regionDefault->RegionName, $regionDefault->ID);
 		if(!$stmt->execute())
 		{
 			$stmt->close();
