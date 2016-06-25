@@ -32,8 +32,9 @@ else if(isset($_GET["SetDefaultHG"]))
 		{
 			$regionDefault = new RegionDefault();
 			$regionDefault->ID = $_GET["regionid"];
-			$regionDefault->ScopeID = $region->ScopeID;
 		}
+		$regionDefault->Name = region->Name;
+		$regionDefault->ScopeID = $region->ScopeID;
 		$regionDefault->Flags |= RegionFlags::DefaultHGRegion;
 		$gridService->storeRegionDefault($regionDefault);
 		$gridService->modifyRegionFlags(null, $_GET["regionid"], RegionFlags::DefaultHGRegion, 0);
@@ -49,6 +50,8 @@ else if(isset($_GET["ClearDefaultHG"]))
 	try
 	{
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
+		$regionDefault->Name = region->Name;
+		$regionDefault->ScopeID = $region->ScopeID;
 		$regionDefault->Flags &= (~RegionFlags::DefaultHGRegion);
 		$gridService->storeRegionDefault($regionDefault);
 		$gridService->modifyRegionFlags(null, $_GET["regionid"], 0, RegionFlags::DefaultHGRegion);
@@ -72,8 +75,9 @@ else if(isset($_GET["SetDefault"]))
 		{
 			$regionDefault = new RegionDefault();
 			$regionDefault->ID = $_GET["regionid"];
-			$regionDefault->ScopeID = $region->ScopeID;
 		}
+		$regionDefault->Name = region->Name;
+		$regionDefault->ScopeID = $region->ScopeID;
 		$regionDefault->Flags |= RegionFlags::DefaultRegion;
 		$gridService->storeRegionDefault($regionDefault);
 		$gridService->modifyRegionFlags(null, $_GET["regionid"], RegionFlags::DefaultRegion, 0);
@@ -89,6 +93,8 @@ else if(isset($_GET["ClearDefault"]))
 	try
 	{
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
+		$regionDefault->Name = region->Name;
+		$regionDefault->ScopeID = $region->ScopeID;
 		$regionDefault->Flags &= (~RegionFlags::DefaultRegion);
 		$gridService->storeRegionDefault($regionDefault);
 		$gridService->modifyRegionFlags(null, $_GET["regionid"], 0, RegionFlags::DefaultRegion);
@@ -112,8 +118,9 @@ else if(isset($_GET["SetFallback"]))
 		{
 			$regionDefault = new RegionDefault();
 			$regionDefault->ID = $_GET["regionid"];
-			$regionDefault->ScopeID = $region->ScopeID;
 		}
+		$regionDefault->Name = region->Name;
+		$regionDefault->ScopeID = $region->ScopeID;
 		$regionDefault->Flags |= RegionFlags::FallbackRegion;
 		$gridService->storeRegionDefault($regionDefault);
 		$gridService->modifyRegionFlags(null, $_GET["regionid"], RegionFlags::FallbackRegion, 0);
@@ -129,6 +136,8 @@ else if(isset($_GET["ClearFallback"]))
 	try
 	{
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
+		$regionDefault->Name = region->Name;
+		$regionDefault->ScopeID = $region->ScopeID;
 		$regionDefault->Flags &= (~RegionFlags::FallbackRegion);
 		$gridService->storeRegionDefault($regionDefault);
 		$gridService->modifyRegionFlags(null, $_GET["regionid"], 0, RegionFlags::FallbackRegion);
