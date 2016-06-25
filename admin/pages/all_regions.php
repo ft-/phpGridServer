@@ -18,8 +18,9 @@ $gridService = getService("Grid");
 if(!isset($_GET["regionid"]))
 {
 }
-else if(isset($_GET["SetDefaultHG"]) && $_GET["SetDefaultHG"] != "")
+else if(isset($_GET["SetDefaultHG"]))
 {
+	trigger_error("RegionFlagsAdmin:SetDefaultHG ".$_GET["regionid"]);
 	try
 	{
 		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
@@ -42,8 +43,9 @@ else if(isset($_GET["SetDefaultHG"]) && $_GET["SetDefaultHG"] != "")
 		trigger_error("SetDefaultHG ".$e->getMessage());
 	}
 }
-else if(isset($_GET["ClearDefaultHG"]) && $_GET["ClearDefaultHG"] != "")
+else if(isset($_GET["ClearDefaultHG"]))
 {
+	trigger_error("RegionFlagsAdmin:ClearDefaultHG ".$_GET["regionid"]);
 	try
 	{
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
@@ -56,8 +58,9 @@ else if(isset($_GET["ClearDefaultHG"]) && $_GET["ClearDefaultHG"] != "")
 		trigger_error("ClearDefaultHG ".$e->getMessage());
 	}
 }
-else if(isset($_GET["SetDefault"]) && $_GET["SetDefault"] != "")
+else if(isset($_GET["SetDefault"]))
 {
+	trigger_error("RegionFlagsAdmin:SetDefault ".$_GET["regionid"]);
 	try
 	{
 		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
@@ -80,8 +83,9 @@ else if(isset($_GET["SetDefault"]) && $_GET["SetDefault"] != "")
 		trigger_error("SetDefault ".$e->getMessage());
 	}
 }
-else if(isset($_GET["ClearDefault"]) && $_GET["ClearDefault"] != "")
+else if(isset($_GET["ClearDefault"]))
 {
+	trigger_error("RegionFlagsAdmin:ClearDefault ".$_GET["regionid"]);
 	try
 	{
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
@@ -94,8 +98,9 @@ else if(isset($_GET["ClearDefault"]) && $_GET["ClearDefault"] != "")
 		trigger_error("ClearDefault ".$e->getMessage());
 	}
 }
-else if(isset($_GET["SetFallback"]) && $_GET["SetFallback"] != "")
+else if(isset($_GET["SetFallback"]))
 {
+	trigger_error("RegionFlagsAdmin:SetFallback ".$_GET["regionid"]);
 	try
 	{
 		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
@@ -118,8 +123,9 @@ else if(isset($_GET["SetFallback"]) && $_GET["SetFallback"] != "")
 		trigger_error("SetFallback ".$e->getMessage());
 	}
 }
-else if(isset($_GET["ClearFallback"]) && $_GET["ClearFallback"] != "")
+else if(isset($_GET["ClearFallback"]))
 {
+	trigger_error("RegionFlagsAdmin:ClearFallback ".$_GET["regionid"]);
 	try
 	{
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
@@ -132,8 +138,9 @@ else if(isset($_GET["ClearFallback"]) && $_GET["ClearFallback"] != "")
 		trigger_error("ClearFallback ".$e->getMessage());
 	}
 }
-else if(isset($_GET["RemoveDefaults"]) && $_GET["RemoveDefaults"] != "")
+else if(isset($_GET["RemoveDefaults"]))
 {
+	trigger_error("RegionFlagsAdmin:RemoveDefaults ".$_GET["regionid"]);
 	try
 	{
 		$regionDefault = $gridService->getRegionDefaultByID(null, $_GET["regionid"]);
@@ -144,8 +151,9 @@ else if(isset($_GET["RemoveDefaults"]) && $_GET["RemoveDefaults"] != "")
 	{
 	}
 }
-else if(isset($_GET["Remove"]) && $_GET["Remove"] != "")
+else if(isset($_GET["Remove"]))
 {
+	trigger_error("RegionAdmin:Remove ".$_GET["regionid"]);
 	try
 	{
 		$region = $gridService->getRegionByUuid(null, $_GET["regionid"]);
