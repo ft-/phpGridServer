@@ -73,7 +73,7 @@ foreach(explode(",", $_RPC_REQUEST->FOLDERS) as $folderid)
 	$serverresponse_written = true;
 	$xmlfolderid = str_replace("-", "_", $folderid);
 	echo "<F_$xmlfolderid type=\"List\">";
-	echo "<FID>$folderid</FID>";
+	echo "<FID>".$folderid."</FID>";
 	echo "<VERSION>".$folder->Version."</VERSION>";
 	echo "<OWNER>".$folder->OwnerID."</OWNER>";
 	echo "<FOLDERS type=\"List\">";
