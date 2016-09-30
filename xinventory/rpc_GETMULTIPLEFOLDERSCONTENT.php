@@ -71,7 +71,7 @@ foreach(explode(",", $_RPC_REQUEST->FOLDERS) as $folderid)
 		echo "<ServerResponse>";
 	}
 	$serverresponse_written = true;
-	$xmlfolderid = str_replace("-", "_", $folderid);
+	$xmlfolderid = $folderid;
 	echo "<F_$xmlfolderid type=\"List\">";
 	echo "<FID>".$folderid."</FID>";
 	echo "<VERSION>".$folder->Version."</VERSION>";
