@@ -71,8 +71,7 @@ foreach(explode(",", $_RPC_REQUEST->FOLDERS) as $folderid)
 		echo "<ServerResponse>";
 	}
 	$serverresponse_written = true;
-	$xmlfolderid = $folderid;
-	echo "<F_$xmlfolderid type=\"List\">";
+	echo "<F_$folderid type=\"List\">";
 	echo "<FID>".$folderid."</FID>";
 	echo "<VERSION>".$folder->Version."</VERSION>";
 	echo "<OWNER>".$folder->OwnerID."</OWNER>";
@@ -109,7 +108,7 @@ foreach(explode(",", $_RPC_REQUEST->FOLDERS) as $folderid)
 	{
 	}
 	echo "</ITEMS>";
-	echo "</F_$xmlfolderid>";
+	echo "</F_$folderid>";
 }
 if(!$serverresponse_written)
 {
