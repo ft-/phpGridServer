@@ -57,7 +57,7 @@ else
 		$res->Params[] = new RPCStruct();
 		$res->Params[0]->reason = "UUID collision detected";
 		$res->Params[0]->success = False;
-		$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+		$res->Params[0]->your_ip = getRemoteIpAddr();
 		header("Content-Type: application/json");
 		echo $serializer->serializeRPC($res);
 		exit;
@@ -79,7 +79,7 @@ if($lockedmsg != "")
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = $lockedmsg;
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -95,7 +95,7 @@ if(count($servicesessionid) != 2)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to verify user identity (Code 1)";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -112,7 +112,7 @@ if($homeGrid->GatekeeperURI != $servicesessionid[0])
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to verify user identity (Code 2)";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -133,7 +133,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to verify user identity (Code 3)";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -154,7 +154,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to verify user identity (Code 4)";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -175,7 +175,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to store HyperGrid Server URIs";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -209,7 +209,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Could not retrieve target region information. ".trim($e->getMessage());
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -259,7 +259,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to add Presence at target grid";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -278,7 +278,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to add GridUser at target grid";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -297,7 +297,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Failed to verify GridUser";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -351,7 +351,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = $e->getMessage();
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -361,6 +361,6 @@ $res = new RPCSuccessResponse();
 $res->Params[] = new RPCStruct();
 $res->Params[0]->reason = "authorized";
 $res->Params[0]->success = True;
-$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+$res->Params[0]->your_ip = getRemoteIpAddr();
 header("Content-Type: application/json");
 echo $serializer->serializeRPC($res);

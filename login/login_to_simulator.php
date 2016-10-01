@@ -418,7 +418,7 @@ $clientInfo = new ClientInfo();
 $clientInfo->ClientVersion = $structParam->version;
 $clientInfo->Channel = $structParam->channel;
 $clientInfo->ID0 = $structParam->id0;
-$clientInfo->ClientIP = $_SERVER["REMOTE_ADDR"];
+$clientInfo->ClientIP = getRemoteIpAddr();
 $clientInfo->Mac = $structParam->mac;
 
 $sessionInfo = new SessionInfo();
@@ -431,7 +431,7 @@ $hgTravelingData->SessionID = $sessionID;
 $hgTravelingData->UserID = $userAccount->PrincipalID;
 $hgTravelingData->GridExternalName = $destination->HomeURI;
 $hgTravelingData->ServiceToken = UUID::Random();
-$hgTravelingData->ClientIPAddress = $_SERVER["REMOTE_ADDR"];
+$hgTravelingData->ClientIPAddress = getRemoteIpAddr();
 $sessionInfo->ServiceSessionID = $hgTravelingData->GridExternalName.";".$hgTravelingData->ServiceToken;
 try
 {

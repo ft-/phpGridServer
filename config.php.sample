@@ -9,6 +9,8 @@ require_once("config.mysql.php");
 
 $enablegzipcompression = false;
 
+$useXForwardedFor = false; /* only set this true if really using a reverse proxy like nginx */
+
 $cfg_AuthenticationService = array(
 	"use" => "services/authentication/PasswordAuthenticationService"
 );

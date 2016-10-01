@@ -25,7 +25,8 @@ class XmlRpcIMServiceConnector implements IMServiceInterface
 	public function send($im)
 	{
 		$host = parse_url($this->uri, PHP_URL_HOST);
-		if($_SERVER["SERVER_ADDR"] == $_SERVER["REMOTE_ADDR"])
+		if($_SERVER["SERVER_ADDR"] == $_SERVER["REMOTE_ADDR"] ||
+			getRemoteIpAddr() == $_SERVER["SERVER_ADDR"])
 		{
 			throw new IMSendFailedException();
 		}

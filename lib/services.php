@@ -47,6 +47,21 @@ if(!function_exists("boolval"))
 	}
 }
 
+function getRemoteIpAddr()
+{
+	global $_SERVER;
+	global $useXForwardedFor;
+	
+	if(array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $useXForwardedFor)
+	{
+		return $_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+	else
+	{
+		return $_SERVER['REMOTE_ADDR'];
+	}
+}
+
 function getService($service)
 {
 	global $_servicecfgs_;

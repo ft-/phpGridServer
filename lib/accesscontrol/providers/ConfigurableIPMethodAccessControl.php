@@ -28,11 +28,11 @@ class ConfigurableIPMethodAccessControl implements AccessControlServiceInterface
 		{
 			throw new AccessDeniedException("Not validated by unrestricted method access control");
 		}
-		if(in_array($_SERVER["REMOTE_ADDR"], $this->ipacl))
+		if(in_array(getRemoteIpAddr(), $this->ipacl))
 		{
 			return;
 		}
-		trigger_error("\"".$_SERVER["REMOTE_ADDR"]."\" is not in IP ACL"); 
+		trigger_error("\"".getRemoteIpAddr()."\" is not in IP ACL"); 
 		throw new AccessDeniedException("Not validated by Private IP access control");
 	}
 }

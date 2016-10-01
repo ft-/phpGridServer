@@ -33,7 +33,7 @@ if(isset($_SESSION["token"]) && isset($_SESSION["principalid"]))
 		{
 			throw new Exception("IP address changed");
 		}
-		if($_SESSION["REMOTE_ADDR"] != $_SERVER["REMOTE_ADDR"])
+		if($_SESSION["REMOTE_ADDR"] != getRemoteIpAddr())
 		{
 			throw new Exception("IP address changed");
 		}

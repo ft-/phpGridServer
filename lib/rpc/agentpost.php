@@ -214,7 +214,7 @@ else if(isset($agentPostParams->service_urls))
 		$res->Params[] = new RPCStruct();
 		$res->Params[0]->reason = "Invalid service_urls data blcok";
 		$res->Params[0]->success = False;
-		$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+		$res->Params[0]->your_ip = getRemoteIpAddr();
 		header("Content-Type: application/json");
 		echo $serializer->serializeRPC($res);
 		exit;
@@ -239,7 +239,7 @@ else
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Invalid HG Post Agent requst";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;

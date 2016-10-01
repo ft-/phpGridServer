@@ -44,7 +44,7 @@ if(!$serverDataUri->isHome())
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "foreign agent not allowed on Home Agent handler";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -67,7 +67,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Home Agent account not found";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -89,7 +89,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Could not find HG Traveling Data";
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -127,7 +127,7 @@ if($serverDataUri->isHome())
 		$res->Params[] = new RPCStruct();
 		$res->Params[0]->reason = "Could not establish presence at target grid";
 		$res->Params[0]->success = False;
-		$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+		$res->Params[0]->your_ip = getRemoteIpAddr();
 		header("Content-Type: application/json");
 		echo $serializer->serializeRPC($res);
 		exit;
@@ -192,7 +192,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = "Could not retrieve target grid information. ".trim($e->getMessage());
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -223,7 +223,7 @@ catch(Exception $e)
 	$res->Params[] = new RPCStruct();
 	$res->Params[0]->reason = $msg;
 	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+	$res->Params[0]->your_ip = getRemoteIpAddr();
 	header("Content-Type: application/json");
 	echo $serializer->serializeRPC($res);
 	exit;
@@ -245,7 +245,7 @@ $res = new RPCSuccessResponse();
 $res->Params[] = new RPCStruct();
 $res->Params[0]->reason = "authorized";
 $res->Params[0]->success = True;
-$res->Params[0]->your_ip = $_SERVER["REMOTE_ADDR"];
+$res->Params[0]->your_ip = getRemoteIpAddr();
 header("Content-Type: application/json");
 echo $serializer->serializeRPC($res);
 

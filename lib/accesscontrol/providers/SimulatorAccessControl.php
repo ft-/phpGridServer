@@ -22,7 +22,7 @@ class SimulatorAccessControl implements AccessControlServiceInterface
 	{
 		try
 		{
-			$region = $this->gridService->getRegionByIP($_SERVER["REMOTE_ADDR"]);
+			$region = $this->gridService->getRegionByIP(getRemoteIpAddr());
 		}
 		catch(Exception $e)
 		{

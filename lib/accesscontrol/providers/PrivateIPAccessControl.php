@@ -17,23 +17,23 @@ class PrivateIPAccessControl implements AccessControlServiceInterface
 	
 	public function verifyAccess($service, $func)
 	{
-		if(substr($_SERVER["REMOTE_ADDR"], 0, 8) == "192.168.")
+		if(substr(getRemoteIpAddr(), 0, 8) == "192.168.")
 		{
 			return;
 		}
-		if(substr($_SERVER["REMOTE_ADDR"], 0, 4) == "172.")
+		if(substr(getRemoteIpAddr(), 0, 4) == "172.")
 		{
-			$grp = explode(".", $_SERVER["REMOTE_ADDR"]);
+			$grp = explode(".", getRemoteIpAddr());
 			if($grp[1] >= 10 && $grp[1] <= 31)
 			{
 				return;
 			}
 		}
-		if(substr($_SERVER["REMOTE_ADDR"], 0, 3) == "10.")
+		if(substr(getRemoteIpAddr(), 0, 3) == "10.")
 		{
 			return;
 		}
-		if(substr($_SERVER["REMOTE_ADDR"], 0, 4) == "127.")
+		if(substr(getRemoteIpAddr(), 0, 4) == "127.")
 		{
 			return;
 		}

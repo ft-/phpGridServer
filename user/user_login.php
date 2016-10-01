@@ -9,7 +9,7 @@
 
 if(isset($_POST["Login"]))
 {
-	$_SESSION["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
+	$_SESSION["REMOTE_ADDR"] = getRemoteIpAddr();
 	$authenticationService = getService("UserAuthentication");
 	try
 	{
