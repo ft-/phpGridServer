@@ -84,7 +84,14 @@ class GridUserInfo
 		$xmlout.="<LastRegionID>".$this->LastRegionID."</LastRegionID>";
 		$xmlout.="<LastPosition>".xmlentities($this->LastPosition)."</LastPosition>";
 		$xmlout.="<LastLookAt>".xmlentities($this->LastLookAt)."</LastLookAt>";
-		$xmlout.="<Online>".$this->Online."</Online>";
+		if($this->Online)
+		{
+			$xmlout.="<Online>True</Online>";
+		}
+		else
+		{
+			$xmlout.="<Online>False</Online>";
+		}
 		$xmlout.="<Login>".strftime("%F %T", intval($this->Login))."</Login>";
 		$xmlout.="<Logout>".strftime("%F %T", intval($this->Logout))."</Logout>";
 		$xmlout.="</$tagname>";
