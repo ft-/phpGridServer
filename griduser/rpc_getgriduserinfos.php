@@ -31,7 +31,7 @@ foreach($_RPC_REQUEST->AgentIDs as $agentid)
 {
 	try
 	{
-		$gridUser = $gridUserService->getGridUsers($_POST["UserID"]);
+		$gridUser = $gridUserService->getGridUserHG($agentid);
 		$out = $gridUser->toXML("griduser$cnt");
 		if($cnt == 0)
 		{
