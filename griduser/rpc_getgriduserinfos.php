@@ -27,7 +27,7 @@ $cnt = 0;
 header("Content-Type: text/xml");
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 
-foreach($_POST["AgentIDs"] as $agentid)
+foreach($_RPC_REQUEST->AgentIDs as $agentid)
 {
 	try
 	{
