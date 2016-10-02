@@ -356,12 +356,9 @@ class JSON_LaunchAgentServiceConnector implements LaunchAgentServiceInterface
 
 		$rpcResponse = JSONHandler::parseResponse($res->Body);
 
-		if(isset($rpcResponse->Params[0]->success))
+		if(isset($rpcResponse->Params[0]->success) && $rpcResponse->Params[0]->success)
 		{
-			if(!$rpcResponse->Params[0]->success)
-			{
-				throw new AgentNotLaunchedException();
-			}
+			/* everything okay */
 		}
 		else if(isset($rpcResponse->Params[0]->reason))
 		{

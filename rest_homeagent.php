@@ -35,19 +35,25 @@ $serverDataUri = getServerDataFromAgentData($_AGENT_POST);
 $destination = getDestinationInfoFromAgentData($_AGENT_POST);
 $appearanceInfo = getAppearanceInfoFromAgentData($_AGENT_POST);
 
+function DoAgentResponse($success, $reason)
+{
+	global $serializer;
+	$res = new RPCSuccessResponse();
+	$res->Params[] = new RPCStruct();
+	$res->Params[0]->success = $success;
+	$res->Params[0]->reason = "".$reason;
+	$res->Params[0]->your_ip = getRemoteIpAddr();
+	header("Content-Type: application/json");
+	echo $serializer->serializeRPC($res);
+	exit;
+}
+
 if(!$serverDataUri->isHome())
 {
 	trigger_error("we got a Foreign Agent here where it should not be");
 	/* we got a Foreign Agent here */
 	/* respond with JSON */
-	$res = new RPCSuccessResponse();
-	$res->Params[] = new RPCStruct();
-	$res->Params[0]->reason = "foreign agent not allowed on Home Agent handler";
-	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = getRemoteIpAddr();
-	header("Content-Type: application/json");
-	echo $serializer->serializeRPC($res);
-	exit;
+	DoAgentResponse(False, "foreign agent not allowed on Home Agent handler");
 }
 
 /* we got a Home Agent here, check that it is definitely in our account table */
@@ -62,15 +68,7 @@ try
 catch(Exception $e)
 {
 	trigger_error("Home Agent account not found");
-	/* failed respond with JSON */
-	$res = new RPCSuccessResponse();
-	$res->Params[] = new RPCStruct();
-	$res->Params[0]->reason = "Home Agent account not found";
-	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = getRemoteIpAddr();
-	header("Content-Type: application/json");
-	echo $serializer->serializeRPC($res);
-	exit;
+	DoAgentResponse(False, "Home Agent account not found");
 }
 
 $homeGrid = ServerDataURI::getHome();
@@ -84,15 +82,7 @@ try
 catch(Exception $e)
 {
 	trigger_error("Could not find session ".$sessionInfo->SessionID.":".get_class($e).":".$e->getMessage());
-	/* failed respond with JSON */
-	$res = new RPCSuccessResponse();
-	$res->Params[] = new RPCStruct();
-	$res->Params[0]->reason = "Could not find HG Traveling Data";
-	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = getRemoteIpAddr();
-	header("Content-Type: application/json");
-	echo $serializer->serializeRPC($res);
-	exit;
+	DoAgentResponse(False, "Could not find HG Traveling Data");
 }
 
 /* fix the agent's AvatarAppearance by appending our asset data */
@@ -122,15 +112,7 @@ if($serverDataUri->isHome())
 	catch(Exception $e)
 	{
 		trigger_error("Could not add presence");
-		/* failed respond with JSON */
-		$res = new RPCSuccessResponse();
-		$res->Params[] = new RPCStruct();
-		$res->Params[0]->reason = "Could not establish presence at target grid";
-		$res->Params[0]->success = False;
-		$res->Params[0]->your_ip = getRemoteIpAddr();
-		header("Content-Type: application/json");
-		echo $serializer->serializeRPC($res);
-		exit;
+		DoAgentResponse(False, "Could not establish presence at target grid");
 	}
 }
 
@@ -171,9 +153,10 @@ try
 }
 catch(Exception $e)
 {
+	$msg = $e->getMessage();
 	if($destination->LocalToGrid)
 	{
-		trigger_error("Home Coming: Could not get target region information ".$e->getMessage()." ; ".get_class($e));
+		trigger_error("Home Coming: Could not get target region information ".$msg." ; ".get_class($e));
 		try
 		{
 			$presenceService->logoutPresence($sessionInfo->SessionID);
@@ -187,15 +170,7 @@ catch(Exception $e)
 	{
 		trigger_error("Going Abroad: Could not get target region information ".$e->getMessage()." ; ".get_class($e));
 	}
-	/* failed respond with JSON */
-	$res = new RPCSuccessResponse();
-	$res->Params[] = new RPCStruct();
-	$res->Params[0]->reason = "Could not retrieve target grid information. ".trim($e->getMessage());
-	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = getRemoteIpAddr();
-	header("Content-Type: application/json");
-	echo $serializer->serializeRPC($res);
-	exit;
+	DoAgentResponse(False, "Could not retrieve target grid information. ".trim($msg));
 }
 
 $destination->TeleportFlags |= TeleportFlags::ViaHGLogin;
@@ -218,15 +193,7 @@ catch(Exception $e)
 	
 	}
 	
-	/* respond with launch failure */
-	$res = new RPCSuccessResponse();
-	$res->Params[] = new RPCStruct();
-	$res->Params[0]->reason = $msg;
-	$res->Params[0]->success = False;
-	$res->Params[0]->your_ip = getRemoteIpAddr();
-	header("Content-Type: application/json");
-	echo $serializer->serializeRPC($res);
-	exit;
+	DoAgentResponse(False, $msg);
 }
 
 if(!$destination->LocalToGrid)
@@ -241,11 +208,4 @@ if(!$destination->LocalToGrid)
 	}
 }
 
-$res = new RPCSuccessResponse();
-$res->Params[] = new RPCStruct();
-$res->Params[0]->reason = "authorized";
-$res->Params[0]->success = True;
-$res->Params[0]->your_ip = getRemoteIpAddr();
-header("Content-Type: application/json");
-echo $serializer->serializeRPC($res);
-
+DoAgentResponse(true, "authorized");
