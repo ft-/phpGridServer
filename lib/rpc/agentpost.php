@@ -282,7 +282,11 @@ foreach($appearancePack->wearables as $kpos => $wearpos)
 foreach($appearancePack->attachments as $ap)
 {
 	$key = "_ap_".$ap->point;
-	$appearanceInfo->appearance[$key] = $ap->item;
+	if(!isset($appearanceInfo->appearance[$key]))
+	{
+		$appearanceInfo->appearance[$key] = array();
+	}
+	array_push($appearanceInfo->appearance[$key], $ap->item);
 }
 
 $agentPostArray[] = $appearanceInfo;

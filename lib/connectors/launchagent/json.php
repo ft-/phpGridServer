@@ -191,7 +191,11 @@ class JSON_LaunchAgentServiceConnector implements LaunchAgentServiceInterface
 				$apStruct = new RPCStruct();
 				$apStruct->point = intval(substr($k, 4));
 				$apStruct->item = $v;
-				$attachments[$k] = $apStruct;
+				if(isset($attachments[$k]))
+				{
+					$attachments[$k] = $attachments[$k].","
+				}
+				$attachments[$k] = $attachments[$k].$apStruct;
 			}
 		}
 
