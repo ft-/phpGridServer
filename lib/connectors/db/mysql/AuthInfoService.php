@@ -94,6 +94,13 @@ class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
 		UUID::CheckWithException($principalID);
 		$token=UUID::Random();
 		$validity = time() + 60 * $lifeTime;
+		$current = time();
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE validity < $current");
+		if($stmt)
+		{
+			$stmt->execute();
+			$stmt->close();
+		}
 		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_tokens." (UUID, token, validity) VALUES ('$principalID',?,?)");
 		if(!$stmt)
 		{

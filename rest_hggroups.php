@@ -28,6 +28,11 @@ function sendBooleanResponse($result, $msg="")
 		header("Content-Type: text/xml");
 		echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><ServerResponse><RESULT>true</RESULT></ServerResponse>";
 	}
+	else if($msg != "")
+	{
+		header("Content-Type: text/xml");
+		echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><ServerResponse><RESULT>false</RESULT><REASON>".htmlentities($msg)."</REASON></ServerResponse>";
+	}
 	else
 	{
 		header("Content-Type: text/xml");
