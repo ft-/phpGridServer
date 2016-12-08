@@ -95,7 +95,7 @@ class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
 		$token=UUID::Random();
 		$validity = time() + 60 * $lifeTime;
 		$current = time();
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE validity < $current");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE validity < $current AND UUID LIKE '$principalID'");
 		if($stmt)
 		{
 			$stmt->execute();
