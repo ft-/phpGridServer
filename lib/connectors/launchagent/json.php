@@ -193,7 +193,7 @@ class JSON_LaunchAgentServiceConnector implements LaunchAgentServiceInterface
 				$apStruct->item = $v;
 				if(isset($attachments[$k]))
 				{
-					$attachments[$k] = $attachments[$k].","
+					$attachments[$k] = $attachments[$k].",";
 				}
 				$attachments[$k] = $attachments[$k].$apStruct;
 			}
