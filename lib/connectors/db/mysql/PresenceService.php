@@ -271,6 +271,7 @@ class MySQLPresenceServiceConnector implements PresenceServiceInterface
 							UNIQUE KEY `SessionID` (`SessionID`),
 							KEY `UserID` (`UserID`)
 							) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+		"",
 		"ALTER TABLE %tablename% ADD `ClientIPAddress` VARCHAR(255) NOT NULL DEFAULT ''"
 	);
 
