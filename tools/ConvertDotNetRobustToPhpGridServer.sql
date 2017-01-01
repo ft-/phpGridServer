@@ -134,13 +134,6 @@ ALTER TABLE userprofile
 	MODIFY profileImage VARCHAR(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
 	MODIFY profileFirstImage VARCHAR(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000';
 
-CREATE TABLE `usersettings` (
-  `useruuid` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
-  `imviaemail` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `visible` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (`useruuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 ALTER TABLE Presence ADD ServiceHandler VARCHAR(255) NOT NULL DEFAULT 'lib/Presence/Simulator';
 
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Asset','assets',1);
