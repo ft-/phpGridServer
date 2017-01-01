@@ -46,7 +46,7 @@ if(isset($_POST["Login"]))
 </head>
 <body>
 <h1 style="text-align: center;" class="loginpage">Admin Login</h1><br/>
-<?php if(isset($errormessage)) echo "<p><span class=\"error\";>$errormessage</span></p>"; ?>
+<?php if(isset($errormessage)) echo "<p><span class=\"error\">$errormessage</span></p>"; ?>
 <center>
 <form ACTION="/admin/" METHOD="POST">
 <table style="border-width: 0px; border-style: none;">
