@@ -383,7 +383,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 		$this->m_count_query = "(SELECT COUNT(xr.RoleID) FROM ".$this->dbtable_roles." AS xr WHERE xr.GroupID LIKE g.GroupID) AS RoleCount";
 
-		$this->r_count_query = "(SELECT COUNT(xrm.PrincipalID) FROM ".$this->dbtable_rolemembership." AS xrm WHERE xrm.RoleID LIKE r.RoleID) AS RoleMembers,".
+		$this->r_count_query = "(SELECT COUNT(xrm.PrincipalID) FROM ".$this->dbtable_rolemembership." AS xrm WHERE xrm.RoleID LIKE r.RoleID AND xrm.GroupID LIKE r.GroupID) AS RoleMembers,".
 					"(SELECT COUNT(xm.PrincipalID) FROM ".$this->dbtable_membership." AS xm WHERE xm.GroupID LIKE r.GroupID) AS GroupMembers";
 
 		$this->db = cached_mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
