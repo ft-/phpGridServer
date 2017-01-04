@@ -157,7 +157,7 @@ INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES 
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Inventory','inventoryitems',1);
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Maptile','maptiles',1);
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.OfflineIM','im_offline',1);
-INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Presence','Presence',2);
+INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Presence','Presence',1);
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Profile','classifieds',1);
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Profile','userdata',1);
 INSERT INTO `migrations` (`serviceName`,`datasetName`,`storageRevision`) VALUES ('MySQL.Profile','usernotes',1);
