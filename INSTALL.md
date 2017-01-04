@@ -1,7 +1,7 @@
 1. Requirements
 
 - PHP 5.4 or newer
-- PHP GMP extension
+- PHP GMP extension or PHP BCMath extension
 - PHP curl extension
 - PHP GD extension
 - Database (currently only MySQL or MariaDB)
