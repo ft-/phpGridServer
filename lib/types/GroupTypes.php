@@ -750,7 +750,7 @@ class GroupNotice
 		$xmlout.="<AttachmentItemID>".$this->AttachmentItemID."</AttachmentItemID>";
 		$xmlout.="<AttachmentName>".xmlentities($this->AttachmentName)."</AttachmentName>";
 		$xmlout.="<AttachmentType>".intval($this->AttachmentType)."</AttachmentType>";
-		$xmlout.="<AttachmentOwnerID>".xmlentities($this->AttachmentItemID)."</AttachmentOwnerID>";
+		$xmlout.="<AttachmentOwnerID>".xmlentities($this->AttachmentOwnerID)."</AttachmentOwnerID>";
 		$xmlout.="</$tagname>";
 		return $xmlout;
 	}
