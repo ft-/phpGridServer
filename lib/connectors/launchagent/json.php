@@ -190,9 +190,12 @@ class JSON_LaunchAgentServiceConnector implements LaunchAgentServiceInterface
 			{
 				if(isset($attachments[$k]))
 				{
-					$attachments[$k] = $attachments[$k].",";
+					$attachments[$k] = $attachments[$k].",".$v;
 				}
-				$attachments[$k] = $attachments[$k].$v;
+				else
+				{
+					$attachments[$k] = $v;
+				}
 			}
 		}
 
