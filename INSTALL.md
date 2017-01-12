@@ -22,7 +22,8 @@ default_charset should be set to UTF-8
 - create folder tmp in root directory with write permissions for web server
 - enable GraphicsMagick extension (http://pecl.php.net/package/gmagick)
 - check that jasper is compiled to be used by GraphicsMagick (http://www.ece.uvic.ca/~mdadams/jasper/)
-
+ 
+ alternatively imagick extension can be used
 
 2. Setting up the Web-Server
 
