@@ -99,7 +99,7 @@ gridlibraryfolderid        no                                    00000112-000f-0
 gridlibraryenabled         no                                    false OR true                         set to true if you provide the Grid Library
 about                      yes                                   http://<yourgridserver>/
 GridURI                    no                                    http://<yourgridserver>               this is the GridURI and used for all entries (DO NOT ADD / at the end)
-
+economy                    yes                                   http://<yourgridserver>/	       landtool reference
 
 Optional Parameters
 
