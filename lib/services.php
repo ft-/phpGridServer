@@ -24,13 +24,22 @@ if(!isset($enablegzipcompression))
 $_services_ = array();
 $_rpc_sessionid_ = null;
 
-foreach($GLOBALS as $k => $v)
+function evalservices()
 {
-	if(substr($k, 0, 4) == "cfg_")
+	global $GLOBALS, $_servicecfgs_;
+	foreach($GLOBALS as $k => $v)
 	{
-		$_servicecfgs_[substr($k, 4)] = $v;
+		if(substr($k, 0, 4) == "cfg_")
+		{
+			if(!isset($$_servicecfgs_[substr($k, 4)]))
+			{
+				$_servicecfgs_[substr($k, 4)] = $v;
+			}
+		}
 	}
 }
+
+evalservices();
 
 if(!function_exists("boolval"))
 {
