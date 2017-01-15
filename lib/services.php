@@ -31,7 +31,7 @@ function evalservices()
 	{
 		if(substr($k, 0, 4) == "cfg_")
 		{
-			if(!isset($$_servicecfgs_[substr($k, 4)]))
+			if(!isset($_servicecfgs_[substr($k, 4)]))
 			{
 				$_servicecfgs_[substr($k, 4)] = $v;
 			}
