@@ -10,216 +10,219 @@
 require_once("lib/interfaces/AuthInfoServiceInterface.php");
 require_once("lib/connectors/db/mysql/_MySQLConnectionCache.php");
 
-class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
+if(!class_exists("MySQLAuthInfoServiceConnector"))
 {
-	private $db;
-	private $dbtable_tokens;
-	private $dbtable_auth;
-
-	public function __construct($dbhost, $dbuser, $dbpass, $dbname, $dbtable_auth, $dbtable_tokens)
+	class MySQLAuthInfoServiceConnector implements AuthInfoServiceInterface
 	{
-		$this->dbtable_auth = $dbtable_auth;
-		$this->dbtable_tokens = $dbtable_tokens;
-		$this->db = cached_mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	}
+		private $db;
+		private $dbtable_tokens;
+		private $dbtable_auth;
 
-	public function getAuthInfo($principalID)
-	{
-		UUID::CheckWithException($principalID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_auth." WHERE UUID LIKE '$principalID'");
-		if(!$res)
+		public function __construct($dbhost, $dbuser, $dbpass, $dbname, $dbtable_auth, $dbtable_tokens)
 		{
-			trigger_error(mysqli_error($this->db));
-			throw new Exception("Database access error");
+			$this->dbtable_auth = $dbtable_auth;
+			$this->dbtable_tokens = $dbtable_tokens;
+			$this->db = cached_mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 		}
-		try
+
+		public function getAuthInfo($principalID)
 		{
-			$row = $res->fetch_assoc();
-			if(!$row)
+			UUID::CheckWithException($principalID);
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable_auth." WHERE UUID LIKE '$principalID'");
+			if(!$res)
 			{
-				throw new AuthInfoNotFoundException();
+				trigger_error(mysqli_error($this->db));
+				throw new Exception("Database access error");
 			}
-			$ret = new AuthInfo();
-			$ret->ID = $row["UUID"];
-			$ret->PasswordHash = $row["passwordHash"];
-			$ret->PasswordSalt = $row["passwordSalt"];
-			$ret->WebLoginKey = $row["webLoginKey"];
-			$ret->AccountType = $row["accountType"];
-			return $ret;
-		}
-		catch(Exception $e)
-		{
-			$res->free();
-			throw $e;
-		}
-		$res->free();
-	}
-
-	public function deleteAuthInfo($principalID)
-	{
-		UUID::CheckWithException($principalID);
-		$stmt = $this->db->query("DELETE FROM ".$this->dbtable_auth." WHERE UUID LIKE '$principalID'");
-	}
-
-	public function setAuthInfo($authInfo)
-	{
-		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_auth." (UUID, passwordHash, passwordSalt, webLoginKey, accountType) VALUES ".
-							"('".$authInfo->ID."',?,?,?,?) ON DUPLICATE KEY UPDATE passwordHash=?, passwordSalt=?,webLoginKey=?,accountType=?");
-		if(!$stmt)
-		{
-			trigger_error(mysqli_error($this->db));
-			throw new Exception("Database access error");
-		}
-		try
-		{
-			$stmt->bind_param("ssssssss", $authInfo->PasswordHash, $authInfo->PasswordSalt, $authInfo->WebLoginKey, $authInfo->AccountType,
-									$authInfo->PasswordHash, $authInfo->PasswordSalt, $authInfo->WebLoginKey, $authInfo->AccountType);
-			if($stmt->execute())
+			try
 			{
-				return;
-			}
-		}
-		catch(Exception $e)
-		{
-			$stmt->close();
-			throw $e;
-		}
-		$stmt->close();
-
-		throw new AuthInfoUpdateFailedException();
-	}
-
-	public function addToken($principalID, $lifeTime)
-	{
-		UUID::CheckWithException($principalID);
-		$token=UUID::Random();
-		$validity = time() + 60 * $lifeTime;
-		$current = time();
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE validity < $current AND UUID LIKE '$principalID'");
-		if($stmt)
-		{
-			$stmt->execute();
-			$stmt->close();
-		}
-		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_tokens." (UUID, token, validity) VALUES ('$principalID',?,?)");
-		if(!$stmt)
-		{
-			trigger_error(mysqli_error($this->db));
-			throw new Exception("Database access error");
-		}
-		try
-		{
-			$stmt->bind_param("si", $token, $validity);
-			$stmt->execute();
-			if($stmt->affected_rows == 0)
-			{
-				throw new AuthTokenAddFailedException();
-			}
-		}
-		catch(Exception $e)
-		{
-			$stmt->close();
-			throw $e;
-		}
-		$stmt->close();
-		return $token;
-	}
-
-	public function verifyToken($principalID, $token, $lifeTime)
-	{
-		UUID::CheckWithException($principalID);
-		$validity = time() + 60 * $lifeTime;
-		$current = time();
-		$query = "UPDATE ".$this->dbtable_tokens." SET validity='$validity' WHERE UUID='$principalID' AND token='".$this->db->real_escape_string($token)."' AND validity >= '$current'";
-		$stmt = $this->db->prepare($query);
-		if(!$stmt)
-		{
-			trigger_error(mysqli_error($this->db));
-			throw new Exception("Database access error");
-		}
-		try
-		{
-			$stmt->execute();
-			if($stmt->affected_rows==0)
-			{
-				/* MySQL does not count an unchanged dataset, so we check by select for such an token */
-				$res = $this->db->query("SELECT validity FROM ".$this->dbtable_tokens." WHERE UUID='$principalID' AND token='".$this->db->real_escape_string($token)."' AND validity >= '$current'");
-				if(!$res)
+				$row = $res->fetch_assoc();
+				if(!$row)
 				{
-					trigger_error(mysqli_error($this->db));
-					throw new Exception("Database access error");
+					throw new AuthInfoNotFoundException();
 				}
-				$row = $res->fetch_row();
-				if($row)
+				$ret = new AuthInfo();
+				$ret->ID = $row["UUID"];
+				$ret->PasswordHash = $row["passwordHash"];
+				$ret->PasswordSalt = $row["passwordSalt"];
+				$ret->WebLoginKey = $row["webLoginKey"];
+				$ret->AccountType = $row["accountType"];
+				return $ret;
+			}
+			catch(Exception $e)
+			{
+				$res->free();
+				throw $e;
+			}
+			$res->free();
+		}
+
+		public function deleteAuthInfo($principalID)
+		{
+			UUID::CheckWithException($principalID);
+			$stmt = $this->db->query("DELETE FROM ".$this->dbtable_auth." WHERE UUID LIKE '$principalID'");
+		}
+
+		public function setAuthInfo($authInfo)
+		{
+			$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_auth." (UUID, passwordHash, passwordSalt, webLoginKey, accountType) VALUES ".
+								"('".$authInfo->ID."',?,?,?,?) ON DUPLICATE KEY UPDATE passwordHash=?, passwordSalt=?,webLoginKey=?,accountType=?");
+			if(!$stmt)
+			{
+				trigger_error(mysqli_error($this->db));
+				throw new Exception("Database access error");
+			}
+			try
+			{
+				$stmt->bind_param("ssssssss", $authInfo->PasswordHash, $authInfo->PasswordSalt, $authInfo->WebLoginKey, $authInfo->AccountType,
+										$authInfo->PasswordHash, $authInfo->PasswordSalt, $authInfo->WebLoginKey, $authInfo->AccountType);
+				if($stmt->execute())
 				{
-					$res->free();
 					return;
 				}
-				$res->free();
-				throw new AuthTokenVerifyFailedException();
 			}
-		}
-		catch(Exception $e)
-		{
-			$stmt->close();
-			throw $e;
-		}
-		$stmt->close();
-	}
-
-	public function releaseToken($principalID, $token)
-	{
-		UUID::CheckWithException($principalID);
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE UUID='$principalID' AND token='".$this->db->real_escape_string($token)."'");
-		if(!$stmt)
-		{
-			trigger_error(mysqli_error($this->db));
-			throw new Exception("Database access error");
-		}
-		try
-		{
-			$stmt->execute();
-			if($stmt->affected_rows==0)
+			catch(Exception $e)
 			{
-				throw new AuthTokenNotFoundException();
+				$stmt->close();
+				throw $e;
 			}
-		}
-		catch(Exception $e)
-		{
 			$stmt->close();
-			throw $e;
+
+			throw new AuthInfoUpdateFailedException();
 		}
-		$stmt->close();
-	}
 
-	private $revisions_auth = array(
-			"CREATE TABLE %tablename% (
-								`UUID` char(36) NOT NULL,
-								`passwordHash` char(32) NOT NULL DEFAULT '',
-								`passwordSalt` char(32) NOT NULL DEFAULT '',
-								`webLoginKey` varchar(255) NOT NULL DEFAULT '',
-								`accountType` varchar(32) NOT NULL DEFAULT 'UserAccount',
-								PRIMARY KEY (`UUID`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8"
-	);
+		public function addToken($principalID, $lifeTime)
+		{
+			UUID::CheckWithException($principalID);
+			$token=UUID::Random();
+			$validity = time() + 60 * $lifeTime;
+			$current = time();
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE validity < $current AND UUID LIKE '$principalID'");
+			if($stmt)
+			{
+				$stmt->execute();
+				$stmt->close();
+			}
+			$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_tokens." (UUID, token, validity) VALUES ('$principalID',?,?)");
+			if(!$stmt)
+			{
+				trigger_error(mysqli_error($this->db));
+				throw new Exception("Database access error");
+			}
+			try
+			{
+				$stmt->bind_param("si", $token, $validity);
+				$stmt->execute();
+				if($stmt->affected_rows == 0)
+				{
+					throw new AuthTokenAddFailedException();
+				}
+			}
+			catch(Exception $e)
+			{
+				$stmt->close();
+				throw $e;
+			}
+			$stmt->close();
+			return $token;
+		}
 
-	private $revisions_tokens = array(
-			" CREATE TABLE %tablename% (
-  								`UUID` char(36) NOT NULL,
-  								`token` varchar(255) NOT NULL,
-  								`validity` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  								UNIQUE KEY `uuid_token` (`UUID`,`token`),
-  								KEY `UUID` (`UUID`),
-  								KEY `token` (`token`),
-  								KEY `validity` (`validity`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-			"ALTER TABLE %tablename% MODIFY validity BIGINT(20) UNSIGNED NOT NULL "
-	);
+		public function verifyToken($principalID, $token, $lifeTime)
+		{
+			UUID::CheckWithException($principalID);
+			$validity = time() + 60 * $lifeTime;
+			$current = time();
+			$query = "UPDATE ".$this->dbtable_tokens." SET validity='$validity' WHERE UUID='$principalID' AND token='".$this->db->real_escape_string($token)."' AND validity >= '$current'";
+			$stmt = $this->db->prepare($query);
+			if(!$stmt)
+			{
+				trigger_error(mysqli_error($this->db));
+				throw new Exception("Database access error");
+			}
+			try
+			{
+				$stmt->execute();
+				if($stmt->affected_rows==0)
+				{
+					/* MySQL does not count an unchanged dataset, so we check by select for such an token */
+					$res = $this->db->query("SELECT validity FROM ".$this->dbtable_tokens." WHERE UUID='$principalID' AND token='".$this->db->real_escape_string($token)."' AND validity >= '$current'");
+					if(!$res)
+					{
+						trigger_error(mysqli_error($this->db));
+						throw new Exception("Database access error");
+					}
+					$row = $res->fetch_row();
+					if($row)
+					{
+						$res->free();
+						return;
+					}
+					$res->free();
+					throw new AuthTokenVerifyFailedException();
+				}
+			}
+			catch(Exception $e)
+			{
+				$stmt->close();
+				throw $e;
+			}
+			$stmt->close();
+		}
 
-	public function migrateRevision()
-	{
-		mysql_migrationExecuter($this->db, "MySQL.AuthInfo", $this->dbtable_auth, $this->revisions_auth);
-		mysql_migrationExecuter($this->db, "MySQL.AuthInfo", $this->dbtable_tokens, $this->revisions_tokens);
+		public function releaseToken($principalID, $token)
+		{
+			UUID::CheckWithException($principalID);
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE UUID='$principalID' AND token='".$this->db->real_escape_string($token)."'");
+			if(!$stmt)
+			{
+				trigger_error(mysqli_error($this->db));
+				throw new Exception("Database access error");
+			}
+			try
+			{
+				$stmt->execute();
+				if($stmt->affected_rows==0)
+				{
+					throw new AuthTokenNotFoundException();
+				}
+			}
+			catch(Exception $e)
+			{
+				$stmt->close();
+				throw $e;
+			}
+			$stmt->close();
+		}
+
+		private $revisions_auth = array(
+				"CREATE TABLE %tablename% (
+									`UUID` char(36) NOT NULL,
+									`passwordHash` char(32) NOT NULL DEFAULT '',
+									`passwordSalt` char(32) NOT NULL DEFAULT '',
+									`webLoginKey` varchar(255) NOT NULL DEFAULT '',
+									`accountType` varchar(32) NOT NULL DEFAULT 'UserAccount',
+									PRIMARY KEY (`UUID`)
+									) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+		);
+
+		private $revisions_tokens = array(
+				" CREATE TABLE %tablename% (
+									`UUID` char(36) NOT NULL,
+									`token` varchar(255) NOT NULL,
+									`validity` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+									UNIQUE KEY `uuid_token` (`UUID`,`token`),
+									KEY `UUID` (`UUID`),
+									KEY `token` (`token`),
+									KEY `validity` (`validity`)
+									) ENGINE=InnoDB DEFAULT CHARSET=utf8",
+				"ALTER TABLE %tablename% MODIFY validity BIGINT(20) UNSIGNED NOT NULL "
+		);
+
+		public function migrateRevision()
+		{
+			mysql_migrationExecuter($this->db, "MySQL.AuthInfo", $this->dbtable_auth, $this->revisions_auth);
+			mysql_migrationExecuter($this->db, "MySQL.AuthInfo", $this->dbtable_tokens, $this->revisions_tokens);
+		}
 	}
 }
 
