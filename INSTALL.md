@@ -33,6 +33,11 @@ Integrate the configuration apache_config.sample in the
 configuration of Apache and adjust pathes
 
 
+2.2. Setting up Microsoft IIS
+
+Use the config in tools/iis-config as a base for your configuration.
+
+
 3. Setting up PHP
 
 Install PHP-Curl
