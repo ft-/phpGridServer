@@ -14,7 +14,15 @@ default_charset should be set to UTF-8
 
 1.2 Recommended PHP extensions
 
+1.2.1. OpCode Caching
+
+1.2.1.1. when using Apache
+
 - opcode cache (e.g. APCu, ZendOpcache)
+
+1.2.1.2. when using Microsoft IIS
+
+- Windows Cache Extension for PHP
 
 
 1.3 Enabling JPEG2000 display
