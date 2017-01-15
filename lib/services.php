@@ -79,11 +79,17 @@ function getService($service)
 	$servicecfg="${servicename}";
 	if(!isset($_services_[$service]))
 	{
+		if(!isset($_servicecfgs_[$servicecfg]))
+		{
+			trigger_error("Missing configuration for service $service", E_USER_ERROR);
+			throw new Exception("Missing configuration for service $service");
+		}
 		$_SERVICE_PARAMS = $_servicecfgs_[$servicecfg];
 		$module = $_SERVICE_PARAMS["use"];
 		if(!$module)
 		{
 			trigger_error("Missing configuration for service $service", E_USER_ERROR);
+			throw new Exception("Missing configuration for service $service");
 		}
 		if(substr($module, 0, 7) =="linkto:")
 		{
