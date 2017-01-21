@@ -40,6 +40,8 @@ default_charset should be set to UTF-8
 Integrate the configuration apache_config.sample in the
 configuration of Apache and adjust pathes
 
+Disable mod_reqtimeout on apache since OpenSim easily takes a lot of network connections.
+
 
 2.2. Setting up Microsoft IIS
 
