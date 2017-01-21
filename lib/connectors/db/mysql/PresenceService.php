@@ -158,7 +158,9 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 
 		public function loginPresence($presence)
 		{
-			$lastseen = strftime("%F %T", time());
+			$lastseen = time();
+			
+			trigger_error($lastseen);
 
 			$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable." (UserID, SessionID, SecureSessionID, LastSeen, ClientIPAddress, ServiceHandler) VALUES (?, ?, ?, '$lastseen', ?, ?)");
 			if(!$stmt)
@@ -245,15 +247,15 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 		{
 			UUID::CheckWithException($regionID);
 			UUID::CheckWithException($sessionID);
-			$lastseen = strftime("%F %T", time());
+			$lastseen = time();
 
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET RegionID=? WHERE SessionID LIKE ?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET RegionID=?, LastSeen=? WHERE SessionID LIKE ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
 				throw new Exception("Database access error");
 			}
-			$stmt->bind_param("ss", $regionID, $sessionID);
+			$stmt->bind_param("sis", $regionID, $lastseen, $sessionID);
 			try
 			{
 				if(!$stmt->execute())
@@ -280,7 +282,9 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 								UNIQUE KEY `SessionID` (`SessionID`),
 								KEY `UserID` (`UserID`)
 								) ENGINE=InnoDB DEFAULT CHARSET=utf8",
-			"ALTER TABLE %tablename% ADD `ClientIPAddress` VARCHAR(255) NOT NULL DEFAULT ''"
+			"ALTER TABLE %tablename% ADD `ClientIPAddress` VARCHAR(255) NOT NULL DEFAULT ''",
+			"ALTER TABLE %tablename% DROP COLUMN `LastSeen`",
+			"ALTER TABLE %tablename% ADD `LastSeen` BIGINT(20) NOT NULL DEFAULT '0'"
 		);
 
 		public function migrateRevision()
