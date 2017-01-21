@@ -217,7 +217,8 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 				trigger_error(mysqli_error($this->db));
 				throw new Exception("Database access error");
 			}
-			$stmt->bind_param("s", substr($userid, 0, 36));
+			$userid = substr($userid, 0, 36);
+			$stmt->bind_param("s", $userid);
 			$stmt->execute();
 			try
 			{
