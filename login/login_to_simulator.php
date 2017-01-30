@@ -28,31 +28,37 @@ $structParam = $_RPC_REQUEST->Params[0];
 
 if(!isset($structParam->first))
 {
+	trigger_error("missing first param");
 	return new RPCFaultResponse(4, "Missing parameter first");
 }
 
 if(!isset($structParam->last))
 {
+	trigger_error("missing last param");
 	return new RPCFaultResponse(4, "Missing parameter last");
 }
 
 if(!isset($structParam->start))
 {
+	trigger_error("missing start param");
 	return new RPCFaultResponse(4, "Missing parameter start");
 }
 
 if(!isset($structParam->passwd))
 {
+	trigger_error("missing passwd param");
 	return new RPCFaultResponse(4, "Missing parameter passwd");
 }
 
 if(!isset($structParam->channel))
 {
+	trigger_error("missing channel param");
 	return new RPCFaultResponse(4, "Missing parameter channel");
 }
 
 if(!isset($structParam->version))
 {
+	trigger_error("missing version param");
 	return new RPCFaultResponse(4, "Missing parameter version");
 }
 
@@ -66,12 +72,14 @@ if(!isset($structParam->platform))
 
 if(!isset($structParam->mac))
 {
+	trigger_error("missing mac param");
 	return new RPCFaultResponse(4, "Missing parameter mac");
 	exit;
 }
 
 if(!isset($structParam->id0))
 {
+	trigger_error("missing id0 param");
 	return new RPCFaultResponse(4, "Missing parameter id0");
 	exit;
 }
@@ -81,6 +89,7 @@ if(isset($structParam->scope_id))
 {
 	if(!isuuid($structParam->scope_id))
 	{
+		trigger_error("invalid scope_id param");
 		return new RPCFaultResponse(4, "Invalid parameter scope_id");
 	}
 	$scopeid = $structParam->scope_id;
