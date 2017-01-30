@@ -98,6 +98,9 @@ With the Parameter Add, you have to add the following parameters:
 
 Replace <yourgridserver> with the hostname and port you are going to use
 
+Do not use localhost here. It will resolve into IPv6 addresses on current operating systems and prevent a successful login.
+
+
 Parameter                  GridInfo                              Value                                 Description
 
 login                      yes                                   http://<yourgridserver>/
