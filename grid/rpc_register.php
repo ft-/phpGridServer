@@ -141,7 +141,7 @@ $region_info = new RegionInfo();
 foreach($keymappings as $from => $to)
 {
 	$tokey=$to[0];
-	if(isset($_RPC_REQUEST->$from))
+	if(isset($_RPC_REQUEST->$from) && $_RPC_REQUEST->$from != "")
 	{
 		$region_info->$tokey = $_RPC_REQUEST->$from;
 	}
