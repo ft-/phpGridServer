@@ -160,8 +160,6 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 		{
 			$lastseen = time();
 			
-			trigger_error($lastseen);
-
 			$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable." (UserID, SessionID, SecureSessionID, LastSeen, ClientIPAddress, ServiceHandler) VALUES (?, ?, ?, '$lastseen', ?, ?)");
 			if(!$stmt)
 			{
