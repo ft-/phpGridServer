@@ -17,6 +17,10 @@ function mysql_FriendFromRow($row)
 	$friend->FriendID = $row["Friend"];
 	$friend->Flags = $row["Flags"];
 	$friend->TheirFlags = $row["TheirFlags"];
+	if($friend->TheirFlags == "")
+	{
+		$friends->TheirFlags = 0;
+	}
 	return $friend;
 }
 
