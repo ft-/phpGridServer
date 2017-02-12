@@ -126,7 +126,7 @@ if(!class_exists("SimulatorPresenceHandler"))
 			if($LocalToGrid)
 			{
 				$fromName = $uui->FirstName.".".$uui->LastName." @".$uui->Uri;
-				$this->friendsSimConnectorService->friendshipOffered(null, $presence->RegionID, $uui->ID, $fromName, $presence->UserID, $message);
+				$this->friendsSimConnectorService->friendshipOffered(null, $presence->RegionID, $uui->ID, $fromName, $presence->UserID, "Friendship offered");
 			}
 			else
 			{
