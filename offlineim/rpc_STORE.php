@@ -15,7 +15,15 @@ $im = new GridInstantMessage();
 
 if(isset($_RPC_REQUEST->BinaryBucket))
 {
-	$im->BinaryBucket = hex2bin($_RPC_REQUEST->BinaryBucket);
+	$repl = array(
+		" "=>"",
+		"\t"=>"",
+		"\n"=>"",
+		"\r"=>"",
+		"\0"=>"",
+		"\x0B"=>"");
+
+	$im->BinaryBucket = hex2bin(strtr($_RPC_REQUEST->BinaryBucket, $repl));
 }
 
 if(isset($_RPC_REQUEST->Dialog))
