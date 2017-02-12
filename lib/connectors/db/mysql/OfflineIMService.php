@@ -87,7 +87,7 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 			throw Exception("Database access error");
 		}
 		$null = NULL;
-		$stmt->bind_param("ssisi"."isssb"."i",
+		$stmt->bind_param("ssisi"."isssb"."is",
 				$offlineIM->FromAgentID,
 				$offlineIM->Message,
 				$offlineIM->Timestamp,
