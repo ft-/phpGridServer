@@ -48,6 +48,11 @@ if(isset($_RPC_REQUEST->Message))
 	$im->Message = $_RPC_REQUEST->Message;
 }
 
+if(isset($_RPC_REQUEST->SessionID))
+{
+	$im->IMSessionID = $_RPC_REQUEST->SessionID;
+}
+
 if(isset($_RPC_REQUEST->EstateID))
 {
 	$im->ParentEstateID = intval($_RPC_REQUEST->EstateID);
