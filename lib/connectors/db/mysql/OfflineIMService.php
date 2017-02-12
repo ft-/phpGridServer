@@ -26,6 +26,7 @@ function mysql_GridInstantMessageFromRow($row)
 		$im->FromGroup = False;
 	$im->Message = $row["Message"];
 	$im->Offline = True;
+	$im->IMSessionID = $row["IMSessionID"];
 	$im->Position = $row["Position"];
 	$im->BinaryBucket = $row["BinaryBucket"];
 	$im->ParentEstateID = intval($row["EstateID"]);
@@ -76,10 +77,10 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable."
 				(FromAgentID, Message, TMStamp, FromAgentName, FromGroup,
 					EstateID, Position, RegionID, ToAgentID, BinaryBucket,
-					Dialog) VALUES
+					Dialog, IMSessionID) VALUES
 				(?, ?, ?, ?, ?,
 				?, ?, ?, ?, ?,
-				?)");
+				?, ?)");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -99,7 +100,8 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 				$offlineIM->ToAgentID,
 				$null,
 
-				$offlineIM->Dialog);
+				$offlineIM->Dialog,
+				$offlineIM->IMSessionID);
 		$stmt->send_long_data(9, $offlineIM->BinaryBucket->Data);
 		$stmt->execute();
 		if($stmt->affected_rows == 0)
@@ -157,7 +159,8 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 								PRIMARY KEY (`ID`),
 								KEY `PrincipalID` (`FromAgentID`)
 								) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8",
-			"ALTER TABLE %tablename% MODIFY TMStamp BIGINT(20)"
+			"ALTER TABLE %tablename% MODIFY TMStamp BIGINT(20)",
+			"ALTER TABLE %tablename% ADD IMSessionID CHAR(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'"
 	);
 	public function migrateRevision()
 	{
