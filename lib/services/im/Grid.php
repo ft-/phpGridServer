@@ -43,7 +43,6 @@ class GridIMService implements IMServiceInterface
 			}
 			else if($im->Dialog==GridInstantMessageDialog::InventoryOffered)
 			{
-				throw new Exception("user offline");
 			}
 			else
 			{
