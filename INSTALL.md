@@ -42,6 +42,7 @@ configuration of Apache and adjust pathes
 
 Disable mod_reqtimeout on apache since OpenSim easily takes a lot of network connections.
 
+On debian: a2dismod reqtimeout
 
 2.2. Setting up Microsoft IIS
 
