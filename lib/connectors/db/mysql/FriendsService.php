@@ -16,11 +16,7 @@ function mysql_FriendFromRow($row)
 	$friend->UserID = $row["PrincipalID"];
 	$friend->FriendID = $row["Friend"];
 	$friend->Flags = $row["Flags"];
-	$friend->TheirFlags = $row["TheirFlags"];
-	if($friend->TheirFlags == "")
-	{
-		$friends->TheirFlags = 0;
-	}
+	$friend->TheirFlags = intval($row["TheirFlags"]);
 	return $friend;
 }
 
