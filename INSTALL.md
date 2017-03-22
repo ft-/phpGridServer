@@ -67,7 +67,7 @@ access the <yourhost>/admin to create the admin user
 
 4.2. from Robust
 
-run the SQL file ConvertDotNetRobustToPhp.sql
+run the SQL file ConvertDotNetRobustToPhpGridServer.sql
 
 run tools/dbmigration.php
 
