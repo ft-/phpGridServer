@@ -26,7 +26,7 @@ foreach($params as $name => $value)
 	}
 	echo ",\"$name\":\"".addcslashes($value, "\\\n\r\\\"\\\'")."\"";
 }
-mysqli_free_result($res);
+
 if(!$have_loginuri)
 {
 	echo ",\"login\":\"".addcslashes("http://${_SERVER['SERVER_NAME']}:${_SERVER['SERVER_PORT']}/")."\"";
