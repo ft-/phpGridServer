@@ -830,11 +830,17 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 			$processed = array();
 			while($row = mysqli_fetch_assoc($res))
 			{
-				if(!in_array($row["creatorID"], $processed))
+				$creatorID = str_replace("\\", "/", $row["creatorID"]);
+				if($creatorID == "")
 				{
-					$processed[] = $row["creatorID"];
-					$creatorRefId = $this->getInventoryCreator($row["creatorID"]);
-					$stmt = $this->db->prepare("UPDATE inventoryitems SET creatorRefId = $creatorRefId WHERE creatorId LIKE '".$this->db->real_escape_string($row["creatorID"])."'");
+					$creatorID = "00000000-0000-0000-0000-000000000000";
+				}
+
+				if(!in_array($creatorID, $processed))
+				{
+					$processed[] = $creatorID;
+					$creatorRefId = $this->getInventoryCreator($creatorID);
+					$stmt = $this->db->prepare("UPDATE inventoryitems SET creatorRefId = $creatorRefId WHERE creatorId LIKE '".$this->db->real_escape_string($creatorID)."'");
 					if(!$stmt)
 					{
 						trigger_error(mysqli_error($this->db));
