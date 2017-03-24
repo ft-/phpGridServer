@@ -53,6 +53,8 @@ Use the config in tools/iis-config as a base for your configuration.
 
 Install PHP-Curl
 
+Increase post_max_size to 64MB at least
+
 4. Creating the database
 
 first copy config.php.sample to config.php and add your database server 
