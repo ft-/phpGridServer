@@ -142,7 +142,7 @@ Use the configuration sample from tools/Sample-OpenSim-Config
 
 7. Setting up Fallback Regions
 
-Admin pages to be implemented
+see http://<yourgridserver>/admin
 
 
 8. Enabling search collector
@@ -166,3 +166,7 @@ Provided frontpages:
 
 tools/frontpage-for-concrete5.7-integration contains files for concrete5 CMS V5.7.X
 
+
+10. Access to user pages
+
+see http://<yourgridserver>/user
