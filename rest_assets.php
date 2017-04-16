@@ -239,6 +239,15 @@ else if($_SERVER["REQUEST_METHOD"]=="POST")
 		echo $outxml;
 		exit;
 	}
+	catch(AssetUpdateFailedException $e)
+	{
+		http_response_code(200);
+		header("Content-Type: text/xml");
+		$outxml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><string>".$asset->ID."</string>";
+		header("Content-Length: ".strlen($outxml));
+		echo $outxml;
+		exit;
+	}
 	catch(InvalidUUIDException $e)
 	{
 		error_log("failed to store asset due to invalid UUID");

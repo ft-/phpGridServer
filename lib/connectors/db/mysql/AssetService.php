@@ -209,7 +209,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 					$res->free();
 					$stmt = $this->db->prepare("UPDATE assets SET data=?, assetType=? WHERE id=? $assetFlagsCheck");
 					$stmt->bind_param("bis", $null, $asset->Type, $id);
-					$stmt->send_long_data(0, $asset->Data); /* this prevents us frm having to rewrite max_packet_size */
+					$stmt->send_long_data(0, $asset->Data); /* this prevents us from having to rewrite max_packet_size */
 					if(!$stmt->execute())
 					{
 						$stmt->close();
@@ -223,7 +223,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 				else
 				{
 					$res->free();
-					throw new AssetStoreFailedException("Could not update immutable asset.");
+					throw new AssetUpdateFailedException("Could not update immutable asset.");
 				}
 			}
 			else

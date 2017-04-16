@@ -11,6 +11,7 @@ require_once("lib/types/Asset.php");
 
 class AssetNotFoundException extends Exception {}
 
+class AssetUpdateFailedException extends Exception {}
 class AssetStoreFailedException extends Exception {}
 class AssetDeleteFailedException extends Exception {}
 class AssetPermissionsInsufficientException extends Exception {}
