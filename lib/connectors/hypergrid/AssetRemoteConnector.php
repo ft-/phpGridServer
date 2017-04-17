@@ -23,7 +23,14 @@ class HGAssetRemoteConnector implements AssetServiceInterface
 	public function __construct($uri, $sessionID)
 	{
 		$this->httpConnector = getService("HTTPConnector");
-		$this->uri = $uri."/assets";
+		if(substr($uri, -1) == "/")
+		{
+			$this->uri = $uri."assets";
+		}
+		else
+		{
+			$this->uri = $uri."/assets";
+		}
 		$this->exists_uri = $uri."/get_assets_exist";
 		$this->SessionID = $sessionID;
 	}
