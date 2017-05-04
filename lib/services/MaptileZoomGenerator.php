@@ -93,8 +93,6 @@ class MaptileZoomGenerator implements MaptileServiceInterface
 		imagejpeg($maptile);
 		$data = ob_get_clean();
 		imagedestroy($maptile);
-		
-		trigger_error("storing maptile");
 
 		$maptile = new Maptile();
 		$maptile->LocX = $locX;
