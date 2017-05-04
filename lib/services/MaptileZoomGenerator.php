@@ -58,10 +58,7 @@ class MaptileZoomGenerator implements MaptileServiceInterface
 			}
 		}
 		
-		trigger_error("generating maptile");
-		
 		$numparts = pow(2, $zoomLevel - 1);
-		trigger_error("generating maptile $numparts by $numparts");
 		$partsize = 256 / $numparts;
 		/* merge maptiles */
 		$maptile = imagecreatetruecolor(256, 256);
@@ -74,11 +71,9 @@ class MaptileZoomGenerator implements MaptileServiceInterface
 			{
 				try
 				{
-					trigger_error("loading $ox $oy");
 					$part = $this->gdloadMaptile($scopeID, $locX+$ox * 256, $locY+$oy * 256);
 					imagecopyresized($maptile, $part, $ox * $partsize, ($numparts - 1 - $oy) * $partsize, 0, 0, $partsize, $partsize, 256, 256);
 					imagedestroy($part);
-					trigger_error("loaded $ox $oy");
 				}
 				catch(Exception $e)
 				{
