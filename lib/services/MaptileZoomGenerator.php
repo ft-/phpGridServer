@@ -77,14 +77,7 @@ class MaptileZoomGenerator implements MaptileServiceInterface
 				}
 				catch(Exception $e)
 				{
-					try
-					{
-						trigger_error("loading failed $ox $oy; ".$e->Message.";".get_class($e));
-					}
-					catch(Exception $e)
-					{
-						trigger_error("loading failed $ox $oy; ".get_class($e));
-					}
+					/* ignore errors in this case */
 				}
 			}
 		}
