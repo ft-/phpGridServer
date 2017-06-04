@@ -24,7 +24,7 @@ class MySQLAvatarServiceConnector implements AvatarServiceInterface
 	public function getAvatar($PrincipalID)
 	{
 		UUID::CheckWithException($PrincipalID);
-		$res = $this->db->query("SELECT Name, Value FROM ".$this->dbtable." WHERE PrincipalID LIKE '$PrincipalID'");
+		$res = $this->db->query("SELECT Name, Value FROM ".$this->dbtable." WHERE PrincipalID = '$PrincipalID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -46,14 +46,14 @@ class MySQLAvatarServiceConnector implements AvatarServiceInterface
 		UUID::CheckWithException($PrincipalID);
 		foreach($nameList as $name)
 		{
-			$this->db->query("DELETE FROM ".$this->dbtable."  WHERE PrincipalID LIKE '$PrincipalID' AND Name LIKE '".$this->db->real_escape_string($name)."'");
+			$this->db->query("DELETE FROM ".$this->dbtable."  WHERE PrincipalID = '$PrincipalID' AND Name = '".$this->db->real_escape_string($name)."'");
 		}
 	}
 
 	public function resetAvatar($PrincipalID)
 	{
 		UUID::CheckWithException($PrincipalID);
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE PrincipalID LIKE '$PrincipalID'");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE PrincipalID = '$PrincipalID'");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -70,7 +70,7 @@ class MySQLAvatarServiceConnector implements AvatarServiceInterface
 
 		foreach($itemlist as $k => $v)
 		{
-			$this->db->query("DELETE FROM ".$this->dbtable."  WHERE PrincipalID LIKE '$PrincipalID' AND Name LIKE '".$this->db->real_escape_string($k)."'");
+			$this->db->query("DELETE FROM ".$this->dbtable."  WHERE PrincipalID = '$PrincipalID' AND Name = '".$this->db->real_escape_string($k)."'");
 			$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable."  (PrincipalID, Name, Value) VALUES (?, ?, ?)");
 			if($stmt)
 			{

@@ -115,7 +115,7 @@ class MySQLOfflineIMServiceConnector implements OfflineIMServiceInterface
 	public function getOfflineIMs($principalID)
 	{
 		UUID::CheckWithException($principalID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ToAgentID LIKE '$principalID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ToAgentID = '$principalID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));

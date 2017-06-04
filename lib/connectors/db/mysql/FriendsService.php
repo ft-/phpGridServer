@@ -59,7 +59,7 @@ class MySQLFriendsServiceConnector implements FriendsServiceInterface
 
 	public function getFriend($UserID, $FriendID)
 	{
-		$res = $this->db->query("SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID LIKE '".$this->db->real_escape_string($UserID)."' AND f.Friend LIKE '".$this->db->real_escape_string($FriendID)."'");
+		$res = $this->db->query("SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID = '".$this->db->real_escape_string($UserID)."' AND f.Friend = '".$this->db->real_escape_string($FriendID)."'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -111,7 +111,7 @@ class MySQLFriendsServiceConnector implements FriendsServiceInterface
 
 	public function getFriends($UserID)
 	{
-		$where = "SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID LIKE '".$this->db->real_escape_string($UserID)."'";
+		$where = "SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID = '".$this->db->real_escape_string($UserID)."'";
 		$res = $this->db->query($where);
 		if(!$res)
 		{
@@ -143,7 +143,7 @@ class MySQLFriendsServiceConnector implements FriendsServiceInterface
 
 	public function deleteFriend($UserID, $FriendID)
 	{
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE PrincipalID LIKE ? AND Friend LIKE ?");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE PrincipalID = ? AND Friend = ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));

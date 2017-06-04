@@ -80,7 +80,7 @@ class MySQLServerParamServiceConnector implements ServerParamServiceInterface
 
 	public function deleteParam($name)
 	{
-		$this->db->query("DELETE FROM ".$this->dbtable." WHERE parameter LIKE '".$this->db->real_escape_string($name)."'");
+		$this->db->query("DELETE FROM ".$this->dbtable." WHERE parameter = '".$this->db->real_escape_string($name)."'");
 	}
 
 	public function getGridInfoParams()
@@ -120,7 +120,7 @@ class MySQLServerParamServiceConnector implements ServerParamServiceInterface
 
 	public function getServerParam($name)
 	{
-		$res = $this->db->query("SELECT parameter, value, gridinfo FROM serverparams WHERE parameter LIKE '".$this->db->real_escape_string($name)."'");
+		$res = $this->db->query("SELECT parameter, value, gridinfo FROM serverparams WHERE parameter = '".$this->db->real_escape_string($name)."'");
 		if($res)
 		{
 			if($row = $res->fetch_assoc())

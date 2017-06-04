@@ -111,7 +111,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		UUID::CheckWithException($scopeID);
 		UUID::CheckWithException($regionID);
 		/* get region defaults */
-		$res = $this->db->query("SELECT flags FROM ".$this->dbtable_defaults." WHERE (ScopeID LIKE '$scopeID' AND regionName LIKE '".$this->db->real_escape_string($regionName)."') OR uuid LIKE '$regionID'");
+		$res = $this->db->query("SELECT flags FROM ".$this->dbtable_defaults." WHERE (ScopeID = '$scopeID' AND regionName = '".$this->db->real_escape_string($regionName)."') OR uuid = '$regionID'");
 		if($res)
 		{
 			$flags = 0;
@@ -128,7 +128,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		}
 
 		/* get region defaults from special UUID */
-		$res = $this->db->query("SELECT flags FROM ".$this->dbtable_defaults." WHERE uuid LIKE '00000000-0000-0000-0000-000000000000'");
+		$res = $this->db->query("SELECT flags FROM ".$this->dbtable_defaults." WHERE uuid = '00000000-0000-0000-0000-000000000000'");
 		if($res)
 		{
 			$flags = 0;
@@ -173,11 +173,11 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE uuid LIKE '$regionID' AND scopeID LIKE '$scopeID' LIMIT 1";
+			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE uuid = '$regionID' AND scopeID = '$scopeID' LIMIT 1";
 		}
 		else
 		{
-			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE uuid LIKE '$regionID' LIMIT 1";
+			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE uuid = '$regionID' LIMIT 1";
 		}
 
 		$res = $this->db->query($q);
@@ -200,11 +200,11 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE regionName LIKE '".$this->db->real_escape_string($regionName)."' AND scopeID LIKE '$scopeID' LIMIT 1";
+			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE regionName = '".$this->db->real_escape_string($regionName)."' AND scopeID = '$scopeID' LIMIT 1";
 		}
 		else
 		{
-			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE regionName LIKE '".$this->db->real_escape_string($regionName)."' LIMIT 1";
+			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE regionName = '".$this->db->real_escape_string($regionName)."' LIMIT 1";
 		}
 
 		$res = $this->db->query($q);
@@ -227,7 +227,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE scopeID LIKE '$scopeID'";
+			$q = "SELECT * FROM ".$this->dbtable_defaults." WHERE scopeID = '$scopeID'";
 		}
 		else
 		{
@@ -244,7 +244,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 	}
 	public function deleteRegionDefault($regionDefault)
 	{
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_defaults." WHERE (scopeID LIKE ? AND regionName LIKE ?) OR uuid LIKE ?");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_defaults." WHERE (scopeID = ? AND regionName = ?) OR uuid = ?");
 		if(!$stmt)
 		{
 			throw new Exception("Database access error");
@@ -316,7 +316,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if("true"!=$allowDuplicateRegionNames)
 		{
 			/* we have to give checks for all intersection variants */
-			$res = $this->db->query("SELECT uuid FROM ".$this->dbtable." WHERE ScopeID LIKE '".$region->ScopeID."' AND regionName LIKE '".$this->db->real_escape_string($region->RegionName)."' LIMIT 1");
+			$res = $this->db->query("SELECT uuid FROM ".$this->dbtable." WHERE ScopeID = '".$region->ScopeID."' AND regionName = '".$this->db->real_escape_string($region->RegionName)."' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -354,8 +354,8 @@ class MySQLGridServiceConnector implements GridServiceInterface
 						(
 							(locX >= $xmin AND locY >= $ymin AND locX < $xmax AND locY < $ymax) OR
 							(locX + sizeX > $xmin AND locY+sizeY > $ymin AND locX + sizeX < $xmax AND locY + sizeY < $ymax)
-						) AND uuid NOT LIKE '".$region->ID."' AND
-						ScopeID LIKE '".$region->ScopeID."' LIMIT 1;");
+						) AND uuid NOT = '".$region->ID."' AND
+						ScopeID = '".$region->ScopeID."' LIMIT 1;");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -403,21 +403,21 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		{
 			/* we handoff most stuff to mysql here */
 			/* first line deletes only when region is not persistent */
-			$query = "DELETE FROM ".$this->dbtable." WHERE ScopeID LIKE '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::Persistent.") = 0";
+			$query = "DELETE FROM ".$this->dbtable." WHERE ScopeID = '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::Persistent.") = 0";
 			$res = $this->db->query($query);
 			/* second line deletes only when region is set persistent */
-			$query = "UPDATE ".$this->dbtable." SET flags = flags - ".RegionFlags::RegionOnline.", last_seen=CURRENT_TIMESTAMP WHERE ScopeID LIKE '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::RegionOnline.") != 0";
+			$query = "UPDATE ".$this->dbtable." SET flags = flags - ".RegionFlags::RegionOnline.", last_seen=CURRENT_TIMESTAMP WHERE ScopeID = '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::RegionOnline.") != 0";
 			$res = $this->db->query($query);
 		}
 		else
 		{
-			$res = $this->db->query("UPDATE ".$this->dbtable." SET flags = flags - ".RegionFlags::RegionOnline.", last_seen=CURRENT_TIMESTAMP WHERE ScopeID LIKE '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::RegionOnline." != 0");
+			$res = $this->db->query("UPDATE ".$this->dbtable." SET flags = flags - ".RegionFlags::RegionOnline.", last_seen=CURRENT_TIMESTAMP WHERE ScopeID = '$scopeID' AND uuid='$regionID' AND (flags & ".RegionFlags::RegionOnline." != 0");
 		}
 	}
 
 	public function getRegionByIP($ipAddress)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE serverIP LIKE '".$this->db->real_escape_string($ipAddress)."' OR resolvedServerIP LIKE '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE serverIP = '".$this->db->real_escape_string($ipAddress)."' OR resolvedServerIP = '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -445,13 +445,13 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$scopeWhere = "ScopeID LIKE '$scopeID' AND";
+			$scopeWhere = "ScopeID = '$scopeID' AND";
 		}
 		else
 		{
 			$scopeWhere = "";
 		}
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE $scopeWhere regionName LIKE '".$this->db->real_escape_string($regionName)."' LIMIT 1");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE $scopeWhere regionName = '".$this->db->real_escape_string($regionName)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -480,11 +480,11 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID LIKE '$scopeID' AND  uuid LIKE '$regionID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID = '$scopeID' AND  uuid = '$regionID'");
 		}
 		else
 		{
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE uuid LIKE '$regionID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE uuid = '$regionID'");
 		}
 		if(!$res)
 		{
@@ -511,7 +511,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 	public function getRegionByPosition($scopeID, $x, $y)
 	{
 		UUID::CheckWithException($scopeID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID LIKE '$scopeID' AND
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID = '$scopeID' AND
 					locX<=$x AND locY<=$y AND locX+sizeX>$x AND locY+sizeY>$y LIMIT 1");
 		if(!$res)
 		{
@@ -549,13 +549,13 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$w = "ScopeID LIKE '$scopeID' AND";
+			$w = "ScopeID = '$scopeID' AND";
 		}
 		else
 		{
 			$w = "";
 		}
-		$this->db->query("UPDATE ".$this->dbtable." SET flags=(flags | $flagsToAdd) & $flagsToRemove WHERE $w uuid LIKE '$regionID'");
+		$this->db->query("UPDATE ".$this->dbtable." SET flags=(flags | $flagsToAdd) & $flagsToRemove WHERE $w uuid = '$regionID'");
 		/* no error checking here since we may not have a region at all */
 	}
 	
@@ -564,7 +564,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$w = "ScopeID LIKE '$scopeID' AND";
+			$w = "ScopeID = '$scopeID' AND";
 		}
 		else
 		{
@@ -593,7 +593,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 	public function getRegionsByName($scopeID, $regionName)
 	{
 		UUID::CheckWithException($scopeID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID LIKE '$scopeID' AND regionName LIKE '".$this->db->real_escape_string($regionName)."%'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID = '$scopeID' AND regionName LIKE '".$this->db->real_escape_string($regionName)."%'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -605,7 +605,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 	public function searchRegionsByName($scopeID, $searchString)
 	{
 		UUID::CheckWithException($scopeID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID LIKE '$scopeID' AND regionName LIKE '%".$this->db->real_escape_string($searchString)."%'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID = '$scopeID' AND regionName LIKE '%".$this->db->real_escape_string($searchString)."%'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -630,7 +630,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE
 				(locX between $xmin and $xmax) AND
 				(locY between $ymin and $ymax) AND
-				ScopeID LIKE '$scopeID'");
+				ScopeID = '$scopeID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -686,7 +686,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$w = "ScopeID LIKE '$scopeID' AND";
+			$w = "ScopeID = '$scopeID' AND";
 		}
 		else
 		{
@@ -711,7 +711,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$w = "ScopeID LIKE '$scopeID' AND";
+			$w = "ScopeID = '$scopeID' AND";
 		}
 		else
 		{

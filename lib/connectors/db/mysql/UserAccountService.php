@@ -101,33 +101,33 @@ if(!class_exists("MySQLUserAccountServiceConnector"))
 		public function getAccountByID($scopeID, $principalID)
 		{
 			UUID::CheckWithException($principalID);
-			$where = "PrincipalID LIKE '$principalID'";
+			$where = "PrincipalID = '$principalID'";
 			if($scopeID)
 			{
 				UUID::CheckWithException($scopeID);
-				$where .= " AND ScopeID LIKE '$scopeID'";
+				$where .= " AND ScopeID = '$scopeID'";
 			}
 			return $this->getAccountByWhere($where);
 		}
 
 		public function getAccountByName($scopeID, $firstName, $lastName)
 		{
-			$where = "FirstName LIKE '".$this->db->real_escape_string($firstName)."' AND LastName LIKE '".$this->db->real_escape_string($lastName)."'";
+			$where = "FirstName = '".$this->db->real_escape_string($firstName)."' AND LastName = '".$this->db->real_escape_string($lastName)."'";
 			if($scopeID)
 			{
 				UUID::CheckWithException($scopeID);
-				$where .= " AND ScopeID LIKE '$scopeID'";
+				$where .= " AND ScopeID = '$scopeID'";
 			}
 			return $this->getAccountByWhere($where);
 		}
 
 		public function getAccountByEmail($scopeID, $email)
 		{
-			$where = "Email LIKE '".$this->db->real_escape_string($email)."'";
+			$where = "Email = '".$this->db->real_escape_string($email)."'";
 			if($scopeID)
 			{
 				UUID::CheckWithException($scopeID);
-				$where .= " AND ScopeID LIKE '$scopeID'";
+				$where .= " AND ScopeID = '$scopeID'";
 			}
 			return $this->getAccountByWhere($where);
 		}
@@ -143,7 +143,7 @@ if(!class_exists("MySQLUserAccountServiceConnector"))
 			if($scopeID)
 			{
 				UUID::CheckWithException($scopeID);
-				$where = "ScopeID LIKE '$scopeID'";
+				$where = "ScopeID = '$scopeID'";
 			}
 			return $this->getAccountsByWhere($where);
 		}
@@ -188,11 +188,11 @@ if(!class_exists("MySQLUserAccountServiceConnector"))
 		public function setEverLoggedIn($scopeID, $principalID)
 		{
 			UUID::CheckWithException($principalID);
-			$where = "PrincipalID LIKE '$principalID'";
+			$where = "PrincipalID = '$principalID'";
 			if($scopeID)
 			{
 				UUID::CheckWithException($scopeID);
-				$where .= " AND ScopeID LIKE '$scopeID'";
+				$where .= " AND ScopeID = '$scopeID'";
 			}
 			$this->db->query("UPDATE ".$this->dbtable." SET EverLoggedIn=1 WHERE $where");
 		}
@@ -245,11 +245,11 @@ if(!class_exists("MySQLUserAccountServiceConnector"))
 		public function deleteAccount($scopeID, $principalID)
 		{
 			UUID::CheckWithException($principalID);
-			$where = "PrincipalID LIKE '$principalID'";
+			$where = "PrincipalID = '$principalID'";
 			if($scopeID)
 			{
 				UUID::CheckWithException($scopeID);
-				$where .= " AND ScopeID LIKE '$scopeID'";
+				$where .= " AND ScopeID = '$scopeID'";
 			}
 			$this->db->query("DELETE FROM ".$this->dbtable." WHERE $where");
 		}

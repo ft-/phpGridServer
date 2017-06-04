@@ -378,13 +378,13 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		$this->dbtable_rolemembership = $dbtable_rolemembership;
 		$this->dbtable_roles = $dbtable_roles;
 
-		$this->g_count_query = "(SELECT COUNT(m.PrincipalID) FROM ".$this->dbtable_membership." AS m WHERE m.GroupID LIKE g.GroupID) AS MemberCount,".
-				"(SELECT COUNT(r.RoleID) FROM ".$this->dbtable_roles." AS r WHERE r.GroupID LIKE g.GroupID) AS RoleCount";
+		$this->g_count_query = "(SELECT COUNT(m.PrincipalID) FROM ".$this->dbtable_membership." AS m WHERE m.GroupID = g.GroupID) AS MemberCount,".
+				"(SELECT COUNT(r.RoleID) FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = g.GroupID) AS RoleCount";
 
-		$this->m_count_query = "(SELECT COUNT(xr.RoleID) FROM ".$this->dbtable_roles." AS xr WHERE xr.GroupID LIKE g.GroupID) AS RoleCount";
+		$this->m_count_query = "(SELECT COUNT(xr.RoleID) FROM ".$this->dbtable_roles." AS xr WHERE xr.GroupID = g.GroupID) AS RoleCount";
 
-		$this->r_count_query = "(SELECT COUNT(xrm.PrincipalID) FROM ".$this->dbtable_rolemembership." AS xrm WHERE xrm.RoleID LIKE r.RoleID AND xrm.GroupID LIKE r.GroupID) AS RoleMembers,".
-					"(SELECT COUNT(xm.PrincipalID) FROM ".$this->dbtable_membership." AS xm WHERE xm.GroupID LIKE r.GroupID) AS GroupMembers";
+		$this->r_count_query = "(SELECT COUNT(xrm.PrincipalID) FROM ".$this->dbtable_rolemembership." AS xrm WHERE xrm.RoleID = r.RoleID AND xrm.GroupID = r.GroupID) AS RoleMembers,".
+					"(SELECT COUNT(xm.PrincipalID) FROM ".$this->dbtable_membership." AS xm WHERE xm.GroupID = r.GroupID) AS GroupMembers";
 
 		$this->db = cached_mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 	}
@@ -426,7 +426,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function getActiveGroup($requestingAgentID, $principalID)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_principals." WHERE PrincipalID LIKE '".$this->db->real_escape_string($principalID)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_principals." WHERE PrincipalID = '".$this->db->real_escape_string($principalID)."'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -448,7 +448,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 
-		$res = $this->db->query("SELECT g.*,".$this->g_count_query." FROM ".$this->dbtable_groups." AS g WHERE g.GroupID LIKE '$groupID'");
+		$res = $this->db->query("SELECT g.*,".$this->g_count_query." FROM ".$this->dbtable_groups." AS g WHERE g.GroupID = '$groupID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -467,7 +467,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function getGroupByName($requestingAgentID, $groupName)
 	{
-		$res = $this->db->query("SELECT g.*,".$this->g_count_query." FROM ".$this->dbtable_groups." AS g WHERE g.Name LIKE '".$this->db->real_escape_string($groupName)."' LIMIT 1");
+		$res = $this->db->query("SELECT g.*,".$this->g_count_query." FROM ".$this->dbtable_groups." AS g WHERE g.Name = '".$this->db->real_escape_string($groupName)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -573,7 +573,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 		foreach($table_names as $table_name)
 		{
-			$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID LIKE '$groupID'");
+			$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID = '$groupID'");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -595,7 +595,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 
-		$where = "SELECT m.* FROM ".$this->dbtable_membership." AS m WHERE m.GroupID LIKE '$groupID' AND m.PrincipalID LIKE '".$this->db->real_escape_string($principalID)."'";
+		$where = "SELECT m.* FROM ".$this->dbtable_membership." AS m WHERE m.GroupID = '$groupID' AND m.PrincipalID = '".$this->db->real_escape_string($principalID)."'";
 		$res = $this->db->query($where);
 		if(!$res)
 		{
@@ -641,7 +641,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function updateGroupMember($requestingAgentID, $groupMember)
 	{
-		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_membership." SET AcceptNotices=?, ListInProfile=?, SelectedRoleID=? WHERE GroupID LIKE ? AND PrincipalID LIKE ?");
+		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_membership." SET AcceptNotices=?, ListInProfile=?, SelectedRoleID=? WHERE GroupID = ? AND PrincipalID = ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -666,11 +666,11 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		{
 			if($table_name == $this->dbtable_principals)
 			{
-				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE ActiveGroupID LIKE '$groupID' AND PrincipalID LIKE '".$this->db->real_escape_string($principalID)."'");
+				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE ActiveGroupID = '$groupID' AND PrincipalID = '".$this->db->real_escape_string($principalID)."'");
 			}
 			else
 			{
-				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID LIKE '$groupID' AND PrincipalID LIKE '".$this->db->real_escape_string($principalID)."'");
+				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID = '$groupID' AND PrincipalID = '".$this->db->real_escape_string($principalID)."'");
 			}
 			if(!$stmt)
 			{
@@ -691,7 +691,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 
-		$res = $this->db->query("SELECT m.* FROM ".$this->dbtable_membership." AS m WHERE m.GroupID LIKE '$groupID'");
+		$res = $this->db->query("SELECT m.* FROM ".$this->dbtable_membership." AS m WHERE m.GroupID = '$groupID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -713,7 +713,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 				$this->m_count_query."
 				FROM ($m AS m INNER JOIN $g AS g ON m.GroupID = g.GroupID)
 				INNER JOIN $r AS r ON m.SelectedRoleID = r.RoleID
-				WHERE m.PrincipalID LIKE '$principalID'");
+				WHERE m.PrincipalID = '$principalID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -728,7 +728,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($groupRoleID);
 
-		$res = $this->db->query("SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_roles." AS r WHERE r.GroupID LIKE '$groupID' AND r.RoleID LIKE '$groupRoleID'");
+		$res = $this->db->query("SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = '$groupID' AND r.RoleID = '$groupRoleID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -751,7 +751,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($groupRoleID);
 
-		$res = $this->db->query("SELECT Powers FROM ".$this->dbtable_roles." AS r WHERE r.GroupID LIKE '$groupID' AND r.RoleID LIKE '$groupRoleID'");
+		$res = $this->db->query("SELECT Powers FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = '$groupID' AND r.RoleID = '$groupRoleID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -797,7 +797,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function updateGroupRole($requestingAgentID, $groupRole)
 	{
-		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_roles." SET Name=?, Description=?, Title=?, Powers=? WHERE GroupID LIKE ? AND RoleID LIKE ?");
+		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_roles." SET Name=?, Description=?, Title=?, Powers=? WHERE GroupID = ? AND RoleID = ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -826,11 +826,11 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 		$table_names = array($this->dbtable_invites, $this->dbtable_rolemembership, $this->dbtable_roles);
 		/* deselect that group role */
-		$this->db->query("UPDATE ".$this->dbtable_membership." SET SelectedRoleID='00000000-0000-0000-0000-000000000000' WHERE SelectedRoleID LIKE '$groupRoleID'");
+		$this->db->query("UPDATE ".$this->dbtable_membership." SET SelectedRoleID='00000000-0000-0000-0000-000000000000' WHERE SelectedRoleID = '$groupRoleID'");
 
 		foreach($table_names as $table_name)
 		{
-			$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID LIKE '$groupID' AND RoleID LIKE '$groupRoleID'");
+			$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID = '$groupID' AND RoleID = '$groupRoleID'");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -850,7 +850,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 
-		$res = $this->db->query("SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_roles." AS r WHERE r.GroupID LIKE '$groupID'");
+		$res = $this->db->query("SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = '$groupID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -870,7 +870,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		{
 			/* we do not store UUID::ZERO entries, so we use group membership for reproducing the everyone entry */
 			$principalID = $this->db->real_escape_string($principalID);
-			$res = $this->db->query("SELECT m.*, r.Powers FROM ".$this->dbtable_membership." AS m INNER JOIN ".$this->dbtable_roles." AS r ON m.GroupID LIKE r.GroupID AND r.RoleID LIKE '00000000-0000-0000-0000-000000000000' WHERE m.GroupID LIKE '$groupID' and m.PrincipalID LIKE '$principalID'");
+			$res = $this->db->query("SELECT m.*, r.Powers FROM ".$this->dbtable_membership." AS m INNER JOIN ".$this->dbtable_roles." AS r ON m.GroupID = r.GroupID AND r.RoleID = '00000000-0000-0000-0000-000000000000' WHERE m.GroupID = '$groupID' and m.PrincipalID = '$principalID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -888,7 +888,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		else
 		{
 			$principalID = $this->db->real_escape_string($principalID);
-			$res = $this->db->query("SELECT rm.*, r.Powers FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID LIKE r.GroupID AND rm.RoleID LIKE r.RoleID WHERE rm.GroupID LIKE '$groupID' AND rm.RoleID LIKE '$groupRoleID' and rm.PrincipalID LIKE '$principalID'");
+			$res = $this->db->query("SELECT rm.*, r.Powers FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID = r.GroupID AND rm.RoleID = r.RoleID WHERE rm.GroupID = '$groupID' AND rm.RoleID = '$groupRoleID' and rm.PrincipalID = '$principalID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -940,11 +940,11 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		$table_names = array($this->dbtable_invites, $this->dbtable_rolemembership);
 		$principalID = $this->db->real_escape_string($principalID);
 		/* deselect that group role */
-		$this->db->query("UPDATE ".$this->dbtable_membership." SET SelectedRoleID='00000000-0000-0000-0000-000000000000' WHERE SelectedRoleID LIKE '$groupRoleID' AND PrincipalID LIKE '$$principalID'");
+		$this->db->query("UPDATE ".$this->dbtable_membership." SET SelectedRoleID='00000000-0000-0000-0000-000000000000' WHERE SelectedRoleID = '$groupRoleID' AND PrincipalID = '$$principalID'");
 
 		foreach($table_names as $table_name)
 		{
-			$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID LIKE '$groupID' AND RoleID LIKE '$groupRoleID' AND PrincipalID LIKE '$principalID'");
+			$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID = '$groupID' AND RoleID = '$groupRoleID' AND PrincipalID = '$principalID'");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -966,7 +966,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupRoleID);
 		if($groupRoleID == "".UUID::ZERO())
 		{
-			$query = "SELECT m.*,r.Powers FROM ".$this->dbtable_membership." AS m INNER JOIN ".$this->dbtable_roles." AS r ON m.GroupID LIKE r.GroupID AND r.RoleID LIKE '00000000-0000-0000-0000-000000000000' WHERE m.GroupID LIKE '$groupID'";
+			$query = "SELECT m.*,r.Powers FROM ".$this->dbtable_membership." AS m INNER JOIN ".$this->dbtable_roles." AS r ON m.GroupID = r.GroupID AND r.RoleID = '00000000-0000-0000-0000-000000000000' WHERE m.GroupID = '$groupID'";
 			$res = $this->db->query($query);
 			if(!$res)
 			{
@@ -978,7 +978,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		}
 		else
 		{
-			$query = "SELECT rm.*,r.Powers FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID LIKE r.GroupID AND rm.RoleID LIKE r.RoleID WHERE rm.GroupID LIKE '$groupID' AND rm.RoleID LIKE '$groupRoleID'";
+			$query = "SELECT rm.*,r.Powers FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID = r.GroupID AND rm.RoleID = r.RoleID WHERE rm.GroupID = '$groupID' AND rm.RoleID = '$groupRoleID'";
 			$res = $this->db->query($query);
 			if(!$res)
 			{
@@ -994,7 +994,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupID);
 		$this->getGroupMember($requestingAgentID, $groupID, $agentID);
 		$agentID = $this->db->real_escape_string($agentID);
-		$where = "SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID LIKE r.GroupID AND rm.RoleID LIKE r.RoleID WHERE rm.GroupID LIKE '$groupID' AND rm.PrincipalID LIKE '$agentID'";
+		$where = "SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID = r.GroupID AND rm.RoleID = r.RoleID WHERE rm.GroupID = '$groupID' AND rm.PrincipalID = '$agentID'";
 		$res = $this->db->query($where);
 		if(!$res)
 		{
@@ -1011,7 +1011,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupInviteID);
 
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE InviteID LIKE '$groupInviteID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE InviteID = '$groupInviteID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1034,7 +1034,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($roleID);
 		$principalID = $this->db->real_escape_string($principalID);
-		$where = "SELECT * FROM ".$this->dbtable_invites." WHERE GroupID LIKE '$groupID' AND RoleID LIKE '$roleID' AND PrincipalID LIKE '$principalID'";
+		$where = "SELECT * FROM ".$this->dbtable_invites." WHERE GroupID = '$groupID' AND RoleID = '$roleID' AND PrincipalID = '$principalID'";
 		$res = $this->db->query($where);
 		if(!$res)
 		{
@@ -1074,7 +1074,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function updateGroupInvite($requestingAgentID, $groupInvite)
 	{
-		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_invites." SET Name=?, Description=?, Title=?, Powers=? WHERE InviteID LIKE ?");
+		$stmt = $this->db->prepare("UPDATE ".$this->dbtable_invites." SET Name=?, Description=?, Title=?, Powers=? WHERE InviteID = ?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1093,7 +1093,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupInviteID);
 
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_invites." WHERE InviteID LIKE '$groupInviteID'");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_invites." WHERE InviteID = '$groupInviteID'");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1111,7 +1111,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function getGroupInvitesByPrincipal($requestingAgentID, $principalID)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE PrincipalID LIKE '".$this->db->real_escape_string($principalID)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE PrincipalID = '".$this->db->real_escape_string($principalID)."'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1124,7 +1124,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	public function getGroupInvitesByGroup($requestingAgentID, $groupID)
 	{
 		UUID::CheckWithException($groupID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE GroupID LIKE '$groupID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE GroupID = '$groupID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1139,7 +1139,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	public function getGroupNotices($requestingAgentID, $groupID)
 	{
 		UUID::CheckWithException($groupID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE GroupID LIKE '$groupID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE GroupID = '$groupID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1184,7 +1184,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($groupNoticeID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE NoticeID LIKE '$groupNoticeID' AND GroupID LIKE '$groupID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE NoticeID = '$groupNoticeID' AND GroupID = '$groupID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1204,7 +1204,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	public function getGroupNotice($requestingAgentID, $groupNoticeID)
 	{
 		UUID::CheckWithException($groupNoticeID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE NoticeID LIKE '$groupNoticeID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE NoticeID = '$groupNoticeID'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1229,7 +1229,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupNoticeID);
 
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_notices." WHERE NoticeID LIKE '$groupNoticeID'");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_notices." WHERE NoticeID = '$groupNoticeID'");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1268,7 +1268,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 		$where = "SELECT Powers FROM $r AS r INNER JOIN ".
 			"($rm AS rm INNER JOIN $m AS m ON rm.GroupID=m.GroupID AND rm.PrincipalID=m.PrincipalID) ON ".
-			"r.RoleID = rm.RoleID WHERE rm.GroupID LIKE '$groupID' AND rm.PrincipalID LIKE '".$this->db->real_escape_string($agentID)."'";
+			"r.RoleID = rm.RoleID WHERE rm.GroupID = '$groupID' AND rm.PrincipalID = '".$this->db->real_escape_string($agentID)."'";
 		$res = $this->db->query($where);
 		if(!$res)
 		{

@@ -46,7 +46,7 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		$locY = intval($locY);
 		$zoomLevel = intval($zoomLevel);
 		UUID::CheckWithException($scopeID);
-		$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE scopeID LIKE '$scopeID' AND locX = $locX AND locY = $locY AND zoomLevel = $zoomLevel");
+		$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE scopeID = '$scopeID' AND locX = $locX AND locY = $locY AND zoomLevel = $zoomLevel");
 		if(!$res)
 		{
 			throw new Exception("Database access error");
@@ -72,7 +72,7 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		$locYHigh = intval($locYHigh);
 		$zoomLevel = intval($zoomLevel);
 		UUID::CheckWithException($scopeID);
-		$res = $this->db->query("SELECT locX, locY, lastUpdate FROM ".$this->dbtable." WHERE scopeID LIKE '$scopeID' AND locX >= $locXLow AND locY >= $locYLow AND locX <= $locXHigh AND locY <= $locYHigh AND zoomLevel = $zoomLevel");
+		$res = $this->db->query("SELECT locX, locY, lastUpdate FROM ".$this->dbtable." WHERE scopeID = '$scopeID' AND locX >= $locXLow AND locY >= $locYLow AND locX <= $locXHigh AND locY <= $locYHigh AND zoomLevel = $zoomLevel");
 		if(!$res)
 		{
 			throw new Exception("Database access error");

@@ -51,7 +51,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function exists($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+			$res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE id = '$assetID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -96,7 +96,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function get($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE id = '$assetID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -121,7 +121,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function getData($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+			$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE id = '$assetID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -143,7 +143,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function getMetadata($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT id, name, description, assetType, local, temporary, CreatorID FROM ".$this->dbtable." WHERE id LIKE '$assetID'");
+			$res = $this->db->query("SELECT id, name, description, assetType, local, temporary, CreatorID FROM ".$this->dbtable." WHERE id = '$assetID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -235,7 +235,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function delete($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE id LIKE '$assetID' AND asset_flags <> 0");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE id = '$assetID' AND asset_flags <> 0");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));

@@ -162,19 +162,19 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 	
 	public function deleteSearchDataHost($hostName, $port)
 	{
-		$res = $this->db->query("DELETE FROM ".$this->dbtable_searchhosts." WHERE HostName LIKE '".$this->db->real_escape_string($hostName)."' AND Port = ".intval($port));
+		$res = $this->db->query("DELETE FROM ".$this->dbtable_searchhosts." WHERE HostName = '".$this->db->real_escape_string($hostName)."' AND Port = ".intval($port));
 	}
 	
 	public function setNewNextCheck($hostName, $port, $nextCheckTime)
 	{
 		$res = $this->db->query("UPDATE ".$this->dbtable_searchhosts." SET NextCheckTime='".$this->db->real_escape_string($nextCheckTime).
-					"', FailCounter='0' WHERE HostName LIKE '".$this->db->real_escape_string($hostName)."' AND Port = ".intval($port));
+					"', FailCounter='0' WHERE HostName = '".$this->db->real_escape_string($hostName)."' AND Port = ".intval($port));
 	}
 	
 	public function incrementFailCounter($hostName, $port, $nextCheckTime)
 	{
 		$res = $this->db->query("UPDATE ".$this->dbtable_searchhosts." SET NextCheckTime='".$this->db->real_escape_string($nextCheckTime).
-					"', FailCounter=FailCounter+1 WHERE HostName LIKE '".$this->db->real_escape_string($hostName)."' AND Port = ".intval($port));
+					"', FailCounter=FailCounter+1 WHERE HostName = '".$this->db->real_escape_string($hostName)."' AND Port = ".intval($port));
 	}
 	
 	public function getAllSearchDataHosts()
@@ -288,14 +288,14 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 	public function deleteParcelsForRegion($region_uuid)
 	{
 		UUID::CheckWithException($region_uuid);
-		$this->db->query("DELETE FROM ".$this->dbtable_parcels." WHERE RegionID LIKE '$region_uuid'");
+		$this->db->query("DELETE FROM ".$this->dbtable_parcels." WHERE RegionID = '$region_uuid'");
 	}
 	
 	public function getParcelUUIDList($region_uuid)
 	{
 		$uuidlist = array();
 		UUID::CheckWithException($region_uuid);
-		$res = $this->db->query("SELECT ParcelID FROM ".$this->dbtable_parcels." WHERE RegionID LIKE '$region_uuid'");
+		$res = $this->db->query("SELECT ParcelID FROM ".$this->dbtable_parcels." WHERE RegionID = '$region_uuid'");
 		if(!$res)
 		{
 			throw new Exception("Database access error");
@@ -313,7 +313,7 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 	{
 		$uuidlist = array();
 		UUID::CheckWithException($region_uuid);
-		$res = $this->db->query("SELECT ObjectID FROM ".$this->dbtable_objects." WHERE RegionID LIKE '$region_uuid'");
+		$res = $this->db->query("SELECT ObjectID FROM ".$this->dbtable_objects." WHERE RegionID = '$region_uuid'");
 		if(!$res)
 		{
 			throw new Exception("Database access error");
@@ -363,14 +363,14 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 			$w .= "'$v'";
 			if(++$limit >= 1000)
 			{
-				$this->db->query("DELETE FROM ".$this->dbtable_parcels." WHERE RegionID LIKE '$region_uuid' AND ParcelID IN ($w)");
+				$this->db->query("DELETE FROM ".$this->dbtable_parcels." WHERE RegionID = '$region_uuid' AND ParcelID IN ($w)");
 				$limit = 0;
 				$w = "";
 			}
 		}
 		if($limit != 0)
 		{
-			$this->db->query("DELETE FROM ".$this->dbtable_parcels." WHERE RegionID LIKE '$region_uuid' AND ParcelID IN ($w)");
+			$this->db->query("DELETE FROM ".$this->dbtable_parcels." WHERE RegionID = '$region_uuid' AND ParcelID IN ($w)");
 		}
 	}
 	
@@ -389,21 +389,21 @@ class MySQLContentSearchServiceConnector implements ContentSearchServiceInterfac
 			$w .= "'$v'";
 			if(++$limit >= 1000)
 			{
-				$this->db->query("DELETE FROM ".$this->dbtable_objects." WHERE RegionID LIKE '$region_uuid' AND ObjectID IN ($w)");
+				$this->db->query("DELETE FROM ".$this->dbtable_objects." WHERE RegionID = '$region_uuid' AND ObjectID IN ($w)");
 				$limit = 0;
 				$w = "";
 			}
 		}
 		if($limit != 0)
 		{
-			$this->db->query("DELETE FROM ".$this->dbtable_objects." WHERE RegionID LIKE '$region_uuid' AND ObjectID IN ($w)");
+			$this->db->query("DELETE FROM ".$this->dbtable_objects." WHERE RegionID = '$region_uuid' AND ObjectID IN ($w)");
 		}
 	}
 	
 	public function deleteObjectsForRegion($region_uuid)
 	{
 		UUID::CheckWithException($region_uuid);
-		$this->db->query("DELETE FROM ".$this->dbtable_objects." WHERE ParcelID LIKE '$region_uuid'");
+		$this->db->query("DELETE FROM ".$this->dbtable_objects." WHERE ParcelID = '$region_uuid'");
 	}
 	
 	public function searchParcelsByName($query)

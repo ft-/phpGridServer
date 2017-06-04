@@ -24,7 +24,7 @@ class MySQLServerDataService implements HGServerDataServiceInterface
 
 	public function getServerURI($homeURI)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE validity >= CURRENT_TIMESTAMP AND HomeURI LIKE '".$this->db->real_escape_string($homeURI)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE validity >= CURRENT_TIMESTAMP AND HomeURI = '".$this->db->real_escape_string($homeURI)."'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));

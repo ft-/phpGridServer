@@ -130,7 +130,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($itemID);
 			$w = "SELECT avatarID FROM ".$this->dbtable_items." WHERE ".
-					"inventoryID LIKE '$itemID'";
+					"inventoryID = '$itemID'";
 			$res = $this->db->query($w);
 			if(!$res)
 			{
@@ -166,7 +166,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 						salePrice, saleType, creationDate, groupID, groupOwned, flags, 
 						inventoryID, avatarID, parentFolderID, inventoryGroupPermissions 
 						FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE ".
-						"inventoryID LIKE '$itemID'");
+						"inventoryID = '$itemID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -195,7 +195,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		public function incrementVersion($folderID)
 		{
 			UUID::CheckWithException($folderID);
-			$this->db->query("UPDATE ".$this->dbtable_folders." SET version = version + 1 WHERE folderID LIKE '$folderID'");
+			$this->db->query("UPDATE ".$this->dbtable_folders." SET version = version + 1 WHERE folderID = '$folderID'");
 		}
 
 		public function addItem($item)
@@ -271,7 +271,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 					inventoryBasePermissions=?, inventoryEveryOnePermissions=?,
 					salePrice=?, saleType=?,
 					groupID=?, groupOwned=?, flags=?, inventoryGroupPermissions=?
-					WHERE inventoryID LIKE ? AND avatarID LIKE ?");
+					WHERE inventoryID = ? AND avatarID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -326,7 +326,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 			{
 				$w = "";
 			}
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_items." WHERE inventoryID LIKE '$itemID'$w");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_items." WHERE inventoryID = '$itemID'$w");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -347,7 +347,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 
 			$thisitem = $this->getItem($principalID, $itemID);
 			
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable_items." SET parentFolderID=? WHERE inventoryID LIKE ?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable_items." SET parentFolderID=? WHERE inventoryID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -381,7 +381,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 						salePrice, saleType, creationDate, groupID, groupOwned, flags, 
 						inventoryID, avatarID, parentFolderID, inventoryGroupPermissions 
 						FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE ".
-						"parentFolderID LIKE '$folderID'");
+						"parentFolderID = '$folderID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -398,7 +398,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 						inventoryCurrentPermissions, invType, n.creatorID AS creatorID, inventoryBasePermissions, inventoryEveryOnePermissions,
 						salePrice, saleType, creationDate, groupID, groupOwned, flags, 
 						inventoryID, avatarID, parentFolderID, inventoryGroupPermissions 
-						FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE avatarID LIKE '$principalID' AND assetType=".AssetType::Gesture." AND (flags & 1) <>0";
+						FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE avatarID = '$principalID' AND assetType=".AssetType::Gesture." AND (flags & 1) <>0";
 			$res = $this->db->query($query);
 			if(!$res)
 			{
@@ -413,7 +413,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($folderID);
 			$res = $this->db->query("SELECT * FROM ".$this->dbtable_folders." WHERE ".
-						"parentFolderID LIKE '$folderID'");
+						"parentFolderID = '$folderID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -427,7 +427,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($folderID);
 			$res = $this->db->query("SELECT agentID FROM ".$this->dbtable_folders." WHERE ".
-					"folderID LIKE '$folderID'");
+					"folderID = '$folderID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -456,7 +456,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($folderID);
 			$res = $this->db->query("SELECT * FROM ".$this->dbtable_folders." WHERE ".
-						"folderID LIKE '$folderID'");
+						"folderID = '$folderID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -483,7 +483,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 
 		public function storeFolder($folder)
 		{
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable_folders." SET folderName=?, type=?, version=? WHERE folderID LIKE ? AND agentID LIKE ?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable_folders." SET folderName=?, type=?, version=? WHERE folderID = ? AND agentID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -556,8 +556,8 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 				$this->deleteFolder($principalID, $item->ID);
 			}
 			$res->free();
-			$stmt = $this->db->query("DELETE FROM ".$this->dbtable_items." WHERE parentFolderID LIKE '".$folderID."'");
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_folders." WHERE folderID LIKE '".$folderID."'");
+			$stmt = $this->db->query("DELETE FROM ".$this->dbtable_items." WHERE parentFolderID = '".$folderID."'");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_folders." WHERE folderID = '".$folderID."'");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -587,7 +587,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 			
 			$thisfolder = $this->getFolder($principalID, $folderID);
 
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable_folders." SET parentFolderID=? WHERE folderID LIKE ?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable_folders." SET parentFolderID=? WHERE folderID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -616,7 +616,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($principalID);
 			$res = $this->db->query("SELECT * FROM ".$this->dbtable_folders." WHERE ".
-						"parentFolderID LIKE '00000000-0000-0000-0000-000000000000' AND agentID LIKE '$principalID'");
+						"parentFolderID = '00000000-0000-0000-0000-000000000000' AND agentID = '$principalID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -637,7 +637,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			$rootfolder = $this->getRootFolder($principalID);
 			$res = $this->db->query("SELECT * FROM ".$this->dbtable_folders." WHERE ".
-						"parentFolderID LIKE '".$rootfolder->ID."' AND type = '".$this->db->real_escape_string($type)."'");
+						"parentFolderID = '".$rootfolder->ID."' AND type = '".$this->db->real_escape_string($type)."'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -775,7 +775,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 											) ENGINE=InnoDB DEFAULT CHARSET=utf8",
 			"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_type (agentID, type)",
 			"ALTER TABLE %tablename% ADD KEY inventoryfolders_agentid_parentfolderid (agentID, parentFolderID)",
-			"update inventoryfolders set type = 8 where type = 9 AND ParentFolderID LIKE '00000000-0000-0000-0000-000000000000'"
+			"update inventoryfolders set type = 8 where type = 9 AND ParentFolderID = '00000000-0000-0000-0000-000000000000'"
 		);
 		
 		public $revisions_creators = array(
@@ -840,7 +840,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 				{
 					$processed[] = $creatorID;
 					$creatorRefId = $this->getInventoryCreator($creatorID);
-					$stmt = $this->db->prepare("UPDATE inventoryitems SET creatorRefId = $creatorRefId WHERE creatorId LIKE '".$this->db->real_escape_string($creatorID)."'");
+					$stmt = $this->db->prepare("UPDATE inventoryitems SET creatorRefId = $creatorRefId WHERE creatorId = '".$this->db->real_escape_string($creatorID)."'");
 					if(!$stmt)
 					{
 						trigger_error(mysqli_error($this->db));

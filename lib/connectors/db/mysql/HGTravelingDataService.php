@@ -61,7 +61,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function getHGTravelingDatasByAgentUUID($uuid)
 		{
 			UUID::CheckWithException($uuid);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$uuid'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID = '$uuid'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -73,7 +73,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function getHGTravelingDataByAgentUUIDAndNotHomeURI($uuid, $homeURI)
 		{
 			UUID::CheckWithException($uuid);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$uuid%' AND GridExternalName NOT LIKE '".$this->db->real_escape_string($homeURI)."' LIMIT 1");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID = '$uuid%' AND (NOT GridExternalName = '".$this->db->real_escape_string($homeURI)."') LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -100,7 +100,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function getHGTravelingDataByAgentUUIDAndIPAddress($uuid, $ipAddress)
 		{
 			UUID::CheckWithException($uuid);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$uuid%' AND ClientIPAddress LIKE '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$uuid%' AND ClientIPAddress = '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -127,7 +127,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function getHGTravelingData($sessionID)
 		{
 			UUID::CheckWithException($sessionID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE SessionID LIKE '$sessionID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE SessionID = '$sessionID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -183,7 +183,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function deleteHGTravelingData($sessionID)
 		{
 			UUID::CheckWithException($sessionID);
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE SessionID LIKE '$sessionID'");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE SessionID = '$sessionID'");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -201,7 +201,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		{
 			$userid = substr($userid, 0, 36);
 			UUID::CheckWithException($userid);
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE UserID LIKE '$userid'");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE UserID = '$userid'");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));

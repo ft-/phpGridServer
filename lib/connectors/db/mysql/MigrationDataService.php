@@ -32,7 +32,7 @@ class MySQLMigrationDataService implements MigrationDataServiceInterface
 			return $this->cache[$serviceName][$datasetName];
 		}
 
-		$res = $this->db->query("SELECT storageRevision FROM ".$this->dbtable." WHERE serviceName LIKE '".$this->db->real_escape_string($serviceName)."' AND datasetName LIKE '".$this->db->real_escape_string($datasetName)."'");
+		$res = $this->db->query("SELECT storageRevision FROM ".$this->dbtable." WHERE serviceName = '".$this->db->real_escape_string($serviceName)."' AND datasetName = '".$this->db->real_escape_string($datasetName)."'");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));

@@ -74,7 +74,7 @@ if(!class_exists("MySQLGridUserServiceConnector"))
 		public function getGridUser($userID)
 		{
 			UUID::CheckWithException($userID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$userID' LIMIT 1");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID = '$userID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -168,7 +168,7 @@ if(!class_exists("MySQLGridUserServiceConnector"))
 
 			if(is_null($lastRegionID))
 			{
-				$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."' WHERE UserID LIKE ?");
+				$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."' WHERE UserID = ?");
 				if(!$stmt)
 				{
 					trigger_error(mysqli_error($this->db));
@@ -178,7 +178,7 @@ if(!class_exists("MySQLGridUserServiceConnector"))
 			}
 			else
 			{
-				$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."', LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID LIKE ?");
+				$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET Online='0', Logout='".time()."', LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID = ?");
 				if(!$stmt)
 				{
 					trigger_error(mysqli_error($this->db));
@@ -206,7 +206,7 @@ if(!class_exists("MySQLGridUserServiceConnector"))
 				$homeLookAt = "<0,1,0>";
 			}
 
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET HomeRegionID=?, HomePosition=?, HomeLookAt=? WHERE UserID LIKE ?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET HomeRegionID=?, HomePosition=?, HomeLookAt=? WHERE UserID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -233,7 +233,7 @@ if(!class_exists("MySQLGridUserServiceConnector"))
 				$lastLookAt = "<0,1,0>";
 			}
 
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID LIKE ?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET LastRegionID=?, LastPosition=?, LastLookAt=? WHERE UserID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));

@@ -70,7 +70,7 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 		public function getAgentBySession($sessionID)
 		{
 			UUID::CheckWithException($sessionID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE SessionID LIKE '$sessionID' LIMIT 1");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE SessionID = '$sessionID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -122,7 +122,7 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 		public function getAgentByUUIDAndIPAddress($userID, $ipAddress)
 		{
 			UUID::CheckWithException($userID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$userID%' AND ClientIPAddress LIKE '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$userID%' AND ClientIPAddress = '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -147,7 +147,7 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 
 		public function getAgentsByID($userID)
 		{
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '".$this->db->real_escape_string($userID)."'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID = '".$this->db->real_escape_string($userID)."'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -185,7 +185,7 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 
 		public function logoutPresence($sessionID)
 		{
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE SessionID LIKE ?");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE SessionID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -211,7 +211,7 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 		public function deletePresenceByAgentUUID($userid)
 		{
 			UUID::CheckWithException(substr($userid, 0, 36));
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE UserID LIKE ?");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable." WHERE UserID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -238,7 +238,7 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 		public function logoutRegion($regionID)
 		{
 			UUID::CheckWithException($regionID);
-			$this->db->query("DELETE FROM ".$this->dbtable." WHERE RegionID LIKE '$regionID'");
+			$this->db->query("DELETE FROM ".$this->dbtable." WHERE RegionID = '$regionID'");
 		}
 
 		public function setRegion($sessionID, $regionID)
@@ -247,7 +247,7 @@ if(!class_exists("MySQLPresenceServiceConnector"))
 			UUID::CheckWithException($sessionID);
 			$lastseen = time();
 
-			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET RegionID=?, LastSeen=? WHERE SessionID LIKE ?");
+			$stmt = $this->db->prepare("UPDATE ".$this->dbtable." SET RegionID=?, LastSeen=? WHERE SessionID = ?");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));

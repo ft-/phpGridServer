@@ -28,7 +28,7 @@ if(!class_exists("MySQLAuthInfoServiceConnector"))
 		public function getAuthInfo($principalID)
 		{
 			UUID::CheckWithException($principalID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable_auth." WHERE UUID LIKE '$principalID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable_auth." WHERE UUID = '$principalID'");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -60,7 +60,7 @@ if(!class_exists("MySQLAuthInfoServiceConnector"))
 		public function deleteAuthInfo($principalID)
 		{
 			UUID::CheckWithException($principalID);
-			$stmt = $this->db->query("DELETE FROM ".$this->dbtable_auth." WHERE UUID LIKE '$principalID'");
+			$stmt = $this->db->query("DELETE FROM ".$this->dbtable_auth." WHERE UUID = '$principalID'");
 		}
 
 		public function setAuthInfo($authInfo)
@@ -97,7 +97,7 @@ if(!class_exists("MySQLAuthInfoServiceConnector"))
 			$token=UUID::Random();
 			$validity = time() + 60 * $lifeTime;
 			$current = time();
-			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE validity < $current AND UUID LIKE '$principalID'");
+			$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_tokens." WHERE validity < $current AND UUID = '$principalID'");
 			if($stmt)
 			{
 				$stmt->execute();
