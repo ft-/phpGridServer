@@ -354,7 +354,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 						(
 							(locX >= $xmin AND locY >= $ymin AND locX < $xmax AND locY < $ymax) OR
 							(locX + sizeX > $xmin AND locY+sizeY > $ymin AND locX + sizeX < $xmax AND locY + sizeY < $ymax)
-						) AND uuid NOT = '".$region->ID."' AND
+						) AND (NOT uuid = '".$region->ID."') AND
 						ScopeID = '".$region->ScopeID."' LIMIT 1;");
 		if(!$res)
 		{
