@@ -1,6 +1,6 @@
 1. Requirements
 
-- PHP 5.4 or newer
+- PHP 5.4 or newer (PHP 7 as well)
 - PHP GMP extension or PHP BCMath extension
 - PHP curl extension
 - PHP GD extension
