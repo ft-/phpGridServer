@@ -73,7 +73,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function getHGTravelingDataByAgentUUIDAndNotHomeURI($uuid, $homeURI)
 		{
 			UUID::CheckWithException($uuid);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID = '$uuid%' AND (NOT GridExternalName = '".$this->db->real_escape_string($homeURI)."') LIMIT 1");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID = '$uuid' AND (NOT GridExternalName = '".$this->db->real_escape_string($homeURI)."') LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -100,7 +100,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function getHGTravelingDataByAgentUUIDAndIPAddress($uuid, $ipAddress)
 		{
 			UUID::CheckWithException($uuid);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID LIKE '$uuid%' AND ClientIPAddress = '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE UserID = '$uuid' AND ClientIPAddress = '".$this->db->real_escape_string($ipAddress)."' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
