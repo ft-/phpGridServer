@@ -63,6 +63,7 @@ $rpcStruct->result = "false";
 
 if($region)
 {
+	trigger_error($region->SizeX.",".$region->SizeY);
 	$rpcStruct->uuid = $region->ID;
 	$rpcStruct->x = strval($region->LocX);
 	$rpcStruct->y = strval($region->LocY);
@@ -72,7 +73,6 @@ if($region)
 	$rpcStruct->hostname = $region->ServerIP;
 	$rpcStruct->http_port = strval($region->ServerHttpPort);
 	$rpcStruct->internal_port = strval($region->ServerPort);
-	$rpcStruct->server_uri = $region->ServerURI;
 	$rpcStruct->result = "true";
 }
 
