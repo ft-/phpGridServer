@@ -72,6 +72,7 @@ if($region)
 	$rpcStruct->hostname = $region->ServerIP;
 	$rpcStruct->http_port = strval($region->ServerHttpPort);
 	$rpcStruct->internal_port = strval($region->ServerPort);
+	$rpcStruct->server_uri = $region->ServerURI;
 	$rpcStruct->result = "true";
 }
 
