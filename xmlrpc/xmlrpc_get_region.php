@@ -63,7 +63,6 @@ $rpcStruct->result = "false";
 
 if($region)
 {
-	trigger_error($region->SizeX.",".$region->SizeY);
 	$rpcStruct->uuid = $region->ID;
 	$rpcStruct->x = strval($region->LocX);
 	$rpcStruct->y = strval($region->LocY);
