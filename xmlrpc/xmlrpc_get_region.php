@@ -66,6 +66,8 @@ if($region)
 	$rpcStruct->uuid = $region->ID;
 	$rpcStruct->x = $region->LocX;
 	$rpcStruct->y = $region->LocY;
+	$rpcStruct->size_x = $region->SizeX;
+	$rpcStruct->size_y = $region->SizeY;
 	$rpcStruct->region_name = $region->RegionName;
 	$rpcStruct->hostname = $region->ServerIP;
 	$rpcStruct->http_port = strval($region->ServerHttpPort);
