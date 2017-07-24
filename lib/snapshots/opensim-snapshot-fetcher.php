@@ -158,7 +158,7 @@ class OpenSimDataSnapshotFetcher
 				}
 				else if($tok["name"]=="location")
 				{
-					$loc = split("/", $this->parseValue($tok["name"]));
+					$loc = explode("/", $this->parseValue($tok["name"]));
 					if(3 != count($loc))
 					{
 						throw new OpenSimDataSnapshotParseException();
@@ -298,7 +298,7 @@ class OpenSimDataSnapshotFetcher
 				}
 				else if($tok["name"]=="location")
 				{
-					$loc = split("/", $this->parseValue($tok["name"]));
+					$loc = explode("/", $this->parseValue($tok["name"]));
 					if(3 != count($loc))
 					{
 						throw new OpenSimDataSnapshotParseException();

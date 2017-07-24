@@ -121,7 +121,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 		{
 			throw new HGFriendInvalidParametersException();
 		}
-		$fromNameParts = split('@', $fromName);
+		$fromNameParts = explode('@', $fromName);
 		if(count($fromNameParts) != 2)
 		{
 			throw new HGFriendInvalidParametersException();
@@ -149,7 +149,7 @@ class HGFriendsServiceHandler implements HGFriendsServiceInterface
 			$homeURI.="/";
 		}
 
-		$nameparts = split('.', $fromNameParts[0], 2);
+		$nameparts = explode('.', $fromNameParts[0], 2);
 
 		$uui = new UUI();
 		$uui->ID = $fromID;

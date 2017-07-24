@@ -46,7 +46,7 @@ try
 
 	if($inventoryitem->CreatorData != "")
 	{
-		$creatorname = split(";", $inventoryitem->CreatorData)[1];
+		$creatorname = explode(";", $inventoryitem->CreatorData)[1];
 	}
 	else
 	{
