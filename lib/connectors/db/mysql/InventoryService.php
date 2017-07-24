@@ -20,7 +20,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		$item->AssetType=intval($row["assetType"]);
 		$item->BasePermissions = intval($row["inventoryBasePermissions"]);
 		$item->CreationDate=intval($row["creationDate"]);
-		$creatorData = split(";", $row["creatorID"], 2);
+		$creatorData = explode(";", $row["creatorID"], 2);
 		if(isset($creatorData[0]))
 		{
 			$item->CreatorID=$creatorData[0];
