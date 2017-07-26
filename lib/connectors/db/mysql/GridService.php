@@ -628,13 +628,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		UUID::CheckWithException($scopeID);
 		/* we have to give checks for all intersection variants */
 		$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE
-				(
-					((locX between $xmin and $xmax) AND
-					(locY between $ymin and $ymax))
-					OR
-					((locX+sizeX between $xmin and $xmax) AND
-					(locY+sizeY between $ymin and $ymax))
-				) AND
+				locX+sizeX > $xmin AND locX <= $xmax AND locY+sizeY > $ymin AND locY <= $ymax AND
 				ScopeID = '$scopeID'");
 		if(!$res)
 		{
