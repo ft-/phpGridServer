@@ -659,6 +659,8 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	public function deleteGroupMember($requestingAgentID, $groupID, $principalID)
 	{
 		UUID::CheckWithException($groupID);
+        $principalId = substr($principalID, 0, 36);
+        UUID::CheckWithException($principalId);
 
 		$table_names = array($this->dbtable_invites, $this->dbtable_principals, $this->dbtable_rolemembership, $this->dbtable_membership);
 
@@ -666,11 +668,11 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		{
 			if($table_name == $this->dbtable_principals)
 			{
-				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE ActiveGroupID = '$groupID' AND PrincipalID = '".$this->db->real_escape_string($principalID)."'");
+				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE ActiveGroupID = '$groupID' AND PrincipalID LIKE '".$this->db->real_escape_string($principalId)."%'");
 			}
 			else
 			{
-				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID = '$groupID' AND PrincipalID = '".$this->db->real_escape_string($principalID)."'");
+				$stmt = $this->db->prepare("DELETE FROM ".$table_name." WHERE GroupID = '$groupID' AND PrincipalID LIKE '".$this->db->real_escape_string($principalId)."%'");
 			}
 			if(!$stmt)
 			{
