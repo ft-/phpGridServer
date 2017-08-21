@@ -100,7 +100,7 @@ if(!UUID::IsUUID($_RPC_REQUEST->UserID))
 	try
 	{
 		$presenceService = getService("Presence");
-		$presenceService->deletePresenceByAgentUUID($RPC_REQUEST->UserID);
+		$presenceService->deletePresenceByAgentUUID($_RPC_REQUEST->UserID);
 	}
 	catch(Exception $e)
 	{
