@@ -64,7 +64,7 @@ class MaptileZoomGenerator implements MaptileServiceInterface
 		$maptile = imagecreatetruecolor(256, 256);
 		$blue = imagecolorallocate($maptile, 30, 70, 95);
 		imagefill($maptile, 0, 0, $blue);
-		++$y;
+
 		for($ox = 0; $ox < $numparts; ++$ox)
 		{
 			for($oy = 0; $oy < $numparts; ++$oy)
