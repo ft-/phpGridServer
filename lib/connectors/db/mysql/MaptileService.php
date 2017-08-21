@@ -56,7 +56,7 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		if(!$row)
 		{
 			$res->free();
-			trigger_error("missing maptile $locX $locY $zoomLevel");
+//			trigger_error("missing maptile $locX $locY $zoomLevel");
 			throw new MaptileNotFoundException("$locX $locY $zoomLevel");
 		}
 		$data = $row["data"];
