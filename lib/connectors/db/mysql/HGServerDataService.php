@@ -61,16 +61,15 @@ class MySQLServerDataService implements HGServerDataServiceInterface
 		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable." (HomeURI, GatekeeperURI, InventoryServerURI, AssetServerURI, ProfileServerURI, ".
 									"FriendsServerURI, IMServerURI, GroupsServerURI, validity) ".
 									"VALUES (?, ?, ?, ?, ?, ".
-											"?, ?, ?, ?) ON DUPLICATE KEY UPDATE ".
+											"?, ?, ?) ON DUPLICATE KEY UPDATE ".
 									"GatekeeperURI=?, InventoryServerURI=?, AssetServerURI=?, ProfileServerURI=?,".
-									"FriendsServerURI=?, IMServerURI=?, GroupsServerURI=?, validity=?");
+									"FriendsServerURI=?, IMServerURI=?, GroupsServerURI=?");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
 			throw new Exception("Database access error");
 		}
-		$now = time() + 24 * 60 * 60;
-		$stmt->bind_param("sssss"."sssi"."ssss"."sssi",
+		$stmt->bind_param("sssss"."sss"."ssss"."sss",
 						$serverDataURI->HomeURI,
 						$serverDataURI->GatekeeperURI,
 						$serverDataURI->InventoryServerURI,
@@ -80,7 +79,6 @@ class MySQLServerDataService implements HGServerDataServiceInterface
 						$serverDataURI->FriendsServerURI,
 						$serverDataURI->IMServerURI,
 						$serverDataURI->GroupsServerURI,
-						$now,
 
 						$serverDataURI->GatekeeperURI,
 						$serverDataURI->InventoryServerURI,
@@ -89,8 +87,7 @@ class MySQLServerDataService implements HGServerDataServiceInterface
 
 						$serverDataURI->FriendsServerURI,
 						$serverDataURI->IMServerURI,
-						$serverDataURI->GroupsServerURI,
-						$now);
+						$serverDataURI->GroupsServerURI);
 		if(!$stmt->execute())
 		{
 			$stmt->close();
