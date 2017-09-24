@@ -59,7 +59,7 @@ class MySQLServerDataService implements HGServerDataServiceInterface
 		$this->db->query("DELETE FROM ".$this->dbtable." WHERE validity < NOW");
 
 		$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable." (HomeURI, GatekeeperURI, InventoryServerURI, AssetServerURI, ProfileServerURI, ".
-									"FriendsServerURI, IMServerURI, GroupsServerURI, validity) ".
+									"FriendsServerURI, IMServerURI, GroupsServerURI) ".
 									"VALUES (?, ?, ?, ?, ?, ".
 											"?, ?, ?) ON DUPLICATE KEY UPDATE ".
 									"GatekeeperURI=?, InventoryServerURI=?, AssetServerURI=?, ProfileServerURI=?,".
