@@ -135,7 +135,7 @@ try
 }
 catch(Exception $e)
 {
-	trigger_error("Failed to store HyperGrid Server URIs (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI.")");
+	trigger_error("Failed to store HyperGrid Server URIs (".$userAccount->PrincipalID.",".$serverDataUri->HomeURI."): ".get_class($e).".:".$e->getMessage());
 	DoAgentResponse(False, "Failed to store HyperGrid Server URIs");
 }
 
