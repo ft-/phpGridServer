@@ -34,7 +34,7 @@ for($argi = 1; $argi < $argc; $argi++)
 		$asset->ID = $uuid;
 		$asset->Name = "From IAR";
 		$asset->Type = 0;
-		$data = file_get_contents($uuid."jp2");
+		$data = file_get_contents($argv[$argi]);
 		if($data == "")
 		{
 			echo "failed to load asset";
