@@ -6,18 +6,27 @@
 <th class="listingtable">First Name</th>
 <th class="listingtable">Last Name</th>
 <th class="listingtable">User Level</th>
+<th class="listingtable">Actions</th>
 </tr>
 <?php
 $userAccounts = $userAccountService->getAllAccounts(null);
 while($userAccount = $userAccounts->getUserAccount())
 {
-	echo "<tr>";
-	echo "<td class=\"listingtable\">".$userAccount->PrincipalID."</td>";
-	echo "<td class=\"listingtable\">".$userAccount->ScopeID."</td>";
-	echo "<td class=\"listingtable\">".htmlentities($userAccount->FirstName)."</td>";
-	echo "<td class=\"listingtable\">".htmlentities($userAccount->LastName)."</td>";
-	echo "<td class=\"listingtable\">".$userAccount->UserLevel."</td>";
-	echo "</tr>";
+?><tr>
+<td class=listingtable><?php echo $userAccount->PrincipalID ?></td>
+<td class=listingtable><?php echo $userAccount->ScopeID ?></td>
+<td class=listingtable><?php echo htmlentities($userAccount->FirstName) ?></td>
+<td class=listingtable><?php echo htmlentities($userAccount->LastName) ?></td>
+<td class=listingtable><?php echo $userAccount->UserLevel ?></td>
+<td class=listingtable>
+<form action="/admin/" method="GET">
+<input type="hidden" name="page" value="changeuserpassword"/>
+<input type="hidden" name="userid" value="<?php echo $userAccount->PrincipalID; ?>"/>
+<input style="" type="submit" name="changepw" value="Change password"/><br/>
+</form>
+</td>
+</tr>
+<?php
 }
 ?>
 </table>
