@@ -19,7 +19,7 @@ if(isset($_POST["changepassword"]))
 		try
 		{
 			$authInfoService = getService("AuthInfo");
-			$authInfo = $_POST["userid"];
+			$authInfo = $authInfoService->getAuthInfo($_POST["userid"]);
 			$authInfo->Password = $_POST["newpassword"];
 			$authInfoService->setAuthInfo($authInfo);
 			echo "<center><p><span class=\"success\";>Password changed successfully</span></p></center>";
