@@ -36,7 +36,7 @@ if(isset($_POST["changepassword"]))
 <?php if(isset($errormessage)) echo "<p><span class=\"error\";>$errormessage</span></p>"; ?>
 <table>
 <tr>
-<form action="/admin/?page=changepassword" method="post">
+<form action="/admin/?page=changeuserpassword" method="post">
 <input type="hidden" name="userid" value="<?php echo $_GET["userid"] ?>"/></td></tr>
 <tr><th>New password</th><td><input type="password" name="newpassword" value=""/></td></tr>
 <tr><th>New password again</th><td><input type="password" name="newpassword2" value=""/></td></tr>
