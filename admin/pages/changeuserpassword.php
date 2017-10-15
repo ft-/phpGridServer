@@ -6,7 +6,7 @@
  * Version 2.1, February 1999
  *
  */
-?><center><h1>Change Password</h1></center><br/>
+?><center><h1>Reset User Password</h1></center><br/>
 <?php
 if(isset($_POST["changepassword"]))
 {
