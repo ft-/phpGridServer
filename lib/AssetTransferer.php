@@ -262,7 +262,10 @@ function TransferAssets($dst_service, $src_service, $assetid, &$processed, $deep
 				}
 			}
 			$innerlist = compileAssetListFromAsset($asset);
-			print("=> finished decoding\n");
+			if($verbose)
+			{
+				print("=> finished decoding\n");
+			}
 		}
 		catch(Exception $e)
 		{
