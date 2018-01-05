@@ -158,6 +158,7 @@ $option_ui_config = False;
 $option_login_flags = False;
 $option_global_textures = False;
 $option_adult_compliant = False;
+$option_grid_capabilities = False;
 
 if(isset($structParam->options))
 {
@@ -191,6 +192,8 @@ if(isset($structParam->options))
 			$option_global_textures = True;
 		if($option == "adult_compliant")
 			$option_adult_compliant = True;
+        if($option == "grid-capabilities")
+            $option_grid_capabilities = True;
 	}
 }
 
@@ -544,6 +547,18 @@ if($option_login_flags)
 	$loginFlags->daylight_savings = "N";
 	$structMember = "login-flags";
 	$rpcStruct->$structMember = array($loginFlags);
+}
+
+if($option_grid_capabilities)
+{
+    require_once("lib/types/ServerDataURI.php");
+    $homeGrid = ServerDataURI::getHome();
+    $folderStruct = new RPCStruct();
+    $folderStruct->FetchInventory2 = $homeGrid->HomeURI."homecap/FetchInventory2.php";
+    $folderStruct->FetchInventoryDescendents2 = $homeGrid->HomeURI."homecap/FetchInventoryDescendents2.php";
+    $folderStruct->CreateInventoryCategory = $homeGrid->HomeURI."homecap/CreateInventoryCategory.php";
+    $structMember = "grid-capabilities";
+    $rpcStruct->$structMember = array($folderStruct);
 }
 
 // login-flags
