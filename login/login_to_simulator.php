@@ -192,8 +192,8 @@ if(isset($structParam->options))
 			$option_global_textures = True;
 		if($option == "adult_compliant")
 			$option_adult_compliant = True;
-        if($option == "user-capabilities")
-            $option_user_capabilities = True;
+		if($option == "user-capabilities")
+			$option_user_capabilities = True;
 	}
 }
 
@@ -553,13 +553,22 @@ if($option_user_capabilities)
 {
     require_once("lib/types/ServerDataURI.php");
     $homeGrid = ServerDataURI::getHome();
+    $userCapArray = array();
     $folderStruct = new RPCStruct();
-    $folderStruct->FetchInventory2 = $homeGrid->HomeURI."homecap/FetchInventory2.php";
-    $folderStruct->FetchInventoryDescendents2 = $homeGrid->HomeURI."homecap/FetchInventoryDescendents2.php";
-    $folderStruct->CreateInventoryCategory = $homeGrid->HomeURI."homecap/CreateInventoryCategory.php";
+    $folderStruct->capability = "FetchInventory2";
+    $folderStruct->uri = $homeGrid->HomeURI."homecap/FetchInventory2.php";
+    $userCapArray[] = $folderStruct;
+    $folderStruct = new RPCStruct();
+    $folderStruct->capability = "FetchInventoryDescendents2";
+    $folderStruct->uri = $homeGrid->HomeURI."homecap/FetchInventoryDescendents2.php";
+    $userCapArray[] = $folderStruct;
+    $folderStruct = new RPCStruct();
+    $folderStruct->capability = "CreateInventoryCategory";
+    $folderStruct->uri = $homeGrid->HomeURI."homecap/CreateInventoryCategory.php";
+    $userCapArray[] = $folderStruct;
     $structMember = "user-capabilities";
-    $rpcStruct->$structMember = array($folderStruct);
-}
+    $rpcStruct->$structMember = $userCapArray;
+} 
 
 // login-flags
 $rpcStruct->message = $serverParamService->getParam("WelcomeMessage", "Hello Avatar!");
