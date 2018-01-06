@@ -7,6 +7,8 @@
  *
  */
 
+set_include_path(dirname(dirname(__FILE__)).PATH_SEPARATOR.get_include_path());
+
 require_once("lib/services.php");
 require_once("lib/helpers/fetchInventory.php");
 
