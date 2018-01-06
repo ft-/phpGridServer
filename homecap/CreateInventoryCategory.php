@@ -74,7 +74,7 @@ else if(count($pathcmps) != 1)
 
 $hgTravelingDataService = getService("HGTravelingData");
 
-$sessionID = $pathcmps[2];
+$sessionID = $pathcmps[0];
 try
 {
 	$travelingdata = $hgTravelingDataService->getHGTravelingData($sessionID);
