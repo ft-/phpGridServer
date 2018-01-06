@@ -58,12 +58,13 @@ else
 	}
 }
 
-$pathcmps = explode("/", $_SERVER["REQUEST_URI"]);
-if(count($pathcmps) == 4 && $pathcmps[3] == "")
+$targetpath = substr($_SERVER["REQUEST_URI"], strlen($_SERVER["SCRIPT_NAME"])+1);
+$pathcmps = explode("/", $targetpath);
+if(count($pathcmps) == 2 && $pathcmps[1] == "")
 {
 	/* this is a valid path too */
 }
-else if(count($pathcmps) != 3)
+else if(count($pathcmps) != 0)
 {
 	http_response_code("400");
 	header("Content-Type: text/plain");
@@ -73,7 +74,7 @@ else if(count($pathcmps) != 3)
 
 $hgTravelingDataService = getService("HGTravelingData");
 
-$sessionID = $pathcmps[2];
+$sessionID = $pathcmps[0];
 try
 {
 	$travelingdata = $hgTravelingDataService->getHGTravelingData($sessionID);

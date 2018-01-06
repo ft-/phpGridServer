@@ -58,12 +58,13 @@ else
 
 $map = $_RPC_REQUEST->Params[0];
 
-$pathcmps = explode("/", $_RPC_REQUEST->Method);
-if(count($pathcmps) == 4 && $pathcmps[3] == "")
+$targetpath = substr($_SERVER["REQUEST_URI"], strlen($_SERVER["SCRIPT_NAME"])+1);
+$pathcmps = explode("/", $targetpath);
+if(count($pathcmps) == 2 && $pathcmps[1] == "")
 {
 	/* this is a valid path too */
 }
-else if(count($pathcmps) != 3)
+else if(count($pathcmps) != 1)
 {
 	http_response_code("400");
 	header("Content-Type: text/plain");
