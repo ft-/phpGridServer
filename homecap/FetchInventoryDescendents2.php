@@ -71,10 +71,12 @@ else if(count($pathcmps) != 3)
 	exit;
 }
 
+$hgTravelingDataService = getService("HGTravelingData");
+
 $sessionID = $pathcmps[2];
 try
 {
-	$travelingdata = getHGTravelingData($sessionID);
+	$travelingdata = $hgTravelingDataService->getHGTravelingData($sessionID);
 }
 catch(Exception $e)
 {

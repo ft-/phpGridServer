@@ -18,14 +18,52 @@ if($_SERVER["REQUEST_METHOD"] != "POST")
 	exit;
 }
 
+if($_SERVER["CONTENT_TYPE"] == "application/llsd+binary")
+{
+	/* llsd-binary */
+	require_once("lib/rpc/llsdbinary.php");
+	$contentType = "application/llsd+binary";
+	try
+	{
+		$_RPC_REQUEST = LLSDBinaryHandler::parseLLSDBinaryRequest(file_get_contents("php://input"));
+	}
+	catch(Exception $e)
+	{
+		http_response_code("500");
+		header("Content-Type: text/plain");
+		echo "Invalid LLSD content";
+		trigger_error("Invalid LLSD content");
+		exit;
+	}
+}
+else
+{
+	/* llsd-xml */
+	require_once("lib/rpc/llsdxml.php");
+	$contentType = "application/llsd+xml";
+
+	try
+	{
+		$_RPC_REQUEST = LLSDXMLHandler::parseLLSDXmlRequest(file_get_contents("php://input"));
+	}
+	catch(Exception $e)
+	{
+		http_response_code("500");
+		header("Content-Type: text/plain");
+		echo "Invalid LLSD content";
+		trigger_error("Invalid LLSD content");
+		exit;
+	}
+}
+
 $map = $_RPC_REQUEST->Params[0];
 
 $pathcmps = explode("/", $_RPC_REQUEST->Method);
-if(count($pathcmps) == 3 && $pathcmps[2] == "")
+if(count($pathcmps) == 4 && $pathcmps[3] == "")
 {
 	/* this is a valid path too */
 }
-else if(count($pathcmps) != 2)
+else if(count($pathcmps) != 3)
 {
 	http_response_code("400");
 	header("Content-Type: text/plain");
@@ -33,7 +71,9 @@ else if(count($pathcmps) != 2)
 	exit;
 }
 
-$sessionID = $pathcmps[1];
+$hgTravelingDataService = getService("HGTravelingData");
+
+$sessionID = $pathcmps[2];
 try
 {
 	$travelingdata = getHGTravelingData($sessionID);

@@ -59,11 +59,11 @@ else
 $map = $_RPC_REQUEST->Params[0];
 
 $pathcmps = explode("/", $_RPC_REQUEST->Method);
-if(count($pathcmps) == 3 && $pathcmps[2] == "")
+if(count($pathcmps) == 4 && $pathcmps[3] == "")
 {
 	/* this is a valid path too */
 }
-else if(count($pathcmps) != 2)
+else if(count($pathcmps) != 3)
 {
 	http_response_code("400");
 	header("Content-Type: text/plain");
@@ -71,10 +71,12 @@ else if(count($pathcmps) != 2)
 	exit;
 }
 
-$sessionID = $pathcmps[1];
+$hgTravelingDataService = getService("HGTravelingData");
+
+$sessionID = $pathcmps[2];
 try
 {
-	$travelingdata = getHGTravelingData($sessionID);
+	$travelingdata = $hgTravelingDataService->getHGTravelingData($sessionID);
 }
 catch(Exception $e)
 {
