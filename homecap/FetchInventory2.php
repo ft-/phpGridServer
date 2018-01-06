@@ -120,7 +120,7 @@ foreach($itemlist as $itemid => $inventoryowner)
 			throw new Exception("Skip foreign owned items");
 		}
 
-		$items[] = llsdItemFromInventoryItem($item, $services);
+		$items[] = llsdItemFromInventoryItem($item, $travelingdata->UserID);
 	}
 	catch(Exception $e)
 	{
@@ -140,4 +140,5 @@ if(!isset($_GET["rpc_debug"]))
 	ini_set("zlib.output_compression", 4096);
 }
 
-return $res;
+header("Content-Type: $contentType");
+echo $_RPC_REQUEST->RPCHandler->serializeRPC($res);

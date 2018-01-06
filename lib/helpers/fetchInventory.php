@@ -12,7 +12,7 @@ require_once("lib/types/InventoryItem.php");
 require_once("lib/rpc/types.php");
 require_once("lib/types/Asset.php");
 
-function llsdItemFromInventoryItem($item, $services = null)
+function llsdItemFromInventoryItem($item, $agentID)
 {
 	$itemmap = new RPCStruct();
 	$itemmap->asset_id = $item->AssetID;
@@ -41,12 +41,12 @@ function llsdItemFromInventoryItem($item, $services = null)
 	if($services)
 	{
 		/* check for Creator */
-		if($itemmap->permissions->creator_id == $services->AgentID)
+		if($itemmap->permissions->creator_id == $agentID)
 		{
 			$itemmap->permissions->base_mask |= InventoryPermissions::Transfer | InventoryPermissions::Copy | InventoryPermissions::Modify;
 		}
 		/* check for Owner */
-		if($itemmap->permissions->owner_id == $services->AgentID)
+		if($itemmap->permissions->owner_id == $agentID)
 		{
 			$itemmap->permissions->base_mask |= $itemmap->permissions->owner_mask;
 		}

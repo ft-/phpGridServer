@@ -144,14 +144,14 @@ foreach($folderlist as $folderref)
 					$origitem = $inventoryService->getItem($origowner, $childitem->AssetID);
 					if($origitem->AssetType != AssetType::Link)
 					{
-						array_unshift($items, llsdItemFromInventoryItem($origitem, $services));
+						array_unshift($items, llsdItemFromInventoryItem($origitem, $travelingdata->UserID));
 					}
 				}
 				catch(Exception $e)
 				{
 				}
 			}
-			$items[] = llsdItemFromInventoryItem($childitem, $services);
+			$items[] = llsdItemFromInventoryItem($childitem, $travelingdata->UserID);
 		}
 		$itemsIterator->free();
 
@@ -191,4 +191,5 @@ if(!isset($_GET["rpc_debug"]))
 	ini_set("zlib.output_compression", 4096);
 }
 
-return $res;
+header("Content-Type: $contentType");
+echo $_RPC_REQUEST->RPCHandler->serializeRPC($res);

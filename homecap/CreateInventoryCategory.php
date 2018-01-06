@@ -128,4 +128,5 @@ else
 	}
 }
 
-return $res;
+header("Content-Type: $contentType");
+echo $_RPC_REQUEST->RPCHandler->serializeRPC($res);
