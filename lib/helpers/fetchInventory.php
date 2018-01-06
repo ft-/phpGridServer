@@ -38,18 +38,15 @@ function llsdItemFromInventoryItem($item, $agentID)
 	$itemmap->sale_info->sale_price = $item->SalePrice;
 	$itemmap->sale_info->sale_type = $item->SaleType;
 
-	if($services)
+	/* check for Creator */
+	if($itemmap->permissions->creator_id == $agentID)
 	{
-		/* check for Creator */
-		if($itemmap->permissions->creator_id == $agentID)
-		{
-			$itemmap->permissions->base_mask |= InventoryPermissions::Transfer | InventoryPermissions::Copy | InventoryPermissions::Modify;
-		}
-		/* check for Owner */
-		if($itemmap->permissions->owner_id == $agentID)
-		{
-			$itemmap->permissions->base_mask |= $itemmap->permissions->owner_mask;
-		}
+		$itemmap->permissions->base_mask |= InventoryPermissions::Transfer | InventoryPermissions::Copy | InventoryPermissions::Modify;
+	}
+	/* check for Owner */
+	if($itemmap->permissions->owner_id == $agentID)
+	{
+		$itemmap->permissions->base_mask |= $itemmap->permissions->owner_mask;
 	}
 	/* check for Everyone rights */
 	$itemmap->permissions->base_mask |= $itemmap->permissions->everyone_mask;
