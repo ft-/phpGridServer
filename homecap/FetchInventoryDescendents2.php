@@ -64,7 +64,7 @@ if(count($pathcmps) == 2 && $pathcmps[1] == "")
 {
 	/* this is a valid path too */
 }
-else if(count($pathcmps) != 0)
+else if(count($pathcmps) != 1)
 {
 	http_response_code("400");
 	header("Content-Type: text/plain");
