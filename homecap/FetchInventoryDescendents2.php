@@ -112,7 +112,7 @@ $folders = array();
 $badfolders = array();
 $items = array();
 
-$inventoryService = getService("InventoryService");
+$inventoryService = getService("Inventory");
 
 foreach($folderlist as $folderref)
 {

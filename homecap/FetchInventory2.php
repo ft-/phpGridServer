@@ -108,7 +108,7 @@ $baditems = array();
 
 $outmap->agent_id = new UUID($map->agent_id);
 
-$inventoryService = getService("InventoryService");
+$inventoryService = getService("Inventory");
 
 foreach($itemlist as $itemid => $inventoryowner)
 {

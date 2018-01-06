@@ -100,7 +100,7 @@ $res = new RPCSuccessResponse();
 $outmap = new RPCStruct();
 $res->Params[] = $outmap;
 
-$inventoryService = getService("InventoryService");
+$inventoryService = getService("Inventory");
 
 if(!$inventoryService->isFolderOwnedByUUID($map->parent_id, $services->AgentID))
 {
