@@ -106,7 +106,7 @@ $outmap = new RPCStruct();
 $items = array();
 $baditems = array();
 
-$outmap->agent_id = new UUID($map->agent_id);
+$outmap->agent_id = $travelingdata->UserID;
 
 $inventoryService = getService("Inventory");
 
