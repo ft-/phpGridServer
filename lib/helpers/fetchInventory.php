@@ -50,9 +50,6 @@ function llsdItemFromInventoryItem($item, $agentID)
 	}
 	/* check for Everyone rights */
 	$itemmap->permissions->base_mask |= $itemmap->permissions->everyone_mask;
-	//$itemmap->permissions->group_id = $item->GroupID;
-	//$itemmap->permissions->group_mask = $item->GroupPermissions;
-	//$itemmap->permissions->is_owner_group = $item->GroupOwned;
 	return $itemmap;
 }
 
