@@ -130,7 +130,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($itemID);
 			$w = "SELECT avatarID FROM ".$this->dbtable_items." WHERE ".
-					"inventoryID = '$itemID'";
+					"inventoryID = '$itemID' LIMIT 1";
 			$res = $this->db->query($w);
 			if(!$res)
 			{
@@ -166,7 +166,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 						salePrice, saleType, creationDate, groupID, groupOwned, flags, 
 						inventoryID, avatarID, parentFolderID, inventoryGroupPermissions 
 						FROM ".$this->dbtable_items." AS m INNER JOIN ".$this->dbtable_creators." AS n ON m.CreatorRefID = n.CreatorRefID WHERE ".
-						"inventoryID = '$itemID'");
+						"inventoryID = '$itemID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -427,7 +427,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($folderID);
 			$res = $this->db->query("SELECT agentID FROM ".$this->dbtable_folders." WHERE ".
-					"folderID = '$folderID'");
+					"folderID = '$folderID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -456,7 +456,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($folderID);
 			$res = $this->db->query("SELECT * FROM ".$this->dbtable_folders." WHERE ".
-						"folderID = '$folderID'");
+						"folderID = '$folderID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -616,7 +616,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			UUID::CheckWithException($principalID);
 			$res = $this->db->query("SELECT * FROM ".$this->dbtable_folders." WHERE ".
-						"parentFolderID = '00000000-0000-0000-0000-000000000000' AND agentID = '$principalID'");
+						"parentFolderID = '00000000-0000-0000-0000-000000000000' AND agentID = '$principalID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -637,7 +637,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			$rootfolder = $this->getRootFolder($principalID);
 			$res = $this->db->query("SELECT * FROM ".$this->dbtable_folders." WHERE ".
-						"parentFolderID = '".$rootfolder->ID."' AND type = '".$this->db->real_escape_string($type)."'");
+						"parentFolderID = '".$rootfolder->ID."' AND type = '".$this->db->real_escape_string($type)."' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));

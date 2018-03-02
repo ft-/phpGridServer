@@ -51,7 +51,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function exists($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE id = '$assetID'");
+			$res = $this->db->query("SELECT id FROM ".$this->dbtable." WHERE id = '$assetID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -96,7 +96,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function get($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE id = '$assetID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE id = '$assetID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -121,7 +121,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function getData($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE id = '$assetID'");
+			$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE id = '$assetID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -143,7 +143,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 		public function getMetadata($assetID)
 		{
 			UUID::CheckWithException($assetID);
-			$res = $this->db->query("SELECT id, name, description, assetType, local, temporary, CreatorID FROM ".$this->dbtable." WHERE id = '$assetID'");
+			$res = $this->db->query("SELECT id, name, description, assetType, local, temporary, CreatorID FROM ".$this->dbtable." WHERE id = '$assetID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -198,7 +198,7 @@ if(!class_exists("MySQLAssetServiceConnector"))
 			if(!$stmt->execute())
 			{
 				$stmt->close();
-				$res = $this->db->query("SELECT id FROM assets WHERE id = '$id' $assetFlagsCheck");
+				$res = $this->db->query("SELECT id FROM assets WHERE id = '$id' $assetFlagsCheck LIMIT 1");
 				if(!$res)
 				{
 					trigger_error(mysqli_error($this->db));

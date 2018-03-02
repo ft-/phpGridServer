@@ -59,7 +59,7 @@ class MySQLFriendsServiceConnector implements FriendsServiceInterface
 
 	public function getFriend($UserID, $FriendID)
 	{
-		$res = $this->db->query("SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID = '".$this->db->real_escape_string($UserID)."' AND f.Friend = '".$this->db->real_escape_string($FriendID)."'");
+		$res = $this->db->query("SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID = '".$this->db->real_escape_string($UserID)."' AND f.Friend = '".$this->db->real_escape_string($FriendID)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -86,7 +86,7 @@ class MySQLFriendsServiceConnector implements FriendsServiceInterface
 	{
 		UUID::CheckWithException($UserID);
 		UUID::CheckWithException($FriendID);
-		$res = $this->db->query("SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID LIKE '$UserID%' AND f.Friend LIKE '$FriendID%'");
+		$res = $this->db->query("SELECT f.*,".$this->their_flags_query." FROM ".$this->dbtable." AS f WHERE f.PrincipalID LIKE '$UserID%' AND f.Friend LIKE '$FriendID%' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));

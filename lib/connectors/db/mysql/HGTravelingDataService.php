@@ -127,7 +127,7 @@ if(!class_exists("MySQLHGTravelingDataService"))
 		public function getHGTravelingData($sessionID)
 		{
 			UUID::CheckWithException($sessionID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE SessionID = '$sessionID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE SessionID = '$sessionID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));

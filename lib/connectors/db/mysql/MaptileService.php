@@ -46,7 +46,7 @@ class MySQLMaptileServiceConnector implements MaptileServiceInterface
 		$locY = intval($locY);
 		$zoomLevel = intval($zoomLevel);
 		UUID::CheckWithException($scopeID);
-		$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE scopeID = '$scopeID' AND locX = $locX AND locY = $locY AND zoomLevel = $zoomLevel");
+		$res = $this->db->query("SELECT data FROM ".$this->dbtable." WHERE scopeID = '$scopeID' AND locX = $locX AND locY = $locY AND zoomLevel = $zoomLevel LIMIT 1");
 		if(!$res)
 		{
 			throw new Exception("Database access error");

@@ -32,7 +32,7 @@ class MySQLServerParamServiceConnector implements ServerParamServiceInterface
 			return $this->grid_server_params["$name"];
 		}
 
-		$res = $this->db->query("SELECT value FROM ".$this->dbtable." WHERE parameter='".$this->db->real_escape_string($name)."'");
+		$res = $this->db->query("SELECT value FROM ".$this->dbtable." WHERE parameter='".$this->db->real_escape_string($name)."' LIMIT 1");
 		if($res)
 		{
 			$row = mysqli_fetch_array($res);
@@ -120,7 +120,7 @@ class MySQLServerParamServiceConnector implements ServerParamServiceInterface
 
 	public function getServerParam($name)
 	{
-		$res = $this->db->query("SELECT parameter, value, gridinfo FROM serverparams WHERE parameter = '".$this->db->real_escape_string($name)."'");
+		$res = $this->db->query("SELECT parameter, value, gridinfo FROM serverparams WHERE parameter = '".$this->db->real_escape_string($name)."' LIMIT 1");
 		if($res)
 		{
 			if($row = $res->fetch_assoc())

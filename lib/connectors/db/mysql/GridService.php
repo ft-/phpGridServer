@@ -480,11 +480,11 @@ class MySQLGridServiceConnector implements GridServiceInterface
 		if($scopeID)
 		{
 			UUID::CheckWithException($scopeID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID = '$scopeID' AND  uuid = '$regionID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE ScopeID = '$scopeID' AND  uuid = '$regionID' LIMIT 1");
 		}
 		else
 		{
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE uuid = '$regionID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable." WHERE uuid = '$regionID' LIMIT 1");
 		}
 		if(!$res)
 		{

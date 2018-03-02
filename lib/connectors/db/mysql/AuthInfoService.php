@@ -28,7 +28,7 @@ if(!class_exists("MySQLAuthInfoServiceConnector"))
 		public function getAuthInfo($principalID)
 		{
 			UUID::CheckWithException($principalID);
-			$res = $this->db->query("SELECT * FROM ".$this->dbtable_auth." WHERE UUID = '$principalID'");
+			$res = $this->db->query("SELECT * FROM ".$this->dbtable_auth." WHERE UUID = '$principalID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));

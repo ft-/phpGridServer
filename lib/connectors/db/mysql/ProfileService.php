@@ -209,7 +209,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 	public function getClassified($classifiedID)
 	{
 		UUID::CheckWithException($classifiedID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_classifieds." WHERE classifieduuid = '$classifiedID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_classifieds." WHERE classifieduuid = '$classifiedID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -286,7 +286,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 	{
 		UUID::CheckWithException($recordID);
 
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_classifieds." WHERE classifieduuid = '$recordID'");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_classifieds." WHERE classifieduuid = '$recordID' LIMIT 1");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -320,7 +320,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 		UUID::CheckWithException($userID);
 		UUID::CheckWithException($pickID);
 
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_userpicks." WHERE creatoruuid = '$userID' AND pickuuid = '$pickID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_userpicks." WHERE creatoruuid = '$userID' AND pickuuid = '$pickID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -392,7 +392,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 	public function deletePick($pickID)
 	{
 		UUID::CheckWithException($pickID);
-		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_userpicks." WHERE pickuuid = '$pickID'");
+		$stmt = $this->db->prepare("DELETE FROM ".$this->dbtable_userpicks." WHERE pickuuid = '$pickID' LIMIT 1");
 		if(!$stmt)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -411,7 +411,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 	{
 		UUID::CheckWithException($userID);
 		UUID::CheckWithException($targetID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_usernotes." WHERE useruuid = '$userID' AND targetuuid = '$targetID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_usernotes." WHERE useruuid = '$userID' AND targetuuid = '$targetID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -467,7 +467,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 	{
 		$props = new UserProperties();
 		$props->UserID = $userID;
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_userprofile." WHERE useruuid = '".$this->db->real_escape_string($userID)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_userprofile." WHERE useruuid = '".$this->db->real_escape_string($userID)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -609,7 +609,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 		$userPrefs = new UserPreferences();
 		$userPrefs->UserID = $userID;
 
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_usersettings." WHERE useruuid = '".$this->db->real_escape_string($userID)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_usersettings." WHERE useruuid = '".$this->db->real_escape_string($userID)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -673,7 +673,7 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 	public function getUserAppData($userID, $tagID)
 	{
 		UUID::CheckWithException($userID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_userdata." WHERE UserID = '$userID' AND TagId = '".$this->db->real_escape_string($tagID)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_userdata." WHERE UserID = '$userID' AND TagId = '".$this->db->real_escape_string($tagID)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));

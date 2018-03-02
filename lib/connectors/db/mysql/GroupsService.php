@@ -426,7 +426,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 
 	public function getActiveGroup($requestingAgentID, $principalID)
 	{
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_principals." WHERE PrincipalID = '".$this->db->real_escape_string($principalID)."'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_principals." WHERE PrincipalID = '".$this->db->real_escape_string($principalID)."' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -448,7 +448,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 
-		$res = $this->db->query("SELECT g.*,".$this->g_count_query." FROM ".$this->dbtable_groups." AS g WHERE g.GroupID = '$groupID'");
+		$res = $this->db->query("SELECT g.*,".$this->g_count_query." FROM ".$this->dbtable_groups." AS g WHERE g.GroupID = '$groupID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -595,7 +595,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 
-		$where = "SELECT m.* FROM ".$this->dbtable_membership." AS m WHERE m.GroupID = '$groupID' AND m.PrincipalID = '".$this->db->real_escape_string($principalID)."'";
+		$where = "SELECT m.* FROM ".$this->dbtable_membership." AS m WHERE m.GroupID = '$groupID' AND m.PrincipalID = '".$this->db->real_escape_string($principalID)."' LIMIT 1";
 		$res = $this->db->query($where);
 		if(!$res)
 		{
@@ -659,8 +659,8 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	public function deleteGroupMember($requestingAgentID, $groupID, $principalID)
 	{
 		UUID::CheckWithException($groupID);
-        $principalId = substr($principalID, 0, 36);
-        UUID::CheckWithException($principalId);
+		$principalId = substr($principalID, 0, 36);
+		UUID::CheckWithException($principalId);
 
 		$table_names = array($this->dbtable_invites, $this->dbtable_principals, $this->dbtable_rolemembership, $this->dbtable_membership);
 
@@ -730,7 +730,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($groupRoleID);
 
-		$res = $this->db->query("SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = '$groupID' AND r.RoleID = '$groupRoleID'");
+		$res = $this->db->query("SELECT r.*,".$this->r_count_query." FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = '$groupID' AND r.RoleID = '$groupRoleID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -753,7 +753,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($groupRoleID);
 
-		$res = $this->db->query("SELECT Powers FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = '$groupID' AND r.RoleID = '$groupRoleID'");
+		$res = $this->db->query("SELECT Powers FROM ".$this->dbtable_roles." AS r WHERE r.GroupID = '$groupID' AND r.RoleID = '$groupRoleID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -872,7 +872,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		{
 			/* we do not store UUID::ZERO entries, so we use group membership for reproducing the everyone entry */
 			$principalID = $this->db->real_escape_string($principalID);
-			$res = $this->db->query("SELECT m.*, r.Powers FROM ".$this->dbtable_membership." AS m INNER JOIN ".$this->dbtable_roles." AS r ON m.GroupID = r.GroupID AND r.RoleID = '00000000-0000-0000-0000-000000000000' WHERE m.GroupID = '$groupID' and m.PrincipalID = '$principalID'");
+			$res = $this->db->query("SELECT m.*, r.Powers FROM ".$this->dbtable_membership." AS m INNER JOIN ".$this->dbtable_roles." AS r ON m.GroupID = r.GroupID AND r.RoleID = '00000000-0000-0000-0000-000000000000' WHERE m.GroupID = '$groupID' and m.PrincipalID = '$principalID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -890,7 +890,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		else
 		{
 			$principalID = $this->db->real_escape_string($principalID);
-			$res = $this->db->query("SELECT rm.*, r.Powers FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID = r.GroupID AND rm.RoleID = r.RoleID WHERE rm.GroupID = '$groupID' AND rm.RoleID = '$groupRoleID' and rm.PrincipalID = '$principalID'");
+			$res = $this->db->query("SELECT rm.*, r.Powers FROM ".$this->dbtable_rolemembership." AS rm INNER JOIN ".$this->dbtable_roles." AS r ON rm.GroupID = r.GroupID AND rm.RoleID = r.RoleID WHERE rm.GroupID = '$groupID' AND rm.RoleID = '$groupRoleID' and rm.PrincipalID = '$principalID' LIMIT 1");
 			if(!$res)
 			{
 				trigger_error(mysqli_error($this->db));
@@ -1013,7 +1013,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupInviteID);
 
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE InviteID = '$groupInviteID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_invites." WHERE InviteID = '$groupInviteID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1036,7 +1036,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($roleID);
 		$principalID = $this->db->real_escape_string($principalID);
-		$where = "SELECT * FROM ".$this->dbtable_invites." WHERE GroupID = '$groupID' AND RoleID = '$roleID' AND PrincipalID = '$principalID'";
+		$where = "SELECT * FROM ".$this->dbtable_invites." WHERE GroupID = '$groupID' AND RoleID = '$roleID' AND PrincipalID = '$principalID' LIMIT 1";
 		$res = $this->db->query($where);
 		if(!$res)
 		{
@@ -1186,7 +1186,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	{
 		UUID::CheckWithException($groupID);
 		UUID::CheckWithException($groupNoticeID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE NoticeID = '$groupNoticeID' AND GroupID = '$groupID'");
+		$res = $this->db->query("SELECT NULL FROM ".$this->dbtable_notices." WHERE NoticeID = '$groupNoticeID' AND GroupID = '$groupID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
@@ -1206,7 +1206,7 @@ class MySQLGroupsServiceConnector implements GroupsServiceInterface
 	public function getGroupNotice($requestingAgentID, $groupNoticeID)
 	{
 		UUID::CheckWithException($groupNoticeID);
-		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE NoticeID = '$groupNoticeID'");
+		$res = $this->db->query("SELECT * FROM ".$this->dbtable_notices." WHERE NoticeID = '$groupNoticeID' LIMIT 1");
 		if(!$res)
 		{
 			trigger_error(mysqli_error($this->db));
