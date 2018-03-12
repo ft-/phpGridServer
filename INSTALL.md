@@ -37,8 +37,12 @@ default_charset should be set to UTF-8
 
 2.1. Setting up Apache HTTP
 
+2.1.1. apache config
+
 Integrate the configuration apache_config.sample in the
 configuration of Apache and adjust pathes
+
+2.1.2. conflicting modules
 
 Disable mod_reqtimeout on apache since OpenSim easily takes a lot of network connections.
 
