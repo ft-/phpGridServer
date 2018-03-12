@@ -104,7 +104,6 @@ $cfg_RPC_GridUserService = array(
 	"use"=>"accesscontrol/wrappers/AccessControlWrapper",
 	"service"=>"GridUser",
 	"acl"=>array(
-        array("check"=>"sufficient", "use"=>"UnrestrictedMethodsACL"), # allow general access to registerRegion
 		array("check"=>"sufficient", "use"=>"PrivateIPACL"),
 		array("check"=>"sufficient", "use"=>"SimulatorACL"),
 		array("check"=>"required", "use"=>"deny")
