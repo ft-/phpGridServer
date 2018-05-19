@@ -1302,7 +1302,7 @@ class SceneObjectPart
 				}
 				else
 				{
-					throw new SceneObjectPartParseException("Unexpected tag ".$tok["name"]);
+					//throw new SceneObjectPartParseException("Unexpected tag ".$tok["name"]);
 				}
 			}
 			else if($tok["type"]=="closing")
