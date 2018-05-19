@@ -1469,7 +1469,11 @@ class SceneObjectGroup
 				}
 				else if($tok["name"] == "KeyframeMotion")
 				{
-					$sop->KeyframeMotion = base64_decode(SceneObjectPart::getValue($input, $tok["name"]));
+					if(!xml_skip_nodes("KeyframeMotion", $input))
+					{
+						throw new SceneObjectGroupParseException();
+					}
+					//$sop->KeyframeMotion = base64_decode(SceneObjectPart::getValue($input, $tok["name"]));
 				}
 				else if($tok["name"] == "GroupScriptStates")
 				{
