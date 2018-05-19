@@ -1302,7 +1302,10 @@ class SceneObjectPart
 				}
 				else
 				{
-					//throw new SceneObjectPartParseException("Unexpected tag ".$tok["name"]);
+					if(!xml_skip_nodes($tok["name"], $input))
+					{
+						throw new SceneObjectPartParseException();
+					}
 				}
 			}
 			else if($tok["type"]=="closing")
