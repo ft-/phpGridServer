@@ -83,6 +83,12 @@ if($lockedmsg != "")
 	DoAgentResponse(False, $lockedmsg);
 }
 
+$lockedmsg = $serverParamService->getParam("lockmessage_".$userAccount->PrincipalID, "");
+if($lockedmsg != "")
+{
+	DoAgentResponse(False, $lockedmsg);
+}
+
 /* verify user first before we store anything */
 $servicesessionid = explode(";", $sessionInfo->ServiceSessionID);
 if(count($servicesessionid) != 2)
