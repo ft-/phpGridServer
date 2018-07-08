@@ -223,16 +223,26 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 			}
 			try
 			{
+				$name = $item->Name;
+				if(strlen($name) > 64)
+				{
+					$name = substr($name, 0, 64);
+				}
+				$desc = $item->Description;
+				if(strlen($desc) > 128)
+				{
+					$desc = substr($desc, 0, 128);
+				}
 				$stmt->bind_param("sisss"."iisii"."iisii"."iiiis",
 							$item->AssetID,
 							$item->AssetType,
-							$item->Name,
+							$name,
 							$item->OwnerID,
 							$item->ID,
 
 							$item->Type,
 							$creatorRefId,
-							$item->Description,
+							$desc,
 							$item->BasePermissions,
 							$item->CurrentPermissions,
 
@@ -247,7 +257,10 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 							$item->Flags,
 							$item->CreationDate,
 							$item->ParentFolderID);
-				$stmt->execute();
+				if(!$stmt->execute())
+				{
+					throw new InventoryAddFailedException();
+				}
 
 				if($stmt->affected_rows==0)
 				{
@@ -279,10 +292,21 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 			}
 			try
 			{
+				$name = $item->Name;
+				if(strlen($name) > 64)
+				{
+					$name = substr($name, 0, 64);
+				}
+				$desc = $item->Description;
+				if(strlen($desc) > 128)
+				{
+					$desc = substr($desc, 0, 128);
+				}
+			
 				$stmt->bind_param("sss"."ii"."ii"."ii"."siii"."ss",
 							$item->AssetID,
-							$item->Name,
-							$item->Description,
+							$name,
+							$description,
 
 							$item->NextPermissions,
 							$item->CurrentPermissions,
@@ -491,8 +515,13 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 			}
 			try
 			{
+				$name = $folder->Name;
+				if(strlen($name) > 64)
+				{
+					$name = substr($name, 0, 64);
+				}
 				$stmt->bind_param("siiss",
-							$folder->Name,
+							$name,
 							$folder->Type,
 							$folder->Version,
 							$folder->ID,
@@ -522,8 +551,13 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 			}
 			try
 			{
+				$name = $folder->Name;
+				if(strlen($name) > 64)
+				{
+					$name = substr($name, 0, 64);
+				}
 				$stmt->bind_param("ssssii",
-							$folder->Name,
+							$name,
 							$folder->ID,
 							$folder->ParentFolderID,
 							$folder->OwnerID,
