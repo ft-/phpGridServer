@@ -755,7 +755,7 @@ class MySQLGridServiceConnector implements GridServiceInterface
 							KEY `regionName` (`regionName`),
 							KEY `ScopeID` (`ScopeID`),
 							KEY `flags` (`flags`)
-							) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED",
+							) ENGINE=InnoDB DEFAULT CHARSET=utf8",
 		"ALTER TABLE %tablename% ADD resolvedServerIP varchar(64) default ''"
 	);
 
