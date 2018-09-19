@@ -139,6 +139,9 @@ The following steps are required whether migrating or setting up from scratch.
 You need a set of files to set it up accordingly. Those can be extracted from OpenSimulator archive.
 
 run tools/loadninifile.php <path-to-opensim-bin>/assets/AssetSets.xml
+
+5.1.2. step needed only for setting grid library
+
 run tools/loadninifile.php <path-to-opensim-bin>/inventory/Libraries.xml
 
 6. Connecting a simulator
