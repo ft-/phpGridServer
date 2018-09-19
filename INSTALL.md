@@ -1,3 +1,5 @@
+Please click on Raw when trying to read this on github.com
+
 1. Requirements
 
 - PHP 5.4 or newer (PHP 7 as well)
