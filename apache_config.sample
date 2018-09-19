@@ -1,6 +1,8 @@
 # Replace <Path to phpGridServer> with installation path of phpGridServer
 
-<Directory "<Path to phpGridServer>">
+Define phpGridServerPath <Path to phpGridServer>
+
+<Directory "${phpGridServerPath}">
     #
     # Possible values for the Options directive are "None", "All",
     # or any combination of:
@@ -30,29 +32,29 @@
 
 </Directory>
 
-Alias /accounts <Path to phpGridServer>/rest_accounts.php
-Alias /auth <Path to phpGridServer>/rest_auth.php
-Alias /authorization <Path to phpGridServer>/rest_authorization.php
-Alias /avatar <Path to phpGridServer>/rest_avatar.php
-Alias /grid <Path to phpGridServer>/rest_grid.php
-Alias /griduser <Path to phpGridServer>/rest_griduser.php
-Alias /helo <Path to phpGridServer>/rest_helo.php
-Alias /get_grid_info <Path to phpGridServer>/get_grid_info.php
-Alias /json_grid_info <Path to phpGridServer>/json_grid_info.php
-Alias /presence <Path to phpGridServer>/rest_presence.php
-Alias /map <Path to phpGridServer>/map.php
-Alias /MAP <Path to phpGridServer>/map.php
-Alias /login <Path to phpGridServer>/index.php/login
-Alias /offlineim <Path to phpGridServer>/rest_offlineim.php
-Alias /sim_grid_info <Path to phpGridServer>/sim_grid_info.php
+Alias /accounts ${phpGridServerPath}/rest_accounts.php
+Alias /auth ${phpGridServerPath}/rest_auth.php
+Alias /authorization ${phpGridServerPath}/rest_authorization.php
+Alias /avatar ${phpGridServerPath}/rest_avatar.php
+Alias /grid ${phpGridServerPath}/rest_grid.php
+Alias /griduser ${phpGridServerPath}/rest_griduser.php
+Alias /helo ${phpGridServerPath}/rest_helo.php
+Alias /get_grid_info ${phpGridServerPath}/get_grid_info.php
+Alias /json_grid_info ${phpGridServerPath}/json_grid_info.php
+Alias /presence ${phpGridServerPath}/rest_presence.php
+Alias /map ${phpGridServerPath}/map.php
+Alias /MAP ${phpGridServerPath}/map.php
+Alias /login ${phpGridServerPath}/index.php/login
+Alias /offlineim ${phpGridServerPath}/rest_offlineim.php
+Alias /sim_grid_info ${phpGridServerPath}/sim_grid_info.php
 
-Alias /assets <Path to phpGridServer>/rest_assets.php
-Alias /get_assets_exist <Path to phpGridServer>/rest_assets_exist.php
-Alias /xinventory <Path to phpGridServer>/rest_xinventory.php
-Alias /hgfriends <Path to phpGridServer>/rest_hgfriends.php
-Alias /friends <Path to phpGridServer>/rest_friends.php
-Alias /groups <Path to phpGridServer>/rest_groups.php
-Alias /hg-groups <Path to phpGridServer>/rest_hggroups.php
-Alias /homeagent <Path to phpGridServer>/rest_homeagent.php
-Alias /foreignagent <Path to phpGridServer>/rest_foreignagent.php
+Alias /assets ${phpGridServerPath}/rest_assets.php
+Alias /get_assets_exist ${phpGridServerPath}/rest_assets_exist.php
+Alias /xinventory ${phpGridServerPath}/rest_xinventory.php
+Alias /hgfriends ${phpGridServerPath}/rest_hgfriends.php
+Alias /friends ${phpGridServerPath}/rest_friends.php
+Alias /groups ${phpGridServerPath}/rest_groups.php
+Alias /hg-groups ${phpGridServerPath}/rest_hggroups.php
+Alias /homeagent ${phpGridServerPath}/rest_homeagent.php
+Alias /foreignagent ${phpGridServerPath}/rest_foreignagent.php
 
