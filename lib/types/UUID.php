@@ -126,4 +126,13 @@ class UUID
 				ord(substr($input, 14, 1)),
 				ord(substr($input, 15, 1))));
 	}
+	
+	public function toBytes()
+	{
+		$res = sscanf(strtolower($this), '%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x');
+		return chr($res[0]) . chr($res[1]) . chr($res[2]) . chr($res[3]) .
+			chr($res[4]) . chr($res[5]) . chr($res[6]) . chr($res[7]) .
+			chr($res[8]) . chr($res[9]) . chr($res[10]) . chr($res[11]) .
+			chr($res[12]) . chr($res[13]) . chr($res[14]) . chr($res[15]);
+	}
 };
