@@ -19,6 +19,12 @@ if(function_exists("apache_request_headers"))
 	}
 }
 
+if(!$_RPC_REQUEST)
+{
+	http_response_code("400");
+	exit;
+}
+
 if(count($_RPC_REQUEST)!=1)
 {
 	return new RPCFaultResponse(4, "Missing struct parameter");
