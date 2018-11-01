@@ -36,10 +36,10 @@ foreach($paramarray as $param)
 	}
 ?>
 <td class="listingtable">
-<form action="/admin/" method="GET">
+<form action="/<?php echo $adminpath ?>/" method="GET">
 <input type="hidden" name="page" value="edit_serverparam"/>
 <input type="hidden" name="Parameter" value="<?php echo htmlentities($param->Parameter) ?>"/><input type="submit" name="Edit" value="Edit"/></form>
-<form action="/admin/?page=all_serverparams" method="POST">
+<form action="/<?php echo $adminpath ?>/?page=all_serverparams" method="POST">
 <input type="hidden" name="DeleteParam" value="<?php echo htmlentities($param->Parameter) ?>"/><input type="submit" name="Delete" value="Delete"/></form>
 </td>
 <?php
@@ -47,4 +47,4 @@ foreach($paramarray as $param)
 }
 ?>
 </table><br/>
-<p><form action="/admin/" METHOD="GET"><input type="hidden" name="page" value="edit_serverparam"/>Parameter <input type="text" name="Parameter" value="" size="40"/><input type="submit" name="Add" value="Add"/></form></p>
+<p><form action="/<?php echo $adminpath ?>/" METHOD="GET"><input type="hidden" name="page" value="edit_serverparam"/>Parameter <input type="text" name="Parameter" value="" size="40"/><input type="submit" name="Add" value="Add"/></form></p>

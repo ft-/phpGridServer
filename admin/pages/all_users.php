@@ -19,7 +19,7 @@ while($userAccount = $userAccounts->getUserAccount())
 <td class=listingtable><?php echo htmlentities($userAccount->LastName) ?></td>
 <td class=listingtable><?php echo $userAccount->UserLevel ?></td>
 <td class=listingtable>
-<form action="/admin/" method="GET">
+<form action="/<?php echo $adminpath ?>/" method="GET">
 <input type="hidden" name="page" value="changeuserpassword"/>
 <input type="hidden" name="userid" value="<?php echo $userAccount->PrincipalID; ?>"/>
 <input style="" type="submit" name="changepw" value="Change password"/><br/>

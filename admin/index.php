@@ -15,7 +15,16 @@ $serverParams = getService("ServerParam");
 
 $gridname = $serverParams->getParam("gridname", "phpGridServer");
 
-require_once("admin/session.php");
+if(!isset($adminpath))
+{
+	$adminpath = "admin";
+}
+if(!isset($adminfilepath))
+{
+	$adminfilepath = "admin";
+}
+
+require_once("${adminfilepath}/session.php");
 
 ?>
 <html>
@@ -28,14 +37,14 @@ require_once("admin/session.php");
 <tr>
 <td class="navbar">
 <div class="navbar">
-<a class="navbar" href="/admin/?Logout=true">Logout</a><br/><br/>
-<a class="navbar" href="/admin/?page=all_users">All Users</a><br/>
-<a class="navbar" href="/admin/?page=create_user">Create User</a><br/>
+<a class="navbar" href="/<?php echo $adminpath ?>/?Logout=true">Logout</a><br/><br/>
+<a class="navbar" href="/<?php echo $adminpath ?>/?page=all_users">All Users</a><br/>
+<a class="navbar" href="/<?php echo $adminpath ?>/?page=create_user">Create User</a><br/>
 <br/>
-<a class="navbar" href="/admin/?page=all_regions">All Regions</a><br/>
-<a class="navbar" href="/admin/?page=all_serverparams">All Server Params</a><br/>
+<a class="navbar" href="/<?php echo $adminpath ?>/?page=all_regions">All Regions</a><br/>
+<a class="navbar" href="/<?php echo $adminpath ?>/?page=all_serverparams">All Server Params</a><br/>
 <br/>
-<a class="navbar" href="/admin/?page=all_regiondefaults">All Region Defaults</a><br/>
+<a class="navbar" href="/<?php echo $adminpath ?>/?page=all_regiondefaults">All Region Defaults</a><br/>
 </div>
 </td>
 <td class="main">
@@ -62,7 +71,7 @@ if(isset($_GET["page"]))
 	}
 	if(isset($page))
 	{
-		$page = "admin/pages/$page.php";
+		$page = "${adminpath}/pages/$page.php";
 		include_once($page);
 	}
 }

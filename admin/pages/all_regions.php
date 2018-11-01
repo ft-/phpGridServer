@@ -221,12 +221,12 @@ while($region = $regions->getRegion())
 	echo "</td>";
 	echo "<td>";
 ?>
-<form action="/admin/" method="GET">
+<form action="/<?php echo $adminpath ?>/" method="GET">
 <input type="hidden" name="page" value="show_region"/>
 <input type="hidden" name="regionid" value="<?php echo $region->Uuid; ?>"/>
 <input type="submit" name="Show" value="Show"/>
 </form>
-<form action="/admin/" method="GET">
+<form action="/<?php echo $adminpath ?>/" method="GET">
 <input type="hidden" name="page" value="all_regions"/>
 <input type="hidden" name="regionid" value="<?php echo $region->Uuid; ?>"/>
 <input type="submit" name="SetDefaultHG" value="Set Default HG"/>
@@ -237,7 +237,7 @@ while($region = $regions->getRegion())
 <input type="submit" name="ClearFallback" value="Clear Fallback"/><br/>
 <input type="submit" name="RemoveDefaults" value="Remove Defaults"/>
 </form><br/>
-<form action="/admin/" method="GET" onsubmit="return confirm('Do you really want to delete the region?');">
+<form action="/<?php echo $adminpath ?>/" method="GET" onsubmit="return confirm('Do you really want to delete the region?');">
 <input type="hidden" name="page" value="all_regions"/>
 <input type="hidden" name="regionid" value="<?php echo $region->Uuid; ?>"/>
 <input style="color: red;" type="submit" name="Remove" value="Remove Region"/><br/>

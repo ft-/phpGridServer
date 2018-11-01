@@ -56,14 +56,14 @@ if(!$adminLoggedIn)
 	}
 	catch(Exception $e)
 	{
-		require_once("admin/create_admin_user.php");
+		require_once("$adminfilepath/create_admin_user.php");
 	}
-	require_once("admin/admin_login.php");
+	require_once("$adminfilepath/admin_login.php");
 }
 else if(isset($_GET["Logout"]))
 {
 	$authInfoService->releaseToken($_SESSION["principalid"], $_SESSION["token"]);
 	unset($_SESSION["token"]);
 	unset($_SESSION["principalid"]);
-	require_once("admin/admin_login.php");
+	require_once("$adminfilepath/admin_login.php");
 }

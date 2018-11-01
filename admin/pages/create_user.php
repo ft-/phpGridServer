@@ -107,7 +107,7 @@ if(isset($_POST["CreateUser"]))
 <center><h1>Create User</h1></center><br/>
 <?php if(isset($message)) echo "<p><center>$message</center></p>"; ?>
 <center>
-<form ACTION="/admin/?page=create_user" METHOD="POST">
+<form ACTION="/<?php echo $adminpath ?>/?page=create_user" METHOD="POST">
 <table style="border-width: 0px; border-style: none;">
 <tr><th>First Name</th><td><input type="text" name="FirstName" size="36"/></td></tr>
 <tr><th>Last Name</th><td><input type="text" name="LastName" size="36"/></td></tr>

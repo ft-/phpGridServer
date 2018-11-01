@@ -45,7 +45,7 @@ catch(Exception $e)
 }
 ?>
 <center>
-<form action="/admin/?page=edit_serverparam&Parameter=<?php echo urlencode($_GET["Parameter"]); ?>" method="POST">
+<form action="/<?php echo $adminpath ?>/?page=edit_serverparam&Parameter=<?php echo urlencode($_GET["Parameter"]); ?>" method="POST">
 <table style="border-width: 0px; border-style: none;">
 <tr><th>Parameter</th><td><input type="text" name="Parameter" readonly="1" value="<?php echo htmlentities($_GET["Parameter"]); ?>" size="40"/></td></tr>
 <tr><th>Value</th><td><input type="text" name="Value" value="<?php echo htmlentities($serverParam->Value); ?>" size="40"/></td></tr>
@@ -54,4 +54,4 @@ catch(Exception $e)
 </table>
 </form>
 </center>
-<p><center><a href="/admin/?page=all_serverparams">Show all server params</a></center></p>
+<p><center><a href="/<?php echo $adminpath ?>/?page=all_serverparams">Show all server params</a></center></p>
