@@ -48,8 +48,10 @@ try
 		$data[0] = $data[0]."/";
 	}
 	if($hgTravelingData->ServiceToken != $data[1] ||
-		$hgTravelingData->GridExternalName != $data[0])
+		strtolower($hgTravelingData->GridExternalName) != strtolower($data[0]))
 	{
+        trigger_error("verify_agent: ${data[0]} ${data[1]}");
+        trigger_error("verify_agent: stored ".$hgTravelingData->GridExternalName." ".$hgTravelingData->ServiceToken);
 		throw new Exception();
 	}
 	$rpcStruct->result = "true";
