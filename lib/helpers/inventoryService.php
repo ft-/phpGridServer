@@ -24,7 +24,7 @@ function verifyInventoryFolderHelper($inventoryService, $principalID, $parentFol
 		$folder->Name = $name;
 		$folder->Type = $type;
 		$folder->ParentFolderID = $parentFolderID;
-		$inventoryService->addFolderWhenNotExistType($folder, $type);
+		$inventoryService->addFolder($folder);
 	}
 }
 
@@ -45,7 +45,7 @@ function verifyInventoryHelper($inventoryService, $principalID)
 		$rootfolder->Type = AssetType::RootFolder;
 		$rootfolder->ParentFolderID = UUID::ZERO();
 
-		$inventoryService->addFolderWhenNotExistRoot($rootfolder);
+		$inventoryService->addFolder($rootfolder);
 	}
 
 	verifyInventoryFolderHelper($inventoryService, $principalID, $rootfolder->ID, "Animations", AssetType::Animation);
