@@ -583,7 +583,7 @@ if(!class_exists("MySQLInventoryServiceConnector"))
 		{
 			$stmt = $this->db->prepare("INSERT INTO ".$this->dbtable_folders.
 					" (folderName, folderID, parentFolderID, agentID, type, version) SELECT ?, ?, ?, ?, ?, ? WHERE ".
-					"NOT EXISTS (SELECT NULL FROM inventoryfolders WHERE type=".intval($type).")");
+					"NOT EXISTS (SELECT NULL FROM inventoryfolders WHERE type=".intval($type)." AND agentID=\"".$folder->OwnerID."\")");
 			if(!$stmt)
 			{
 				trigger_error(mysqli_error($this->db));
