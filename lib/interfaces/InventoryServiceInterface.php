@@ -48,6 +48,8 @@ interface InventoryServiceInterface
 	public function getFolder($principalID, $folderID);
 	public function storeFolder($folder);
 	public function addFolder($folder);
+	public function addFolderWhenNotExistType($folder, $type);
+	public function addFolderWhenNotExistRoot($folder);
 	public function deleteFolder($principalID, $folderID);
 	public function moveFolder($principalID, $folderID, $toFolderID);
 
