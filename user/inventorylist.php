@@ -34,6 +34,11 @@ function titlecmp($a, $b)
 	return strnatcasecmp($a["title"], $b["title"]);
 }
 
+function quoteescape($a)
+{
+        return str_replace("\\", "\\\\", $a);
+}
+
 echo "[\n";
 $cnt = 0;
 try
@@ -42,7 +47,7 @@ try
 	$res = $inventoryService->getFoldersInFolder($principalID, $folderID);
 	while($row = $res->getFolder())
 	{
-		$folders["".$row->ID] = array("title"=>htmlentities($row->Name), "icon"=>getFolderIcon($row->Type));
+		$folders["".$row->ID] = array("title"=>quoteescape(htmlentities($row->Name)), "icon"=>getFolderIcon($row->Type));
 	}
 	$res->free();
 	uasort($folders, 'titlecmp');
@@ -67,12 +72,12 @@ try
 	{
 		if($row->AssetType == AssetType::Link || $row->AssetType == AssetType::LinkFolder)
 		{
-			$items["".$row->ID] = array("title"=>htmlentities($row->Name). " [Link]",
+			$items["".$row->ID] = array("title"=>quoteescape(htmlentities($row->Name)). " [Link]",
 					"icon" => getItemIcon($principalID, $row->Type, $row->AssetType, $row->Flags, $row->AssetID));
 		}
 		else
 		{
-			$items["".$row->ID] = array("title"=>htmlentities($row->Name),
+			$items["".$row->ID] = array("title"=>quoteescape(htmlentities($row->Name)),
 					"icon" => getItemIcon($principalID, $row->Type, $row->AssetType, $row->Flags, $row->AssetID));
 		}
 	}
