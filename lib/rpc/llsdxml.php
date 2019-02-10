@@ -267,7 +267,7 @@ class LLSDXMLHandler implements RPCHandler
 		throw new LLSDXMLParseException();
 	}
 
-	private static function parseLLSD(&$xml_input)
+	public static function parseLLSD(&$xml_input)
 	{
 		$value = null;
 		$have_value = False;
