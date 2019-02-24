@@ -56,7 +56,7 @@ class Wearable
 		for($idx = 3; $idx < count($lines); ++$idx)
 		{
 			$line = trim($lines[$idx]);
-			$para = preg_split("/[ \t]/", $lines[$idx]);
+			$para = preg_split("/[ \t]/", $line);
 			if(count($para) == 2 && $para[0] == "type")
 			{
 				$wearable->Type = intval($para[1]);
@@ -67,7 +67,12 @@ class Wearable
 				$parametercount = intval($para[1]);
 				for($paranum = 0; $paranum < $parametercount; ++$paranum)
 				{
-					$line = trim($lines[++$idx]);
+					++$idx;
+					if($idx >= count($lines))
+					{
+						break;
+					}
+					$line = trim($lines[$idx]);
 					$para = preg_split("/[ \t]/", $line);
 					if(count($para) == 2)
 					{
@@ -81,7 +86,12 @@ class Wearable
 				$texturecount = intval($para[1]);
 				for($paranum = 0; $paranum < $texturecount; ++$paranum)
 				{
-					$line = trim($lines[++$idx]);
+					++$idx;
+					if($idx >= count($lines))
+					{
+						break;
+					}
+					$line = trim($lines[$idx]);
 					$para = preg_split("/[ \t]/", $line);
 					if(count($para) == 2)
 					{
