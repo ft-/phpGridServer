@@ -82,7 +82,7 @@ class Wearable
 				for($paranum = 0; $paranum < $texturecount; ++$paranum)
 				{
 					$line = trim($lines[++$idx]);
-					$para = preg_split("/[ \t]/", $lines[$idx]);
+					$para = preg_split("/[ \t]/", $line);
 					if(count($para) == 2)
 					{
 						$wearable->Textures[intval($para[0])] = new UUID($para[1]);
