@@ -43,7 +43,14 @@ class TarFileReader
 
 	public function readFile()
 	{
-		$filedata = fread($this->File, $this->Filelength);
+		if($this->Filelength != 0)
+		{
+			$filedata = fread($this->File, $this->Filelength);
+		}
+		else
+		{
+			$filedata = "";
+		}
 		if(0 != ($this->Filelength % 512))
 		{
 			fseek($this->File, 512 - ($this->Filelength % 512), SEEK_CUR);
