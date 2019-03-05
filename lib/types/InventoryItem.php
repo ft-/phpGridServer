@@ -308,7 +308,7 @@ class InventoryItem
 					{
 						throw new InventoryItemXMLParseException();
 					}
-					$item->OwnerID = $data["text"];
+					$item->OwnerID = new UUID($data["text"]);
 				}
 				else if($tok["name"]=="CreatorData")
 				{
