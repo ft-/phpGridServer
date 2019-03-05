@@ -20,24 +20,36 @@ class TarFileReader
 
 	public function readHeader()
 	{
-		$tarhdr = fread($this->File, 512);
-		if(strlen($tarhdr) < 512)
+		$haveLonkLink = false;
+		do
 		{
-			return false;
-		}
-		$this->Filename = substr($tarhdr, 0, 100);
-		$pos = strpos($this->Filename, "\0");
-		if($pos !== False)
-		{
-			$this->Filename = substr($this->Filename, 0, $pos);
-		}
-		$filelen = substr($tarhdr, 124, 12);
-		$pos = strpos($filelen, "\0");
-		if($pos !== False)
-		{
-			$filelen = substr($filelen, 0, $pos);
-		}
-		$this->Filelength = octdec($filelen);
+			$tarhdr = fread($this->File, 512);
+			if(strlen($tarhdr) < 512)
+			{
+				return false;
+			}
+			$filelen = substr($tarhdr, 124, 12);
+			$pos = strpos($filelen, "\0");
+			if($pos !== False)
+			{
+				$filelen = substr($filelen, 0, $pos);
+			}
+			$this->Filelength = octdec($filelen);
+			if(substr($tarhdr, 156, 1) == "L")
+			{
+				$this->Filename = readFile();
+				$haveLongLink = true;
+			}
+			else if(!$haveLongLink)
+			{
+				$this->Filename = substr($tarhdr, 0, 100);
+				$pos = strpos($this->Filename, "\0");
+				if($pos !== False)
+				{
+					$this->Filename = substr($this->Filename, 0, $pos);
+				}
+			}
+		} while(substr($tarhdr, 156, 1) == "L");
 		return true;
 	}
 
