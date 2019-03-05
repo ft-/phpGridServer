@@ -16,6 +16,8 @@ class InventoryType extends AssetType {
 	const Wearable = 18;
 }
 
+class InventoryItemXMLParseException extends Exception {}
+
 class InventoryPermissions
 {
 	const None        = 0;
@@ -173,5 +175,242 @@ class InventoryItem
 		$xmlout.="<SaleType>".$this->SaleType."</SaleType>";
 		$xmlout.="</$tagname>";
 		return $xmlout;
+	}
+    
+	private static function parseInventoryItem(&$input)
+	{
+		$item = new InventoryItem();
+		while($tok = xml_tokenize($input))
+		{
+			if($tok["type"]=="opening")
+			{
+				if($tok["name"]=="ID")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->ID = $data["text"];
+				}
+				else if($tok["name"]=="AssetID")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->AssetID = $data["text"];
+				}
+				else if($tok["name"]=="Name")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->Name = $data["text"];
+				}
+				else if($tok["name"]=="Description")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->Description = $data["text"];
+				}
+				else if($tok["name"]=="InvType")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->Type = intval($data["text"]);
+				}
+				else if($tok["name"]=="CreationDate")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->CreationDate = intval($data["text"]);
+				}
+				else if($tok["name"]=="AssetType")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->AssetType = intval($data["text"]);
+				}
+				else if($tok["name"]=="SaleType")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->SaleType = intval($data["text"]);
+				}
+				else if($tok["name"]=="SalePrice")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->SalePrice = intval($data["text"]);
+				}
+				else if($tok["name"]=="BasePermissions")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->BasePermissions = intval($data["text"]);
+				}
+				else if($tok["name"]=="CurrentPermissions")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->CurrentPermissions = intval($data["text"]);
+				}
+				else if($tok["name"]=="EveryOnePermissions")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->EveryOnePermissions = intval($data["text"]);
+				}
+				else if($tok["name"]=="NextPermissions")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->NextPermissions = intval($data["text"]);
+				}
+				else if($tok["name"]=="Owner")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->OwnerID = $data["text"];
+				}
+				else if($tok["name"]=="CreatorData")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->CreatorData = $data["text"];
+				}
+				else if($tok["name"]=="CreatorID")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+					$item->CreatorID = $data["text"];
+				}
+				else if($tok["name"]=="Flags")
+				{
+					$data = xml_parse_text($tok["name"], $input);
+					if(!$data)
+					{
+						throw new InventoryItemXMLParseException();
+					}
+                                        $item->Flags = intval($data["text"]);
+				}
+				else
+				{
+					if(!xml_skip_nodes($tok["name"], $input))
+					{
+						throw new InventoryItemXMLParseException();
+					}
+				}
+			}
+			else if($tok["type"]=="closing")
+			{
+				if($tok["name"]=="InventoryItem")
+				{
+					return $item;
+				}
+				else
+				{
+					throw new InventoryItemXMLParseException();
+				}
+			}
+			else if($tok["type"]=="single")
+			{
+				if($tok["name"]=="Name")
+				{
+					$item->Name="";
+				}
+				else if($tok["name"]=="Description")
+				{
+					$item->Description="";
+				}
+				else if($tok["name"]=="CreatorID")
+				{
+					$item->CreatorID="";
+				}
+				else if($tok["name"]=="CreatorData")
+				{
+					$item->CreatorData="";
+				}
+				else if($tok["name"]=="Flags")
+				{
+					$item->Flags=0;
+				}
+			}
+		}
+	}
+
+	public static function fromXML($input)
+	{
+		$encoding="utf-8";
+
+		while($tok = xml_tokenize($input))
+		{
+			if($tok["type"]=="processing")
+			{
+				if($tok["name"]=="xml")
+				{
+					if(isset($tok["attrs"]["encoding"]))
+					{
+						$encoding=$tok["attrs"]["encoding"];
+					}
+				}
+			}
+			else if($tok["type"]=="opening")
+			{
+				if($tok["name"] == "InventoryItem")
+				{
+					return InventoryItem::parseInventoryItem($input);
+				}
+				else
+				{
+					throw new InventoryItemXMLParseException();
+				}
+			}
+		}
+
+		throw new InventoryItemXMLParseException();
 	}
 }
