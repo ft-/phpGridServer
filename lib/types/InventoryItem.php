@@ -191,7 +191,7 @@ class InventoryItem
 					{
 						throw new InventoryItemXMLParseException();
 					}
-					$item->ID = $data["text"];
+					$item->ID = new UUID($data["text"]);
 				}
 				else if($tok["name"]=="AssetID")
 				{
@@ -200,7 +200,7 @@ class InventoryItem
 					{
 						throw new InventoryItemXMLParseException();
 					}
-					$item->AssetID = $data["text"];
+					$item->AssetID = new UUID($data["text"]);
 				}
 				else if($tok["name"]=="Name")
 				{
