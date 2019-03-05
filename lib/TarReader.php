@@ -37,7 +37,7 @@ class TarFileReader
 			$this->Filelength = octdec($filelen);
 			if(substr($tarhdr, 156, 1) == "L")
 			{
-				$this->Filename = readFile();
+				$this->Filename = $this->readFile();
 				$haveLongLink = true;
 			}
 			else if(!$haveLongLink)
