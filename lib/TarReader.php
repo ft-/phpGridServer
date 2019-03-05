@@ -20,7 +20,7 @@ class TarFileReader
 
 	public function readHeader()
 	{
-		$haveLonkLink = false;
+		$haveLongLink = false;
 		do
 		{
 			$tarhdr = fread($this->File, 512);
