@@ -12,6 +12,7 @@ class TarFileReader
 	private $File;
 	public $Filename;
 	public $Filelength;
+	public $Filetype;
 
 	public function __construct($file)
 	{
@@ -35,7 +36,8 @@ class TarFileReader
 				$filelen = substr($filelen, 0, $pos);
 			}
 			$this->Filelength = octdec($filelen);
-			if(substr($tarhdr, 156, 1) == "L")
+			$this->Filetype = substr($tarhdr, 156, 1);
+			if($this->Filetype == "L")
 			{
 				$this->Filename = $this->readFile();
 				$haveLongLink = true;
@@ -49,7 +51,7 @@ class TarFileReader
 					$this->Filename = substr($this->Filename, 0, $pos);
 				}
 			}
-		} while(substr($tarhdr, 156, 1) == "L");
+		} while($this->Filetype == "L");
 		return true;
 	}
 
