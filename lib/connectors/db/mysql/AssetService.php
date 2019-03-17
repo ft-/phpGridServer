@@ -181,10 +181,20 @@ if(!class_exists("MySQLAssetServiceConnector"))
 			}
 			$create_time = time();
 			$access_time = time();
+			$name = $asset->Name;
+			$description = $asset->Description;
+			if(strlen($name)>64)
+			{
+				$name = substr($name, 0, 64);
+			}
+			if(strlen($description)>64)
+			{
+				$description = substr($description, 0, 64);
+			}
 
 			$id = $asset->ID->__toString();
-			$stmt->bind_param("ssiiisiiisb", $asset->Name,
-							$asset->Description,
+			$stmt->bind_param("ssiiisiiisb", $name,
+							$description,
 							$asset->Type,
 							$asset->Local,
 							$asset->Temporary,
