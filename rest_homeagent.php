@@ -140,7 +140,7 @@ try
 	else
 	{
 		$gatekeeperConnector = new GatekeeperRemoteConnector($destination->GatekeeperURI);
-		$destination = $gatekeeperConnector->getRegion($destination);
+		$destination = $gatekeeperConnector->getRegion($destination, $userAccount->PrincipalID, $homeGrid->HomeURI);
 		$gk_destination = $gatekeeperConnector->linkRegion($destination->RegionName, $userAccount->PrincipalID, $homeGrid->HomeURI);
 		if($gk_destination->ID != $destination->ID)
 		{
