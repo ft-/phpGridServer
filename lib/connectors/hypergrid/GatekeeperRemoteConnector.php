@@ -34,8 +34,8 @@ class GatekeeperRemoteConnector implements GatekeeperServiceInterface
 		if($regionName)
 		{
 			$req->Params[0]->region_name = $regionName;
-			$req->Params[0]->uuid = $uuid;
 		}
+		$req->Params[0]->agent_id = $uuid;
 		$req->Method = "link_region";
 		$req->InvokeID = UUID::Random();
 		$serializer = new XMLRPCHandler();
