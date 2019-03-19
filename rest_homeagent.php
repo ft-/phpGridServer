@@ -141,7 +141,7 @@ try
 	{
 		$gatekeeperConnector = new GatekeeperRemoteConnector($destination->GatekeeperURI);
 		$destination = $gatekeeperConnector->getRegion($destination);
-		$gk_destination = $gatekeeperConnector->linkRegion($destination->RegionName);
+		$gk_destination = $gatekeeperConnector->linkRegion($destination->RegionName, $userAccount->PrincipalID);
 		if($gk_destination->ID != $destination->ID)
 		{
 			throw new Exception("We cannot guarantee the correct target id");
