@@ -792,7 +792,11 @@ class MySQLProfileServiceConnector implements ProfileServiceInterface
 					MODIFY profileSkillsText text,
 					MODIFY profileLanguages text,
 					MODIFY profileAboutText TEXT,
-					MODIFY profileFirstText TEXT"
+					MODIFY profileFirstText TEXT",
+		"ALTER TABLE %tablename% MODIFY `profileAllowPublish` binary(1) NOT NULL DEFAULT '0',
+					MODIFY `profileMaturePublish` binary(1) NOT NULL DEFAULT '0',
+					MODIFY `profileWantToMask` int(3) NOT NULL DEFAULT '0',
+					MODIFY `profileSkillsMask` int(3) NOT NULL DEFAULT '0'"
 	);
 
 	private $revisions_usersettings = array(
