@@ -23,7 +23,7 @@ class PasswordAuthenticationService implements AuthenticationServiceInterface
 
 		$salted = md5($password.":".$authInfo->PasswordSalt);
 
-		if($salted != $authInfo->PasswordHash)
+		if($salted !== $authInfo->PasswordHash)
 		{
 			throw new AuthenticationFailedException();
 		}
