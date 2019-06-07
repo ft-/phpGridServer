@@ -20,7 +20,8 @@ function compileAssetListFromMaterial($asset, &$assetlist)
 	try
 	{
 		$assetdata = $asset->Data;
-		$llsd = LLSDXMLHandler::parseLLSD($assetdata);
+        $matdata = "".$assetdata;
+		$llsd = LLSDXMLHandler::parseLLSD($matdata);
 		if("".$llsd->NormMap != "".UUID::ZERO())
 		{
 			$assetlist[] = "".$llsd->NormMap;

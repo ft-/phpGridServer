@@ -140,8 +140,8 @@ try
 	else
 	{
 		$gatekeeperConnector = new GatekeeperRemoteConnector($destination->GatekeeperURI);
-		$destination = $gatekeeperConnector->getRegion($destination);
-		$gk_destination = $gatekeeperConnector->linkRegion($destination->RegionName);
+		$destination = $gatekeeperConnector->getRegion($destination, $userAccount->PrincipalID, $homeGrid->HomeURI);
+		$gk_destination = $gatekeeperConnector->linkRegion($destination->RegionName, $userAccount->PrincipalID, $homeGrid->HomeURI);
 		if($gk_destination->ID != $destination->ID)
 		{
 			throw new Exception("We cannot guarantee the correct target id");

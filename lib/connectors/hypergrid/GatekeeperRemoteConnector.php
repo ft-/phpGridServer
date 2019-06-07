@@ -24,7 +24,7 @@ class GatekeeperRemoteConnector implements GatekeeperServiceInterface
 		$this->uri = $uri;
 	}
 
-	public function linkRegion($regionName = "")
+	public function linkRegion($regionName = "", $uuid = "00000000-0000-0000-0000-000000000000", $homeuri = "")
 	{
 		$httpConnector = getService("HTTPConnector");
 
@@ -34,6 +34,11 @@ class GatekeeperRemoteConnector implements GatekeeperServiceInterface
 		if($regionName)
 		{
 			$req->Params[0]->region_name = $regionName;
+		}
+		$req->Params[0]->agent_id = $uuid;
+		if($homeuri)
+		{
+			$req->Params[0]->agent_home_uri = $homeuri;
 		}
 		$req->Method = "link_region";
 		$req->InvokeID = UUID::Random();
@@ -72,13 +77,18 @@ class GatekeeperRemoteConnector implements GatekeeperServiceInterface
 			return $destinationInfo;
 		}
 	}
-	public function getRegion($destinationInfo)
+	public function getRegion($destinationInfo, $uuid = "00000000-0000-0000-0000-000000000000", $homeuri = "")
 	{
 		$httpConnector = getService("HTTPConnector");
 
 		$req = new RPCRequest();
 		$req->Params[0] = new RPCStruct();
 		$req->Params[0]->region_uuid = $destinationInfo->ID;
+		$req->Params[0]->agent_id = $uuid;
+		if($homeuri)
+		{
+			$req->Params[0]->agent_home_uri = $homeuri;
+		}
 		$req->Method = "get_region";
 		$req->InvokeID = UUID::Random();
 		$serializer = new XMLRPCHandler();
